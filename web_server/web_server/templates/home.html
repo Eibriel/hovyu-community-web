@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% from '_add_edit_modal.html' import add_edit_modal,add_edit_modal_js %}
+{% from '_list_stores.html' import list_stores %}
+{% block body %}
+    <div class="row">
+        <h1 style="text-align: center;">Comunidad WIDÚ</h1>
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+          Sumar comercio
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+        </div> 
+        <div class="col-lg-6">
+            <form action="/" method="GET">
+                <input type="hidden" name="latitude" id="q_latitude">
+                <input type="hidden" name="longitude" id="q_longitude">
+                <input type="hidden" name="q" id="q_">
+                <button type="submit" class="btn btn-default btn-lg" style="margin-bottom: 1em;">
+                    <div>Busco <span class="label label-primary" id="query_product">todo</span> cerca de <span class="label label-success" id="query_place">aquí</span></div>
+                </button>
+            </form>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Busco..." name="q" id="q" autocomplete="off">
+              <!--<span class="input-group-btn">
+                <button class="btn btn-success" type="button">DÚ!</button>
+              </span>-->
+            </div><!-- /input-group -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="query_items"></div>
+                </div>
+            </div>
+        </div> 
+        <div class="col-lg-3">
+        </div> 
+    </div><!-- /row -->
+                        
+    {{ list_stores(items) }}
+
+</div>
+
+{{ msg }}
+
+{{ add_edit_modal(edit_item, products) }}
+    
+{% endblock %}
+
+{% block scripts %}
+{{ add_edit_modal_js() }}
+<script>
+$("#q").keyup(function() {
+    if ($('#q').val()=="") {
+        return;
+    }
+    $.ajax({
+      method: "POST",
+      url: "/build_query",
+      type: "json",
+      data: { q: $('#q').val() }
+    })
+      .done(function( msg ) {
+        var html = "<p>";
+        var name = "";
+        var _id = "";
+        for (var index in msg['products']) {
+            name = msg['products'][index]['name'];
+            _id = msg['products'][index]['_id'];
+            html += "<a class='btn btn-primary' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+        }
+        html += "</p><p>";
+        for (var index in msg['places']) {
+        name = msg['places'][index]
+            html += "<a class='btn btn-success' role='button' href='#' onclick='return add_query_place(\""+name+"\")'>"+name+"</a> ";
+        }
+        html += "</p>";
+        $("#query_items").html(html);
+      });
+});
+
+function add_query_product(_id, name) {
+    $("#query_product").html(name);
+    $('#q_').val(_id);
+    $("#query_items").html("");
+    $('#q').val("");
+    return false;
+}
+
+function add_query_place(name) {
+    $("#query_place").html(name);
+    if (name=='cualquier lado') {
+        $('#q_latitude').val("");
+        $('#q_longitude').val("");
+    } else {
+        $('#q_latitude').val(latitude);
+        $('#q_longitude').val(longitude);
+    }
+    $("#query_items").html("");
+    $('#q').val("");
+    return false;
+}
+</script>
+{% endblock %}
