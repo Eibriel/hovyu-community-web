@@ -1,0 +1,61 @@
+{% macro upgrade_modal() %}
+<!-- Upgrade Modal -->
+    <div class="modal fade" id="upgradeModal" tabindex="-1" role="dialog" aria-labelledby="upgradeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="upgradeModalLabel">Elevar comercio</h4>
+                </div>
+                <div class="modal-body">
+                    Puedes colocar este negocio entre los primeros, solo debes abonar $200 por mes, o $2.000 por año.
+                    
+                    <div role="tabpanel">
+                      <!-- Nav tabs -->
+                      <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Depósito</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Pagomiscuentas</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Bitcoin</a></li>
+                        <!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>-->
+                      </ul>
+
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <p>Ingrese su dirección de correo electrónico y le enviaremos los datos para realizar el pago vía depósito o transferencia bancaria.</p>
+                            <input type="text" />
+                            <select>
+                            <option>1 mes</option>
+                            <option>1 año</option>
+                            </select>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <p>Ingrese a <a href="http://pagomiscuentas.com.ar/">Pagomiscuentas</a>, busque el comercio "WIDU Transmedia", page utilizando el siguiente código: ""</p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="messages">
+                            <p>Envíe el pago a 123456</p>
+                        </div>
+                        <!--<div role="tabpanel" class="tab-pane" id="settings">...</div>-->
+                      </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro upgrade_modal_js() %}
+<script>
+function add_high(id) {
+    $('#panel_store_'+id).addClass('panel-primary');
+    $('#panel_store_'+id).removeClass('panel-default');
+    $('#star_'+id).css('display', 'inline');
+}
+
+</script>
+{% endmacro %}

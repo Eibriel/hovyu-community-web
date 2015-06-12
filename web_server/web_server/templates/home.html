@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
-{% from '_add_edit_modal.html' import add_edit_modal,add_edit_modal_js %}
-{% from '_list_stores.html' import list_stores %}
+{% from '_add_edit_modal.html' import add_edit_modal, add_edit_modal_js %}
+{% from '_upgrade_modal.html' import upgrade_modal, upgrade_modal_js %}
+{% from '_list_stores.html' import list_stores, list_stores_js %}
 {% block body %}
     <div class="row">
         <h1 style="text-align: center;">Comunidad WIDÚ</h1>
     </div>
     <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditModal">
           Sumar comercio
         </button>
     </div>
@@ -15,11 +16,13 @@
         </div> 
         <div class="col-lg-6">
             <form action="/" method="GET">
-                <input type="hidden" name="latitude" id="q_latitude">
-                <input type="hidden" name="longitude" id="q_longitude">
-                <input type="hidden" name="q" id="q_">
+                <input type="hidden" name="latitude" id="q_latitude" value="{{latitude}}">
+                <input type="hidden" name="longitude" id="q_longitude" value="{{longitude}}">
+                <input type="hidden" name="location_name" id="q_location_name" value="{{location_name}}">
+                <input type="hidden" name="product" id="q_product" value="{{product}}">
+                <input type="hidden" name="product_name" id="q_product_name" value="{{product_name}}">
                 <button type="submit" class="btn btn-default btn-lg" style="margin-bottom: 1em;">
-                    <div>Busco <span class="label label-primary" id="query_product">todo</span> cerca de <span class="label label-success" id="query_place">aquí</span></div>
+                    <div>Busco <span class="label label-primary" id="query_product">{{product_name}}</span> cerca de <span class="label label-success" id="query_place">{{location_name}}</span></div>
                 </button>
             </form>
             <div class="form-group">
@@ -45,11 +48,14 @@
 {{ msg }}
 
 {{ add_edit_modal(edit_item, products) }}
-    
+{{ upgrade_modal() }}
+
 {% endblock %}
 
 {% block scripts %}
+{{ list_stores_js(items) }}
 {{ add_edit_modal_js() }}
+{{ upgrade_modal_js() }}
 <script>
 $("#q").keyup(function() {
     if ($('#q').val()=="") {
@@ -82,7 +88,8 @@ $("#q").keyup(function() {
 
 function add_query_product(_id, name) {
     $("#query_product").html(name);
-    $('#q_').val(_id);
+    $('#q_product').val(_id);
+    $('#q_product_name').val(name);
     $("#query_items").html("");
     $('#q').val("");
     return false;
@@ -97,9 +104,17 @@ function add_query_place(name) {
         $('#q_latitude').val(latitude);
         $('#q_longitude').val(longitude);
     }
+    $('#q_location_name').val(name);
     $("#query_items").html("");
     $('#q').val("");
     return false;
 }
 </script>
+
+{% if editing %}
+<script>
+$('#addEditModal').modal('show')
+</script>
+{% endif %}
+
 {% endblock %}

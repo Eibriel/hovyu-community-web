@@ -71,16 +71,33 @@ def patch(resource, data, eTag):
         msg = "ConnectionError"
 
 
+@app.route("/store_add")
+def store_add():
+    return "Add Store"
+    
+
+@app.route("/store_edit")
+def store_edit():
+    return "Edit Store"
+
+
 @app.route("/")
 def home():
     msg = ""
     query = ""
+    product = ""
+    product_name = "todo"
+    latitude = ""
+    longitude = ""
+    location_name = "cualquier lado"
     edit_item = {}
     items = []
+    editing = False
     
     products = get('products')
     
     if 'e' in request.args:
+        editing = True
         edit_item = get('stores/{0}'.format(request.args['e']))
         websites = []
         if type(edit_item['website']) == list:
@@ -105,19 +122,31 @@ def home():
     if 'location' not in edit_item:
         edit_item['location'] = None
 
-    if 'q' in request.args:
+    if 'product' in request.args:
+        product = request.args['product']
+        if 'product_name' in request.args:
+            product_name = request.args['product_name']
+        if 'location_name' in request.args:
+            location_name = request.args['location_name']
         if 'latitude' in request.args and 'longitude' in request.args:
-            items = get('stores?products={0}&latitude={1}&longitude={2}'.format(request.args['q'], request.args['latitude'], request.args['longitude']))
+            latitude = request.args['latitude']
+            longitude = request.args['longitude']
+            items = get('stores?products={0}&latitude={1}&longitude={2}'.format(request.args['product'], request.args['latitude'], request.args['longitude']))
         else:
-            items = get('stores?products={0}'.format(request.args['q']))
-        query = request.args['q']
+            items = get('stores?products={0}'.format(request.args['product']))
+        query = request.args['product']
         
     return render_template('home.html',
                            msg = msg,
                            products = products,
                            edit_item=edit_item,
+                           editing=editing,
                            items = items,
-                           query = query)
+                           latitude = latitude,
+                           longitude = longitude,
+                           location_name = location_name,
+                           product = product,
+                           product_name = product_name)
 
 
 def get_form():
@@ -177,7 +206,7 @@ def build_query():
 def new_store():
     store = get_form()
     post('stores', store)
-    return redirect(url_for('home'))
+    return redirect('/?store={0}'.format('123'))
 
 
 @app.route('/edit_store', methods=['POST'])
@@ -186,7 +215,7 @@ def edit_store():
     _etag = request.form['_etag']
     _id = request.form['_id']
     patch('stores/{0}'.format(_id), store, _etag)
-    return redirect(url_for('home'))
+    return redirect('/?store={0}'.format(_id))
 
 
 

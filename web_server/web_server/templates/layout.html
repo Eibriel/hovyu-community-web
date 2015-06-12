@@ -37,14 +37,20 @@
 
 <script>
 /* Geolocation */
-var latitude = null
-var longitude = null
-if ("geolocation" in navigator) {
+{% if latitude and longitude %}
+var latitude = {{latitude}};
+var longitude = {{longitude}};
+{% else %}
+var latitude = null;
+var longitude = null;
+{% endif %}
+if ("geolocation" in navigator && !latitude && !longitude) {
     navigator.geolocation.getCurrentPosition(function(position) {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;
       $('#q_latitude').val(latitude);
       $('#q_longitude').val(longitude);
+      $('#query_place').html('aquí');
     });
 }
 </script>
