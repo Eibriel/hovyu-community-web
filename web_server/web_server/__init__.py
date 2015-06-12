@@ -232,14 +232,56 @@ def edit_store():
 @app.route('/payments')
 def payments():
     items = get('payments')
-    return render_template('payments.html')
+    stats = get('payment_stats')[0]
+    return render_template('payments.html', items=items, stats=stats)
 
 
 @app.route('/payment_add_edit')
 def payment_add_edit():
+    editing = False
     edit_item = {}
+    
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('payments/{0}'.format(request.args['e']))
+        #print (edit_item)
+        #edit_item = edit_item[0]
     return render_template('add_edit_payment.html',
-                            edit_item=edit_item)
+                            editing = editing,
+                            edit_item = edit_item)
+
+def get_payment_form():
+    payment = {
+        'payment_method': request.form['payment_method'],
+        'description': request.form['description'],
+        'store_id': '554ce34116a24e0fe8197493',
+        'currency': request.form['currency'],
+        'amount': float(request.form['amount']),
+        'day_cost': float(request.form['day_cost']),
+        'completed': False,
+        'refunded': False,
+        'refund_description': request.form['refund_description'],
+    }
+    if 'completed' in request.form:
+        payment['completed'] = True
+    if 'refunded' in request.form:
+        payment['refunded'] = True
+        
+    return payment
 
 
+@app.route('/new_payment', methods=['POST'])
+def add_payment():
+    payment = get_payment_form()
+    r = post('payments', payment)
+    print (r.text)
+    return redirect('/payments')
+    
+@app.route('/edit_payment', methods=['POST'])
+def edit_payment():
+    payment = get_payment_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    patch('payments/{0}'.format(_id), payment, _etag)
+    return redirect('/payments')
 
