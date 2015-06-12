@@ -1,0 +1,294 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="row">
+        {% if editing %}
+        <h1 style="text-align: center;">Editar Pago</h1>
+        {% else %}
+        <h1 style="text-align: center;">Agregar Pago</h1>
+        {% endif %}
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <a role="button" class="btn btn-primary btn-sm" href="/">
+          Cancelar
+        </a>
+    </div>
+    {% if editing %}
+    <form action="edit_payment" method="POST" class="form-horizontal">
+    {% else %}
+    <form action="new_payment" method="POST" class="form-horizontal">
+    {% endif %}
+        <!-- Payment Method -->
+        <div class="form-group">
+            <label for="payment_method" class="col-sm-2 control-label">Método de pago</label>
+                <div class="col-sm-10">
+                    <select class="form-control"  name="method" id="payment_method">
+                        <option value="local_bank">Transferencia/Depósito Bancario</option>
+                        <option value="pagomiscuentas">Pagomiscuentas</option>
+                        <option value="bitcoin">Bitcoin</option>
+                        <option value="bonus">Bonus</option>
+                    </select>
+            </div>
+        </div>
+        <!-- Description -->
+        <div class="form-group">
+            <label for="payment_description" class="col-sm-2 control-label">Descripción</label>
+            <div class="col-sm-10">
+                <textarea name="description" id="payment_description" class="form-control" rows="3" >{{ edit_item.description }}</textarea>
+                <span id="payment_description_help" class="help-block">Detalles del pago</span>
+            </div>
+        </div>
+        <!-- Store Id -->
+        <div class="form-group">
+            <label for="payment_store_id" class="col-sm-2 control-label">ID del Comercio</label>
+            <div class="col-sm-10">
+                <input type="text" name="store_id" id="payment_store_id" class="form-control" placeholder="s4c5c8e4fg4h6fgh5n8" value="{{ edit_item.store_id }}"></input>
+                <span id="payment_store_help" class="help-block">ID del Comercio</span>
+            </div>
+        </div>
+        <!-- Currency -->
+        <div class="form-group">
+            <label for="payment_currency" class="col-sm-2 control-label">Moneda</label>
+                <div class="col-sm-10">
+                    <select class="form-control"  name="currency" id="payment_currency">
+                        <option value="ar">Pesos Argentinos</option>
+                        <option value="usd">Dólar</option>
+                        <option value="euro">Euro</option>
+                        <option value="bitcoin">Bitcoin</option>
+                    </select>
+            </div>
+        </div>
+        <!-- Amount -->
+        <div class="form-group">
+            <label for="payment_amount" class="col-sm-2 control-label">Cantidad</label>
+            <div class="col-sm-10">
+                <input type="text" name="amount" id="payment_amount" class="form-control" placeholder="0.0 o 1000000000" value="{{ edit_item.amount }}"></input>
+                <span id="payment_amount_help" class="help-block">Cantidad en formato de coma flotante o satoshi</span>
+            </div>
+        </div>
+        <!-- Day cost -->
+        <div class="form-group">
+            <label for="payment_day_cost" class="col-sm-2 control-label">Costo diario</label>
+            <div class="col-sm-10">
+                <input type="text" name="day_cost" id="payment_day_cost" class="form-control" placeholder="0.0 o 1000000000" value="{{ edit_item.amount }}"></input>
+                <span id="payment_day_cost_help" class="help-block">Cantidad en formato de coma flotante o satoshi</span>
+            </div>
+        </div>
+        <!-- Completed -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="completed" {% if edit_item.completed %}checked="checked"{% endif %}> Completado
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- Refunded -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="refunded" {% if edit_item.refunded %}checked="checked"{% endif %}> Reembolsado
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- Description del Reembolso -->
+        <div class="form-group">
+            <label for="payment_refund_description" class="col-sm-2 control-label">Descripción del reembolso</label>
+            <div class="col-sm-10">
+                <textarea name="refund_description" id="payment_refund_description" class="form-control" rows="3" >{{ edit_item.refund_description }}</textarea>
+                <span id="payment_refund_description_help" class="help-block">¿Cual fue el motivo del reembolso?¿Cómo y cuando se reenbolsó?</span>
+            </div>
+        </div>
+
+        {% if editing %}
+        <input type="hidden" name="_id" value="{{ edit_item._id }}">
+        <input type="hidden" name="_etag" value="{{ edit_item._etag }}">
+        {% endif %}
+        {% if editing %}
+        <button type="submit" class="btn btn-primary">Editar</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary">Agregar</button>
+        {% endif %}
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* WEBSITES */
+if ($('#new_store_websites_json').val()=='') {
+    $('#new_store_websites_json').val('[]');
+}
+function print_websites() {
+    var html = "";
+    for (var item in websites) {
+      html = html + "<p><a href='"+websites[item]['url']+"' target='_blank'> "+websites[item]['text']+"</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return remove_website(\""+websites[item]['url']+"\");'>Eliminar</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return edit_website(\""+websites[item]['url']+"\");'>Editar</a></p>";
+    }
+    $('#websites_list').html(html);
+}
+var websites = JSON.parse($('#new_store_websites_json').val());
+print_websites();
+
+/* TELS */
+if ($('#new_store_tels_json').val()=='') {
+    $('#new_store_tels_json').val('[]');
+}
+function print_tels() {
+    var html = "";
+    for (var item in tels) {
+      html = html + "<p><strong>Tipo:</strong> "+tels[item]['type']+" <strong>Número:</strong> "+tels[item]['number']+" <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return remove_tel(\""+tels[item]['number']+"\");'>Eliminar</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return edit_tel(\""+tels[item]['number']+"\");'>Editar</a></p>";
+    }
+    $('#tels_list').html(html);
+}
+var tels = JSON.parse($('#new_store_tels_json').val());
+print_tels();
+
+/* PRODUCTS */
+if ($('#new_store_products_json').val()=='') {
+    $('#new_store_products_json').val('[]');
+}
+function print_products() {
+    var html = "";
+    for (var item in products) {
+      html = html + "<p>"+products[item]['name']+" <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return remove_product(\""+products[item]['_id']+"\");'>Eliminar</a></p>";
+    }
+    $('#products_list').html(html);
+}
+var products = JSON.parse($('#new_store_products_json').val());
+print_products();
+
+
+/* ADD */
+function add_website() {
+    url = $('#new_store_website').val();
+    text = $('#new_store_website_title').val();
+    var done = false;
+    
+    if (url=='' || text=='') {
+        return false;
+    }
+    
+    for (var website in websites) {
+        if (websites[website]['url'] == url) {
+            websites[website]['text'] = text;
+            done = true;
+        }
+    }
+    
+    if (! done) {
+        var new_website = new Object();
+        new_website['url'] = url;
+        new_website['text'] = text;
+        websites.push(new_website);
+    }
+    
+    $('#new_store_websites_json').val(JSON.stringify(websites))
+    print_websites();
+    
+    return false;
+}
+
+function add_tel() {
+    number = $('#new_store_tel').val();
+    type = $('#new_store_tel_type').val();
+    
+    if (number=='' || type=='') {
+        return false;
+    }
+    
+    var new_tel = new Object();
+    new_tel['type'] = type;
+    new_tel['number'] = number;
+
+    tels.push(new_tel);
+    $('#new_store_tels_json').val(JSON.stringify(tels))
+    print_tels();
+    
+    return false;
+}
+
+function add_product() {
+    _id = $('#new_store_product').val();
+    name = $('#product_'+_id).text();
+    
+    for (var product in products) {
+        if (products[product]['_id'] == _id) {
+            return false;
+        }
+    }
+    
+    var new_product = new Object();
+    new_product['_id'] = _id;
+    new_product['name'] = name;
+
+    products.push(new_product);
+    $('#new_store_products_json').val(JSON.stringify(products))
+    print_products();
+    
+    return false;
+}
+
+/* REMOVE */
+function remove_website(url) {
+    var new_websites = new Array;
+    for (var website in websites) {
+        if (websites[website]['url'] != url) {
+            new_websites.push(websites[website]);
+        }
+    }
+    websites = new_websites;
+    $('#new_store_websites_json').val(JSON.stringify(websites))
+    print_websites();
+    return false;
+}
+
+function remove_tel(number) {
+    var new_tels = new Array;
+    for (var tel in tels) {
+        if (tels[tel]['number'] != number) {
+            new_tels.push(tels[tel]);
+        }
+    }
+    tels = new_tels;
+    $('#new_store_tels_json').val(JSON.stringify(tels))
+    print_tels();
+    return false;
+}
+
+function remove_product(_id) {
+    var new_products = new Array;
+    for (var product in products) {
+        if (products[product]['_id'] != _id) {
+            new_products.push(products[product]);
+        }
+    }
+    products = new_products;
+    $('#new_store_products_json').val(JSON.stringify(products))
+    print_products();
+    return false;
+}
+
+/* EDIT */
+function edit_website(url) {
+    for (var website in websites) {
+        if (websites[website]['url'] == url) {
+            $('#new_store_website').val(websites[website]['url']);
+            $('#new_store_website_title').val(websites[website]['text']);
+        }
+    }
+    return false;
+}
+
+function edit_tel(number) {
+    for (var tel in tels) {
+        if (tels[tel]['number'] == number) {
+            $('#new_store_tel').val(tels[tel]['number']);
+            $('#new_store_tel_type').val(tels[tel]['type']);
+        }
+    }
+    return false;
+}
+</script>
+{% endblock %}

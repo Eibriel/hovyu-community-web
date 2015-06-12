@@ -25,7 +25,9 @@
 <div class="container">
     {% block body %}{% endblock %}
 </div><!-- /.container -->
-    
+<div class="container" style="text-align: center">
+<p><small>WIDÚ Transmedia - 2015</small></p>
+</div><!-- /.container -->
     
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -44,7 +46,7 @@ var longitude = {{longitude}};
 var latitude = null;
 var longitude = null;
 {% endif %}
-if ("geolocation" in navigator && !latitude && !longitude) {
+if ("geolocation" in navigator && !latitude && !longitude && false) {
     navigator.geolocation.getCurrentPosition(function(position) {
       latitude = position.coords.latitude;
       longitude = position.coords.longitude;

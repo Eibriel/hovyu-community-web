@@ -41,7 +41,7 @@
                     <div class="col-lg-6">
                         {% if item.location %}
                         <a class="thumbnail" href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[0] }}/{{ item.location.coordinates[1] }}" target="_blank">
-                        <img src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/pin-l-shop+482({{ item.location.coordinates[1] }},{{ item.location.coordinates[0] }})/{{ item.location.coordinates[1] }},{{ item.location.coordinates[0] }},15/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
+                        <img src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/pin-l-shop+482({{ item.location.coordinates[1] }},{{ item.location.coordinates[0] }})/{{ item.location.coordinates[1] }},{{ item.location.coordinates[0] }},{% if item.exact_location %}15{% else %}13{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
                         </a>
                         {% endif %}
                     </div>
@@ -51,11 +51,11 @@
                 
                 <div class="row">
                     <div class="col-lg-6" style="margin-top: 1em">
-                        <a class="btn btn-default" href="/?e={{ item._id }}" role="button">
+                        <a class="btn btn-default" href="/store_add_edit?e={{ item._id }}" role="button">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar
                         </a>
                         <button class="btn btn-default" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
-                            <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Elevar
+                            <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Resaltar
                         </button>
                     </div>
                     <div class="col-lg-6" style="text-align: right; margin-top: 1em">

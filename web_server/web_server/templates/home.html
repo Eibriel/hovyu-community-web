@@ -7,9 +7,9 @@
         <h1 style="text-align: center;">Comunidad WIDÚ</h1>
     </div>
     <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addEditModal">
+        <a role="button" class="btn btn-primary btn-sm" href="/store_add_edit">
           Sumar comercio
-        </button>
+        </a>
     </div>
     <div class="row">
         <div class="col-lg-3">
@@ -43,18 +43,16 @@
                         
     {{ list_stores(items) }}
 
-</div>
+<!--</div>-->
 
 {{ msg }}
 
-{{ add_edit_modal(edit_item, products) }}
 {{ upgrade_modal() }}
 
 {% endblock %}
 
 {% block scripts %}
 {{ list_stores_js(items) }}
-{{ add_edit_modal_js() }}
 {{ upgrade_modal_js() }}
 <script>
 $("#q").keyup(function() {

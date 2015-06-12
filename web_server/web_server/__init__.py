@@ -54,6 +54,8 @@ def post(resource, data):
         msg = "MissingSchema"
     except ConnectionError:
         msg = "ConnectionError"
+    
+    return r
 
 
 def patch(resource, data, eTag):
@@ -71,34 +73,15 @@ def patch(resource, data, eTag):
         msg = "ConnectionError"
 
 
-@app.route("/store_add")
+@app.route("/store_add_edit")
 def store_add():
-    return "Add Store"
-    
-
-@app.route("/store_edit")
-def store_edit():
-    return "Edit Store"
-
-
-@app.route("/")
-def home():
-    msg = ""
-    query = ""
-    product = ""
-    product_name = "todo"
-    latitude = ""
-    longitude = ""
-    location_name = "cualquier lado"
-    edit_item = {}
-    items = []
     editing = False
-    
-    products = get('products')
+    edit_item = {}
     
     if 'e' in request.args:
         editing = True
         edit_item = get('stores/{0}'.format(request.args['e']))
+        edit_item = edit_item[0]
         websites = []
         if type(edit_item['website']) == list:
             for website in edit_item['website']:
@@ -111,6 +94,7 @@ def home():
         edit_item['tels_json'] = json.dumps(edit_item['tel'])
         if 'products' in edit_item:
             products_json = []
+            products = get('products')
             for product in edit_item['products']:
                 for product_ in products:
                     if product_['_id'] == product:
@@ -118,11 +102,32 @@ def home():
             edit_item['products_json'] = json.dumps(products_json)
         else:
             edit_item['products_json'] = []
-
+    
     if 'location' not in edit_item:
         edit_item['location'] = None
+        
+    return render_template('add_edit_store.html',
+                           edit_item = edit_item,
+                           editing = editing)
 
-    if 'product' in request.args:
+
+@app.route("/")
+def home():
+    msg = ""
+    query = ""
+    product = ""
+    product_name = "todo"
+    latitude = ""
+    longitude = ""
+    location_name = "cualquier lado"
+    items = []
+    
+    products = get('products')
+
+    if 'store' in request.args:
+        items = get('stores/{0}'.format(request.args['store']))
+        print (items)
+    elif 'product' in request.args:
         product = request.args['product']
         if 'product_name' in request.args:
             product_name = request.args['product_name']
@@ -139,8 +144,6 @@ def home():
     return render_template('home.html',
                            msg = msg,
                            products = products,
-                           edit_item=edit_item,
-                           editing=editing,
                            items = items,
                            latitude = latitude,
                            longitude = longitude,
@@ -164,6 +167,7 @@ def get_form():
         'email': request.form['email'],
         'website': [],
         'tel': [],
+        'exact_location': False
     }
     
     websites_json = json.loads(request.form['websites_json'])
@@ -181,9 +185,14 @@ def get_form():
     if request.form['latitude'] != '' and request.form['longitude'] != '':
         latitude = float(request.form['latitude'])
         longitude = float(request.form['longitude'])
-        store['location'] = {"type":"Point","coordinates":[latitude, longitude]}
     else:
-        store['location'] = None
+        latitude = 0.0
+        longitude = 0.0
+        
+    store['location'] = {"type":"Point","coordinates":[latitude, longitude]}
+    
+    if 'exact_location' in request.form:
+        store['exact_location'] = True
     
     return store
 
@@ -204,9 +213,11 @@ def build_query():
 
 @app.route('/new_store', methods=['POST'])
 def new_store():
+    print 
     store = get_form()
-    post('stores', store)
-    return redirect('/?store={0}'.format('123'))
+    r = post('stores', id)
+    _store = r.json()['_id']
+    return redirect('/?store={0}'.format(_id))
 
 
 @app.route('/edit_store', methods=['POST'])
@@ -216,6 +227,19 @@ def edit_store():
     _id = request.form['_id']
     patch('stores/{0}'.format(_id), store, _etag)
     return redirect('/?store={0}'.format(_id))
+
+
+@app.route('/payments')
+def payments():
+    items = get('payments')
+    return render_template('payments.html')
+
+
+@app.route('/payment_add_edit')
+def payment_add_edit():
+    edit_item = {}
+    return render_template('add_edit_payment.html',
+                            edit_item=edit_item)
 
 
 
