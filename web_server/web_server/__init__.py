@@ -212,12 +212,11 @@ def build_query():
     return jsonify(r)
 
 @app.route('/new_store', methods=['POST'])
-def new_store():
-    print 
+def new_store(): 
     store = get_form()
-    r = post('stores', id)
+    r = post('stores', store)
     _store = r.json()['_id']
-    return redirect('/?store={0}'.format(_id))
+    return redirect('/?store={0}'.format(_store))
 
 
 @app.route('/edit_store', methods=['POST'])
