@@ -11,6 +11,7 @@
           Sumar comercio
         </a>
     </div>
+    
     <div class="row">
         <div class="col-lg-3">
         </div> 
@@ -40,7 +41,26 @@
         <div class="col-lg-3">
         </div> 
     </div><!-- /row -->
-                        
+
+    {% if items|length <1 %}
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p style="text-align: center;">Comunidad de comercios basados en el <strong>Diseño Sustentable</strong>, el <strong>Comercio Justo</strong> y la <strong>Alimentación Consciente</strong></p>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body" >
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="//www.youtube-nocookie.com/embed/LTYDj_pqnDI?rel=0&amp;controls=0&amp;showinfo=0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     {{ list_stores(items) }}
 
 <!--</div>-->
@@ -94,15 +114,20 @@ function add_query_product(_id, name) {
 }
 
 function add_query_place(name) {
-    $("#query_place").html(name);
     if (name=='cualquier lado') {
         $('#q_latitude').val("");
         $('#q_longitude').val("");
+        $('#q_location_name').val(name);
+        $("#query_place").html(name);
+    } else if (name=='aquí') {
+        $("#query_place").html('"recalculando..."');
+        here();
     } else {
         $('#q_latitude').val(latitude);
         $('#q_longitude').val(longitude);
+        $('#q_location_name').val(name);
+        $("#query_place").html(name);
     }
-    $('#q_location_name').val(name);
     $("#query_items").html("");
     $('#q').val("");
     return false;

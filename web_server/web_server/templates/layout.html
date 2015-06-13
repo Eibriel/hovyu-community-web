@@ -46,14 +46,20 @@ var longitude = {{longitude}};
 var latitude = null;
 var longitude = null;
 {% endif %}
-if ("geolocation" in navigator && !latitude && !longitude && false) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude;
-      $('#q_latitude').val(latitude);
-      $('#q_longitude').val(longitude);
-      $('#query_place').html('aquí');
-    });
+
+function here() {
+    if ("geolocation" in navigator && !latitude && !longitude) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          $('#q_latitude').val(latitude);
+          $('#q_longitude').val(longitude);
+          $('#query_place').html('aquí');
+          $('#q_location_name').val('aquí');
+        }, function(err) {
+          $('#query_place').html( $('#q_location_name').val() );
+        });
+    }
 }
 </script>
 
