@@ -18,10 +18,10 @@ app = Flask(__name__)
 def getserverip():
     ip = None
     try:
-        ip = os.environ['COMUNIDAD_MAIN_1_PORT_80_TCP_ADDR']
+        ip = os.environ['WIDU_MAIN_1_PORT_80_TCP_ADDR']
     except KeyError:
         ip = '127.0.0.1:5000'
-        pass
+    print ("IP: {0}".format(ip))
     return ip
 
 
@@ -215,8 +215,8 @@ def build_query():
 def new_store(): 
     store = get_form()
     r = post('stores', store)
-    _store = r.json()['_id']
-    return redirect('/?store={0}'.format(_store))
+    _id = r.json()['_id']
+    return redirect('/?store={0}'.format(_id))
 
 
 @app.route('/edit_store', methods=['POST'])
