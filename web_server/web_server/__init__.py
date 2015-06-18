@@ -97,6 +97,8 @@ def store_add():
     editing = False
     edit_item = {}
     
+    products = get('products')
+    
     if 'e' in request.args:
         editing = True
         edit_item = get('stores/{0}'.format(request.args['e']))
@@ -138,6 +140,7 @@ def store_add():
         edit_item['place_json'] = json.dumps(None)
     
     return render_template('add_edit_store.html',
+                           products = products,
                            edit_item = edit_item,
                            editing = editing)
 
@@ -161,8 +164,6 @@ def home():
     place_full_name = ""
     location_name = "cualquier lado"
     items = []
-    
-    products = get('products')
 
     if 'store' in request.args:
         items = get('stores/{0}'.format(request.args['store']))
@@ -191,7 +192,6 @@ def home():
         
     return render_template('home.html',
                            msg = msg,
-                           products = products,
                            items = items,
                            latitude = latitude,
                            longitude = longitude,
