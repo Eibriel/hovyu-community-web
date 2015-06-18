@@ -144,6 +144,13 @@ def store_add():
 
 @app.route("/")
 def home():
+    if 'interpolate_places' in request.args:
+        get('places?interpolate_places')
+        return ("Interpolation OK")
+    elif 'rebuild_places' in request.args:
+        get('places?rebuild_places')
+        return ("Rebuild OK")
+
     msg = ""
     query = ""
     product = ""
