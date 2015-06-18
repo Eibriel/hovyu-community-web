@@ -13,7 +13,7 @@
             {% endif %}
               <div class="panel-heading"><h2>{{ item.name }} <span id="star_{{item._id}}" class="glyphicon glyphicon-star" aria-hidden="true" {% if not item.highlight %}style="display: none"{% endif %}></span></h2></div>
               <div class="panel-body">
-                <p>{{ item.description }}</p>
+                {{ item.description|nl2br }}
                 {% if item.address %}
                 <p>{{ item.address }}</p>
                 {% endif %}

@@ -15,13 +15,31 @@ from requests.exceptions import ConnectionError
 app = Flask(__name__)
 
 
+# nl2br ###########################
+import re
+
+from jinja2 import evalcontextfilter, Markup, escape
+
+_paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+
+@app.template_filter()
+@evalcontextfilter
+def nl2br(eval_ctx, value):
+    result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', '<br>\n') \
+        for p in _paragraph_re.split(escape(value)))
+    if eval_ctx.autoescape:
+        result = Markup(result)
+    return result 
+###################################
+
+
 def getserverip():
     ip = None
     try:
         ip = os.environ['WIDU_MAIN_1_PORT_80_TCP_ADDR']
     except KeyError:
         ip = '127.0.0.1:5000'
-    print ("IP: {0}".format(ip))
+    #print ("IP: {0}".format(ip))
     return ip
 
 
@@ -70,6 +88,8 @@ def patch(resource, data, eTag):
         msg = "MissingSchema"
     except ConnectionError:
         msg = "ConnectionError"
+    
+    return r
 
 
 @app.route("/store_add_edit")
@@ -360,3 +380,50 @@ def edit_payment():
     patch('payments/{0}'.format(_id), payment, _etag)
     return redirect('/payments')
 
+# PRODUCTS
+
+@app.route('/products')
+def products():
+    items = get('products')
+    return render_template('products.html', items=items)
+
+
+@app.route('/product_add_edit')
+def product_add_edit():
+    editing = False
+    edit_item = {}
+    
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('products/{0}'.format(request.args['e']))
+    return render_template('add_edit_product.html',
+                            editing = editing,
+                            edit_item = edit_item)
+
+
+def get_product_form():
+    product = {
+        'name': request.form['name'],
+        'description': request.form['description'],
+        'wiktionary': request.form['wiktionary']
+    }
+        
+    return product
+
+
+@app.route('/new_product', methods=['POST'])
+def add_product():
+    product = get_product_form()
+    r = post('products', product)
+    print (r.text)
+    return redirect('/products')
+
+
+@app.route('/edit_product', methods=['POST'])
+def edit_product():
+    product = get_product_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    r = patch('products/{0}'.format(_id), product, _etag)
+    print (r.text)
+    return redirect('/products')
