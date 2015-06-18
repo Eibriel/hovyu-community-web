@@ -257,7 +257,7 @@ def get_form():
                  'full_name': place_json['full_name'],
                  'location': {"type":"Point","coordinates":[latitude, longitude]}
                  }
-    store['place'] = place
+        store['place'] = place
     return store
 
 @app.route('/build_query', methods=['POST'])
