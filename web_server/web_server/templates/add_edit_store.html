@@ -12,6 +12,7 @@
           Cancelar
         </a>
     </div>
+    {% if not editing %}
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
@@ -28,6 +29,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% if editing %}
     <form action="edit_store" method="POST" class="form-horizontal">
     {% else %}
@@ -120,6 +122,22 @@
                         <input type="hidden" id="new_store_tels_json" name="tels_json" value="{{ edit_item.tels_json }}"></input>
                         <div id="tels_list"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <!-- Place -->
+        <div class="form-group">
+            <label for="new_store_name" class="col-sm-2 control-label">Zona</label>
+            <div class="col-sm-10">
+                <input type="text" id="new_store_place" class="form-control" placeholder="Córdoba" value=""></input>
+            </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <input type="hidden" id="new_store_place_json" name="place_json" value="{{ edit_item.place_json }}"></input>
+                    <div><span class="label label-info" id="zone_name_button"></span></div>
+                    <div id="query_items"></div>
                 </div>
             </div>
         </div>
@@ -361,5 +379,56 @@ function edit_tel(number) {
     }
     return false;
 }
+</script>
+
+<script>
+$("#new_store_place").keyup(function() {
+    if ($('#new_store_place').val()=="") {
+        return;
+    }
+    $.ajax({
+      method: "POST",
+      url: "/build_query",
+      type: "json",
+      data: { q: $('#new_store_place').val() }
+    })
+      .done(function( msg ) {
+        var html = '<p style="line-height: 3em">';
+        var name = "";
+        var _id = "";
+        for (var index in msg['places']) {
+        _id = msg['places'][index]['_id'];
+        //name = msg['places'][index]['name'];
+        osm_id = msg['places'][index]['osm_id'];
+        full_name = msg['places'][index]['full_name'];
+        latitude = msg['places'][index]['latitude'];
+        longitude = msg['places'][index]['longitude'];
+            html += "<a class='btn btn-info btn-sm' role='button' href='#' onclick='return add_query_place(\""+_id+"\", \""+osm_id+"\", \""+full_name+"\", \""+latitude+"\", \""+longitude+"\")'>"+full_name+"</a> ";
+        }
+        html += "</p>";
+        $("#query_items").html(html);
+      });
+});
+
+function add_query_place(_id, osm_id, full_name, latitude, longitude) {
+    $("#zone_name_button").html(full_name);
+    //$('#q_product').val(_id);
+    //$('#q_product_name').val(name);
+    $("#query_items").html("");
+    $('#new_store_place').val("");
+    place = new Object()
+    place.place_id = _id;
+    place.full_name = full_name;
+    place.osm_id = osm_id;
+    place.longitude = longitude;
+    place.latitude = latitude;
+    $('#new_store_place_json').val(JSON.stringify(place))
+    
+    return false;
+}
+
+place_json = JSON.parse($('#new_store_place_json').val())
+$("#zone_name_button").html(place_json.full_name);
+
 </script>
 {% endblock %}

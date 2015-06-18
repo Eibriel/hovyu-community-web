@@ -66,7 +66,6 @@ def patch(resource, data, eTag):
         r = requests.patch('http://{0}/{1}'.format(serverip, resource),
                           data=json.dumps(data),
                           headers=headers)
-        print (r.text)
     except MissingSchema:
         msg = "MissingSchema"
     except ConnectionError:
@@ -102,10 +101,22 @@ def store_add():
             edit_item['products_json'] = json.dumps(products_json)
         else:
             edit_item['products_json'] = []
+        place_json = None
+        if edit_item.get('place'):
+            place_json = {'place_id': edit_item['place']['place_id'],
+                          'osm_id': edit_item['place']['osm_id'],
+                          'full_name': edit_item['place']['full_name'],
+                          'latitude': edit_item['place']['location']['coordinates'][0],
+                          'longitude': edit_item['place']['location']['coordinates'][1]
+                         }
+        edit_item['place_json'] = json.dumps(place_json)
     
     if 'location' not in edit_item:
         edit_item['location'] = None
-        
+    
+    if 'place_json' not in edit_item:
+        edit_item['place_json'] = json.dumps(None)
+    
     return render_template('add_edit_store.html',
                            edit_item = edit_item,
                            editing = editing)
@@ -119,6 +130,8 @@ def home():
     product_name = "todo"
     latitude = ""
     longitude = ""
+    place_id = ""
+    place_full_name = ""
     location_name = "cualquier lado"
     items = []
     
@@ -126,19 +139,27 @@ def home():
 
     if 'store' in request.args:
         items = get('stores/{0}'.format(request.args['store']))
-        print (items)
     elif 'product' in request.args:
         product = request.args['product']
         if 'product_name' in request.args:
             product_name = request.args['product_name']
         if 'location_name' in request.args:
             location_name = request.args['location_name']
-        if 'latitude' in request.args and 'longitude' in request.args:
+        if 'latitude' in request.args:
             latitude = request.args['latitude']
+        if 'longitude' in request.args:
             longitude = request.args['longitude']
-            items = get('stores?products={0}&latitude={1}&longitude={2}'.format(request.args['product'], request.args['latitude'], request.args['longitude']))
+        if 'place_id' in request.args:
+            place_id = request.args['place_id']
+        if 'place_full_name' in request.args:
+            place_full_name = request.args['place_full_name']
+        
+        if latitude!='' and longitude!='':
+            items = get('stores?products={0}&latitude={1}&longitude={2}'.format(product, request.args['latitude'], request.args['longitude']))
+        elif place_id!='':
+            items = get('stores?products={0}&place_id={1}'.format(product, place_id))
         else:
-            items = get('stores?products={0}'.format(request.args['product']))
+            items = get('stores?products={0}'.format(product))
         query = request.args['product']
         
     return render_template('home.html',
@@ -149,7 +170,9 @@ def home():
                            longitude = longitude,
                            location_name = location_name,
                            product = product,
-                           product_name = product_name)
+                           product_name = product_name,
+                           place_full_name = place_full_name,
+                           place_id = place_id)
 
 
 def get_form():
@@ -158,6 +181,7 @@ def get_form():
         'description': request.form['description'],
         'address': request.form['address'],
         'country': '554ce34116a24e0fe8197493',
+        'place': None,
         'highlight': False,
         'score': {
             'count': 0,
@@ -169,6 +193,8 @@ def get_form():
         'tel': [],
         'exact_location': False
     }
+    
+    
     
     websites_json = json.loads(request.form['websites_json'])
     store['website'] = websites_json
@@ -194,6 +220,17 @@ def get_form():
     if 'exact_location' in request.form:
         store['exact_location'] = True
     
+    # Place
+    place_json = json.loads(request.form['place_json'])
+    if place_json:
+        latitude = float(place_json['latitude'])
+        longitude = float(place_json['longitude'])
+        place = {'place_id': place_json['place_id'],
+                 'osm_id': place_json['osm_id'],
+                 'full_name': place_json['full_name'],
+                 'location': {"type":"Point","coordinates":[latitude, longitude]}
+                 }
+    store['place'] = place
     return store
 
 @app.route('/build_query', methods=['POST'])
@@ -203,12 +240,51 @@ def build_query():
     for item in items:
         products_items.append({'_id': item['_id'], 'name': item['name']})
     
-    items = get('points_of_interest?find_places={0}'.format(request.form['q']))
-    places_items = ['aquí', 'cualquier lado']
+    items = get('points_of_interest?find_points={0}'.format(request.form['q']))
+    point_items = ['aquí', 'cualquier lado']
     for item in items:
-        places_items.append(item['name'])
+        point_items.append(item['name'])
+        
+    items = get('places?find_places={0}'.format(request.form['q']))
+    place_items = []
+    for item in items:
+        full_name = item['name']
+        city = item['is_in']['city']
+        state = item['is_in']['state']
+        country = item['is_in']['country']
+        if city:
+            full_name = "{0}, {1}".format(full_name, city)
+        if state:
+            full_name = "{0}, {1}".format(full_name, state)
+        if country:
+            full_name = "{0}, {1}".format(full_name, country)
+        
+        if not city and not state and not country:
+            near_name = item['near_place']['name']
+            near_city = item['near_place']['city']
+            near_state = item['near_place']['state']
+            near_country = item['near_place']['country']
+            full_name = "{0} ({1}".format(full_name, near_name)
+            if near_city:
+                full_name = "{0}, {1}".format(full_name, near_city)
+            if near_state:
+                full_name = "{0}, {1}".format(full_name, near_state)
+            if near_country:
+                full_name = "{0}, {1}".format(full_name, near_country)
+            full_name = "{0})".format(full_name)
+            
+        osm_id = item['osm_id']
+        latitude = item['location']['coordinates'][0]
+        longitude = item['location']['coordinates'][1]
+        
+        place_items.append({'_id': item['_id'],
+                            'name': item['name'],
+                            'full_name': full_name,
+                            'osm_id': osm_id,
+                            'latitude': latitude,
+                            'longitude': longitude})
     
-    r = {'products': products_items, 'places': places_items}
+    r = {'products': products_items, 'points': point_items, 'places': place_items}
     return jsonify(r)
 
 @app.route('/new_store', methods=['POST'])

@@ -17,6 +17,9 @@
                 {% if item.address %}
                 <p>{{ item.address }}</p>
                 {% endif %}
+                {% if item.place %}
+                <p>{{ item.place.full_name }}</p>
+                {% endif %}
                 
                 {% for website in item.website %}
                 <p><a href="{{ website.url }}">{{ website.text }}</a></p>
@@ -42,6 +45,10 @@
                         {% if item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
                         <a class="thumbnail" href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[0] }}/{{ item.location.coordinates[1] }}" target="_blank">
                         <img src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/pin-l-shop+482({{ item.location.coordinates[1] }},{{ item.location.coordinates[0] }})/{{ item.location.coordinates[1] }},{{ item.location.coordinates[0] }},{% if item.exact_location %}15{% else %}13{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
+                        </a>
+                        {% elif item.place %}
+                        <a class="thumbnail" href="http://www.openstreetmap.org/#map=13/{{ item.place.location.coordinates[0] }}/{{ item.place.location.coordinates[1] }}" target="_blank">
+                        <img src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{{ item.place.location.coordinates[1] }},{{ item.place.location.coordinates[0] }},11/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
                         </a>
                         {% endif %}
                     </div>
