@@ -25,11 +25,11 @@
                     <div>Busco <span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
                 </button>
             </form>
-            <div class="form-group">
+            <div class="input-group">
               <input type="text" class="form-control" placeholder="Busco..." name="q" id="q" autocomplete="off">
-              <!--<span class="input-group-btn">
-                <button class="btn btn-success" type="button">DÚ!</button>
-              </span>-->
+              <span class="input-group-btn">
+                <button class="btn btn-success" type="button" onclick="build_query()">DÚ!</button>
+              </span>
             </div><!-- /input-group -->
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -82,7 +82,9 @@
 {{ list_stores_js(items) }}
 {{ upgrade_modal_js() }}
 <script>
-$("#q").keyup(function() {
+$("#q").keyup(build_query);
+
+function build_query() {
     if ($('#q').val()=="") {
         return;
     }
@@ -112,7 +114,7 @@ $("#q").keyup(function() {
         $("#query_items").html(html);
         $("#common_query_items").css('display', 'none');
       });
-});
+}
 
 function add_query_product(_id, name) {
     $("#query_product").html(name);
