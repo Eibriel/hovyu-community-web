@@ -13,33 +13,41 @@
             {% endif %}
               <div class="panel-heading"><h2>{{ item.name }} <span id="star_{{item._id}}" class="glyphicon glyphicon-star" aria-hidden="true" {% if not item.highlight %}style="display: none"{% endif %}></span></h2></div>
               <div class="panel-body">
-                {{ item.description|nl2br }}
-                {% if item.address %}
-                <p>{{ item.address }}</p>
-                {% endif %}
-                {% if item.place %}
-                <p>{{ item.place.full_name }}</p>
-                {% endif %}
-                
-                {% for website in item.website %}
-                <p><a href="{{ website.url }}">{{ website.text }}</a></p>
-                {% endfor %}
-                
-                {% if item.tel %}
-                {% for tel in item.tel %}
-                <p>{{ tel.number }} <a class="btn btn-default btn-sm" role="button" href="tel:{{ tel.number }}"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> Llamar</a></p>
-                {% endfor %}
-                {% endif %}
-                
-                {% if item.near_points|length != 0 %}
-                <p>Cerca de:</p>
-                <ul>
-                {% for point in item.near_points %}
-                <li>{{ point }}</li>
-                {% endfor %}
-                </ul>
-                {% endif %}
-                
+                <div class="alert" role="alert">
+                    <!--<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
+                    <span class="sr-only">Información:</span>
+                    {{ item.description|nl2br }}
+                </div>
+                <div style="font-size: 1em">
+                    <address>
+                    <strong>{{ item.name }}</strong><br>
+                    {% if item.address %}
+                    {{ item.address }}<br>
+                    {% endif %}
+                    {% if item.place %}
+                    {{ item.place.full_name }}<br>
+                    {% endif %}
+                    
+                    {% for website in item.website %}
+                    <a href="{{ website.url }}">{{ website.text }}</a><br>
+                    {% endfor %}
+                    
+                    {% if item.tel %}
+                    {% for tel in item.tel %}
+                    {{ tel.number }} <a class="btn btn-default btn-xs" role="button" href="tel:{{ tel.number }}"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> Llamar</a><br>
+                    {% endfor %}
+                    {% endif %}
+                    </address>
+                    
+                    {% if item.near_points|length != 0 %}
+                    <p><strong>Cerca de</strong>:</p>
+                    <ul>
+                    {% for point in item.near_points %}
+                    <li>{{ point }}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
                 <div class="row">
                     <div class="col-lg-6">
                         {% if item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
@@ -58,22 +66,22 @@
                 
                 <div class="row">
                     <div class="col-lg-6" style="margin-top: 1em">
-                        <a class="btn btn-default" href="/store_add_edit?e={{ item._id }}" role="button">
+                        <a class="btn btn-default btn-sm" href="/store_add_edit?e={{ item._id }}" role="button">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar
                         </a>
-                        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
+                        <button class="btn btn-default btn-sm" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
                             <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Destacar
                         </button>
                     </div>
                     <div class="col-lg-6" style="text-align: right; margin-top: 1em">
                         <div class="btn-group" role="group" aria-label="Puntaje">
                             {% for n in range(0, item.total_score|int) %}
-                            <button type="button" class="btn btn-default">
+                            <button type="button" class="btn btn-default btn-sm">
                                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                             </button>
                             {% endfor %}
                             {% for n in range(0, 5-item.total_score|int) %}
-                            <button type="button" class="btn btn-default">
+                            <button type="button" class="btn btn-default btn-sm">
                                 <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
                             </button>
                             {% endfor %}
