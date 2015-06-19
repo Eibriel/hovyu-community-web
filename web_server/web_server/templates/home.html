@@ -19,13 +19,10 @@
             <form action="/" method="GET">
                 <input type="hidden" name="latitude" id="q_latitude" value="{{latitude}}">
                 <input type="hidden" name="longitude" id="q_longitude" value="{{longitude}}">
-                <input type="hidden" name="location_name" id="q_location_name" value="{{location_name}}">
                 <input type="hidden" name="product" id="q_product" value="{{product}}">
-                <input type="hidden" name="product_name" id="q_product_name" value="{{product_name}}">
-                <input type="hidden" name="place_full_name" id="q_place_full_name" value="{{place_full_name}}">
                 <input type="hidden" name="place_id" id="q_place_id" value="{{place_id}}">
                 <button type="submit" class="btn btn-default btn-lg" style="margin-bottom: 1em;">
-                    <div>Busco <span class="label label-primary" id="query_product">{{product_name}}</span> cerca de <span class="label label-success" id="query_place">{{place_full_name}}</span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
+                    <div>Busco <span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
                 </button>
             </form>
             <div class="form-group">
@@ -36,7 +33,13 @@
             </div><!-- /input-group -->
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div id="query_items"></div>
+                    <div id="common_query_items">
+                        <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">todo</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">aquí</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">cualquiér lado</a>
+                    </div>
+                    <div id="query_items">
+                    </div>
                 </div>
             </div>
         </div> 
@@ -52,6 +55,7 @@
                     <p style="text-align: center;">Comunidad de comercios basados en el <strong>Diseño Sustentable</strong>, el <strong>Comercio Justo</strong> y la <strong>Alimentación Consciente</strong></p>
                 </div>
             </div>
+            <!--
             <div class="panel panel-default">
                 <div class="panel-body" >
                     <div class="embed-responsive embed-responsive-16by9">
@@ -59,6 +63,7 @@
                     </div>
                 </div>
             </div>
+            -->
         </div>
     </div>
     {% endif %}
@@ -96,11 +101,6 @@ $("#q").keyup(function() {
             _id = msg['products'][index]['_id'];
             html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
         }
-        /*html += '</p><p style="line-height: 3em">';
-        for (var index in msg['point']) {
-        name = msg['point'][index]
-            html += "<a class='btn btn-success btn-sm' role='button' href='#' onclick='return add_query_point(\""+name+"\")'>"+name+"</a> ";
-        }*/
         html += '</p><p style="line-height: 3em">';
         for (var index in msg['places']) {
             name = msg['places'][index]['name'];
@@ -110,6 +110,7 @@ $("#q").keyup(function() {
         }
         html += "</p>";
         $("#query_items").html(html);
+        $("#common_query_items").css('display', 'none');
       });
 });
 
@@ -119,26 +120,8 @@ function add_query_product(_id, name) {
     $('#q_product_name').val(name);
     $("#query_items").html("");
     $('#q').val("");
-    return false;
-}
-
-function add_query_point(name) {
-    if (name=='cualquier lado') {
-        $('#q_latitude').val("");
-        $('#q_longitude').val("");
-        $('#q_location_name').val(name);
-        $("#query_point").html(name);
-    } else if (name=='aquí') {
-        $("#query_point").html('"recalculando..."');
-        here();
-    } else {
-        $('#q_latitude').val(latitude);
-        $('#q_longitude').val(longitude);
-        $('#q_location_name').val(name);
-        $("#query_point").html(name);
-    }
-    $("#query_items").html("");
-    $('#q').val("");
+    
+    $("#common_query_items").css('display', 'inline');
     return false;
 }
 
@@ -150,14 +133,90 @@ function add_query_place(_id, full_name) {
     $("#query_items").html("");
     $('#q').val("");
     $('#new_store_place').val("");
-    //place = new Object()
-    //place.place_id = _id;
-    //place.full_name = full_name;
-    //place.osm_id = osm_id;
-    //place.longitude = longitude;
-    //place.latitude = latitude;
-    //$('#new_store_place_json').val(JSON.stringify(place))
+    this_place();
     
+    $("#common_query_items").css('display', 'inline');
+    return false;
+}
+
+/* Geolocation */
+{% if latitude and longitude %}
+var latitude = {{latitude}};
+var longitude = {{longitude}};
+{% else %}
+var latitude = null;
+var longitude = null;
+{% endif %}
+
+function here() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          
+          print_here();
+          
+        }, function(err) {
+          $('#query_place').html( $('#q_location_name').val() );
+        });
+    }
+    
+    return false;
+}
+
+function print_here() {
+    $('#q_latitude').val(latitude);
+    $('#q_longitude').val(longitude);
+    $('#q_location_name').val('aquí');
+    $('#q_place_id').val("");
+
+    $('#place_label').css('display', 'inline');
+    $('#place_label_here').css('display', 'inline');
+    $('#place_label_near_to').css('display', 'inline');
+    $('#place_label_in').css('display', 'none');
+    $('#query_place').css('display', 'none');
+}
+
+function any_place() {
+    $('#q_latitude').val("");
+    $('#q_longitude').val("");
+    $('#q_location_name').val("");
+    
+    $('#place_label').css('display', 'none');
+    $('#place_label_here').css('display', 'none');
+    $('#place_label_near_to').css('display', 'none');
+    $('#place_label_in').css('display', 'none');
+    
+    return false;
+}
+
+function this_place() {
+    $('#q_latitude').val("");
+    $('#q_longitude').val("");
+    
+    $('#place_label').css('display', 'inline');
+    $('#place_label_here').css('display', 'none');
+    $('#place_label_near_to').css('display', 'none');
+    $('#place_label_in').css('display', 'inline');
+    $('#query_place').css('display', 'inline');
+    
+    return false;
+}
+
+{% if here %}
+print_here();
+{% elif place_id=="" %}
+any_place();
+{% else %}
+this_place();
+{% endif %}
+
+function all_products() {
+    $("#query_product").html("todo");
+    $('#q_product').val("");
+    $('#q_product_name').val("");
+    $("#query_items").html("");
+    $('#q').val("");
     return false;
 }
 </script>

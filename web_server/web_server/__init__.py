@@ -160,6 +160,7 @@ def home():
     product_name = "todo"
     latitude = ""
     longitude = ""
+    here = False
     place_id = ""
     place_full_name = ""
     location_name = "cualquier lado"
@@ -169,8 +170,12 @@ def home():
         items = get('stores/{0}'.format(request.args['store']))
     elif 'product' in request.args:
         product = request.args['product']
-        if 'product_name' in request.args:
-            product_name = request.args['product_name']
+        #if 'product_name' in request.args:
+        #    product_name = request.args['product_name']
+        if product != '':
+            product_db = get('products/{0}'.format(product))
+            if product_db:
+                product_name = product_db['name']
         if 'location_name' in request.args:
             location_name = request.args['location_name']
         if 'latitude' in request.args:
@@ -179,10 +184,15 @@ def home():
             longitude = request.args['longitude']
         if 'place_id' in request.args:
             place_id = request.args['place_id']
-        if 'place_full_name' in request.args:
-            place_full_name = request.args['place_full_name']
+            if place_id != '':
+                place = get('places/{0}'.format(place_id))
+                if place:
+                    place_full_name = place['name']
+        #if 'place_full_name' in request.args:
+        #    place_full_name = request.args['place_full_name']
         
         if latitude!='' and longitude!='':
+            here = True
             items = get('stores?products={0}&latitude={1}&longitude={2}'.format(product, request.args['latitude'], request.args['longitude']))
         elif place_id!='':
             items = get('stores?products={0}&place_id={1}'.format(product, place_id))
@@ -195,6 +205,7 @@ def home():
                            items = items,
                            latitude = latitude,
                            longitude = longitude,
+                           here = here,
                            location_name = location_name,
                            product = product,
                            product_name = product_name,
@@ -266,11 +277,6 @@ def build_query():
     products_items = []
     for item in items:
         products_items.append({'_id': item['_id'], 'name': item['name']})
-    
-    items = get('points_of_interest?find_points={0}'.format(request.form['q']))
-    point_items = ['aquí', 'cualquier lado']
-    for item in items:
-        point_items.append(item['name'])
         
     items = get('places?find_places={0}'.format(request.form['q']))
     place_items = []
@@ -311,7 +317,7 @@ def build_query():
                             'latitude': latitude,
                             'longitude': longitude})
     
-    r = {'products': products_items, 'points': point_items, 'places': place_items}
+    r = {'products': products_items, 'places': place_items}
     return jsonify(r)
 
 @app.route('/new_store', methods=['POST'])
