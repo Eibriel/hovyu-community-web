@@ -5,42 +5,65 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="upgradeModalLabel">Elevar comercio</h4>
+                    <h4 class="modal-title" id="upgradeModalLabel">Destacar comercio</h4>
                 </div>
                 <div class="modal-body">
-                    Puedes colocar este negocio entre los primeros, solo debes abonar $200 por mes, o $2.000 por año.
+                    <p>Podés colocar este negocio entre los primeros, abonando solo $200 por mes, o $2.000 por año (ahorrando $400).</p>
+                    <p>¿Qué método de pago preferís?</p>
                     
-                    <div role="tabpanel">
-                      <!-- Nav tabs -->
-                      <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Depósito</a></li>
-                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Pagomiscuentas</a></li>
-                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Bitcoin</a></li>
-                        <!--<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>-->
-                      </ul>
-
-                      <!-- Tab panes -->
-                      <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home">
-                            <p>Ingrese su dirección de correo electrónico y le enviaremos los datos para realizar el pago vía depósito o transferencia bancaria.</p>
-                            <input type="text" />
-                            <select>
-                            <option>1 mes</option>
-                            <option>1 año</option>
-                            </select>
+                    <div class="form-horizontal">
+                        <!-- Payment Method -->
+                        <div class="form-group">
+                            <label for="new_store_name" class="col-sm-2 control-label">Método</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group" data-toggle="buttons" id="method_radio">
+                                  <label class="btn btn-primary active disabled">
+                                    <input type="radio" name="method" id="payment_pagomiscuentas" autocomplete="off" value="pagomiscuentas"> PagoMisCuentas
+                                  </label>
+                                  <label class="btn btn-primary">
+                                    <input type="radio" name="method" id="payment_transfer" autocomplete="off" value="transfer" checked> Transferencia Bancária
+                                  </label>
+                                  <label class="btn btn-primary disabled">
+                                    <input type="radio" name="method" id="payment_bitcoin" autocomplete="off" value="bitcoin"> Bitcoin
+                                  </label>
+                                </div>
+                                <span id="new_store_name_help" class="help-block">Seleccionar método de pago</span>
+                            </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="profile">
-                            <p>Ingrese a <a href="http://pagomiscuentas.com.ar/">Pagomiscuentas</a>, busque el comercio "WIDU Transmedia", page utilizando el siguiente código: ""</p>
+                        <!-- Amount -->
+                        <div class="form-group">
+                            <label for="new_store_name" class="col-sm-2 control-label">Cantidad</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group" data-toggle="buttons" id="amount_radio">
+                                  <label class="btn btn-primary active">
+                                    <input type="radio" name="amount" id="payment_year" autocomplete="off" value="year" checked> Un Año
+                                  </label>
+                                  <label class="btn btn-primary">
+                                    <input type="radio" name="amount" id="payment_month" autocomplete="off" value="month"> Un Mes
+                                  </label>
+                                </div>
+                                <span id="new_store_name_help" class="help-block">¿Por cuánto tiempo querés destacar el comercio?</span>
+                            </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="messages">
-                            <p>Envíe el pago a 123456</p>
+                        <!-- EMail -->
+                        <div class="form-group">
+                            <label for="new_store_name" class="col-sm-2 control-label">EMail</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="email" id="payment_email" class="form-control" placeholder="tu@correo.com" value=""></input>
+                                <span id="new_store_name_help" class="help-block">Enviar instrucciones de pago a éste correo</span>
+                            </div>
                         </div>
-                        <!--<div role="tabpanel" class="tab-pane" id="settings">...</div>-->
-                      </div>
+                        <!-- Send -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success" onclick="send_payment_instructions();">Enviar</button>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" id="upgrade_store_id" value=""/>
+                    <input type="hidden" id="upgrade_store_name" value=""/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                 </div>
@@ -51,11 +74,33 @@
 
 {% macro upgrade_modal_js() %}
 <script>
-function add_high(id) {
+function add_high(id, name) {
     $('#panel_store_'+id).addClass('panel-primary');
     $('#panel_store_'+id).removeClass('panel-default');
     $('#star_'+id).css('display', 'inline');
+    
+    $('#upgrade_store_id').val(id);
+    $('#upgrade_store_name').val(name);
+}
+
+function send_payment_instructions() {
+    var method = $('input[name=method]:checked', '#method_radio').val();
+    var amount = $('input[name=amount]:checked', '#amount_radio').val();
+    var email = $('#payment_email').val();
+    var id = $('#upgrade_store_id').val();
+    var name = $('#upgrade_store_name').val();
+
+    $.ajax({
+      method: "GET",
+      url: "/send_payment_instructions",
+      type: "json",
+      data: { email: email, method: method, amount: amount, id: id, name: name }
+    })
+      .done(function( msg ) {});
 }
 
 </script>
 {% endmacro %}
+
+
+

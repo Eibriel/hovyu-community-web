@@ -105,7 +105,7 @@
 {% macro list_stores_js(items) %}
 <script>
 {% for item in items %}
-$('#upgrade_{{ item._id }}').click( function(){ add_high('{{ item._id }}'); } );
+$('#upgrade_{{ item._id }}').click( function(){ add_high('{{ item._id }}', '{{ item.name }}'); } );
 {% endfor %}
 </script>
 {% endmacro %}

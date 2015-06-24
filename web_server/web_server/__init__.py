@@ -12,7 +12,11 @@ from flask import render_template
 from requests.exceptions import MissingSchema
 from requests.exceptions import ConnectionError
 
+from web_server.mail_client import send_mail
+
 app = Flask(__name__)
+
+app.config.from_object('web_server.config.Config')
 
 
 # nl2br ###########################
@@ -440,3 +444,89 @@ def edit_product():
     r = patch('products/{0}'.format(_id), product, _etag)
     print (r.text)
     return redirect('/products')
+    
+@app.route('/send_payment_instructions')
+def send_payment_instructions():
+    smtp_server = app.config['PAYMENT_SMTP_SERVER']
+    from_ = app.config['PAYMENT_MAIL_FROM']
+    username = app.config['PAYMENT_MAIL_USERNAME']
+    password = app.config['PAYMENT_MAIL_PASSWORD']
+
+    to = request.args.get('email')
+    amount = request.args.get('amount')
+    method = request.args.get('method')
+    name = request.args.get('name')
+    _id = request.args.get('id')
+
+    #print( request.args )
+
+    if not to or to == '':
+        return '', 403
+
+    if amount == 'year':
+        amount_text = 'Pago de 1 año: $2000'
+        saving_text = '$400'
+    elif amount == 'month':
+        amount_text = 'Pago de 1 mes: $200'
+        saving_text = '$0'
+    else:
+        return '', 403
+
+    text="""\
+¡Hola!
+Para destacar el comercio "{0}" estas instrucciones.
+
+{1} (descuento: {2})
+
+Métodos de pago disponibles:
+
+Transferencia Bancaria
+----------------------
+
+Cuenta Corriente en pesos
+Banco: BBVA Frances
+Número: 270-7129/2
+CBU: 0170270720000000712925
+Titular: Gabriel Caraballo
+CUIT: 20311134451
+
+PagoMisCuentas
+--------------
+(Próximamente)
+
+Bitcoin
+-------
+(Próximamente)
+    """.format(name, amount_text, saving_text)
+    
+    html="""\
+    <html>
+        <head></head>
+        <body>
+            <p>¡Hola!</p>
+            <p>Para destacar el comercio "{0}" estas instrucciones.</p>
+            <p>{1} (descuento: {2})</p>
+            <p>Métodos de pago disponibles</p>
+            <p>Transferencia Bancaria</p>
+            <p>
+            Cuenta Corriente en pesos<br>
+            Banco: BBVA Frances<br>
+            Número: 270-7129/2<br>
+            CBU: 0170270720000000712925<br>
+            Titular: Gabriel Caraballo<br>
+            CUIT: 20311134451<br>
+            </p>
+            
+            <p>PagoMisCuentas</p>
+            <p>(Próximamente)</p>
+
+            <p>Bitcoin</p>
+            <p>(Próximamente)</p>
+        </body>
+    </html>
+    """.format(name, amount_text, saving_text)
+
+    subject="Instrucciones de pago ({0})".format(_id)
+    
+    send_mail(from_, to, subject, text, html, smtp_server, username, password)
+    return ''
