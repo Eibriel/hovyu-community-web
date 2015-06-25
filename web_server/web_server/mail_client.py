@@ -1,11 +1,12 @@
 import sys
-# import os
-# import re
+import ssl
+import time
+import imaplib
 
 from smtplib import SMTP_SSL as SMTP       # this invokes the secure SMTP protocol (port 465, uses SSL)
-# from smtplib import SMTP                  # use this for standard SMTP protocol   (port 25, no encryption)
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+
 
 def send_mail(from_, to, subject, text, html, smtp_server, username, password):
     try:
@@ -35,4 +36,21 @@ def send_mail(from_, to, subject, text, html, smtp_server, username, password):
     #except Exception, exc:
     #    sys.exit( "mail failed; %s" % str(exc) ) # give a error message
     except:
-        sys.exit("mail failed")
+        return False
+
+    conn = imaplib.IMAP4(smtp_server, port = 143)
+    # Python 3.5
+    #context = ssl.create_default_context()
+    #conn.starttls(context=context)
+    conn.starttls()
+    r = conn.login(username, password)
+    if r[0] != 'OK':
+        return False
+    r = conn.select('INBOX.Sent')
+    if r[0] != 'OK':
+        return False
+    r = conn.append('INBOX.Sent', '', imaplib.Time2Internaldate(time.time()), msg.as_string().encode('utf-8'))
+    if r[0] != 'OK':
+        return False
+        
+    return True
