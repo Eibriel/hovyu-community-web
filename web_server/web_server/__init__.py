@@ -463,6 +463,12 @@ def send_payment_instructions():
     if not to or to == '':
         return '', 403
 
+    if method not in ['pagomiscuentas', 'transfer', 'bitcoin']:
+        return '', 403
+        
+    if not name:
+        return '', 403
+
     if amount == 'year':
         amount_text = 'Pago de 1 año: $2000'
         saving_text = '$400'
@@ -474,7 +480,7 @@ def send_payment_instructions():
 
     text="""\
 ¡Hola!
-Para destacar el comercio "{0}" estas instrucciones.
+Para destacar el comercio "{0}" siga estas instrucciones.
 
 {1} (descuento: {2})
 
@@ -482,7 +488,10 @@ Métodos de pago disponibles:
 
 Transferencia Bancaria
 ----------------------
-
+Realice la transferencia a la siguiente cuenta,
+luego responda este correo con el comprobante de transferencia correspondiente.
+(Es importante que no modifique el asunto del correo)
+            
 Cuenta Corriente en pesos
 Banco: BBVA Frances
 Número: 270-7129/2
@@ -497,6 +506,11 @@ PagoMisCuentas
 Bitcoin
 -------
 (Próximamente)
+
+Atte.
+Gabriel Caraballo
+WIDU Transmedia
+
     """.format(name, amount_text, saving_text)
     
     html="""\
@@ -504,11 +518,15 @@ Bitcoin
         <head></head>
         <body>
             <p>¡Hola!</p>
-            <p>Para destacar el comercio "{0}" estas instrucciones.</p>
+            <p>Para destacar el comercio "{0}" siga estas instrucciones.</p>
             <p>{1} (descuento: {2})</p>
             <p>Métodos de pago disponibles</p>
             <p>Transferencia Bancaria</p>
             <p>
+            Realice la transferencia a la siguiente cuenta,<br>
+            luego responda este correo con el comprobante de transferencia correspondiente.<br>
+            (Es importante que no modifique el asunto del correo)
+            </p>
             Cuenta Corriente en pesos<br>
             Banco: BBVA Frances<br>
             Número: 270-7129/2<br>

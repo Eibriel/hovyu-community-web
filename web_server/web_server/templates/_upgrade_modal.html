@@ -97,6 +97,8 @@ function send_payment_instructions() {
       data: { email: email, method: method, amount: amount, id: id, name: name }
     })
       .done(function( msg ) {});
+    
+    $('#upgradeModal').modal('hide')
 }
 
 </script>
