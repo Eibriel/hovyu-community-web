@@ -63,6 +63,7 @@
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" id="upgrade_store_id" value=""/>
+                    <input type="hidden" id="upgrade_store_iid" value=""/>
                     <input type="hidden" id="upgrade_store_name" value=""/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     <!--<button type="button" class="btn btn-primary">Save changes</button>-->
@@ -74,12 +75,13 @@
 
 {% macro upgrade_modal_js() %}
 <script>
-function add_high(id, name) {
+function add_high(id, iid, name) {
     $('#panel_store_'+id).addClass('panel-primary');
     $('#panel_store_'+id).removeClass('panel-default');
     $('#star_'+id).css('display', 'inline');
     
     $('#upgrade_store_id').val(id);
+    $('#upgrade_store_iid').val(iid);
     $('#upgrade_store_name').val(name);
 }
 
@@ -88,13 +90,19 @@ function send_payment_instructions() {
     var amount = $('input[name=amount]:checked', '#amount_radio').val();
     var email = $('#payment_email').val();
     var id = $('#upgrade_store_id').val();
+    var iid = $('#upgrade_store_iid').val();
     var name = $('#upgrade_store_name').val();
 
     $.ajax({
       method: "GET",
       url: "/send_payment_instructions",
       type: "json",
-      data: { email: email, method: method, amount: amount, id: id, name: name }
+      data: { email: email,
+              method: method,
+              amount: amount,
+              id: id,
+              iid: iid,
+              name: name }
     })
       .done(function( msg ) {});
     
