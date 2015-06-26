@@ -11,7 +11,7 @@
             <div class="panel panel-default" id="panel_store_{{ item._id }}">
               <!--<div class="panel-heading"><h2>{{ item.name }}</h2></div>-->
             {% endif %}
-              <div class="panel-heading"><h2>{{ item.name }} <span id="star_{{item._id}}" class="glyphicon glyphicon-star" aria-hidden="true" {% if not item.highlight %}style="display: none"{% endif %}></span></h2></div>
+              <!--<div class="panel-heading"><h3>{{ item.name }} <span id="star_{{item._id}}" class="glyphicon glyphicon-star" aria-hidden="true" {% if not item.highlight %}style="display: none"{% endif %}></span></h3></div>-->
               <div class="panel-body">
                 <div class="alert" role="alert">
                     <!--<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
@@ -63,7 +63,7 @@
                     <div class="col-lg-6">
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-lg-6" style="margin-top: 1em">
                         <a class="btn btn-default btn-sm" href="/store_add_edit?e={{ item._id }}" role="button">

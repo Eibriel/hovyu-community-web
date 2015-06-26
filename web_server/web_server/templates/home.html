@@ -3,14 +3,14 @@
 {% from '_upgrade_modal.html' import upgrade_modal, upgrade_modal_js %}
 {% from '_list_stores.html' import list_stores, list_stores_js %}
 {% block body %}
-    <div class="row">
+    <!--<div class="row">
         <h1 style="text-align: center;">Comunidad WIDÚ</h1>
     </div>
     <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
         <a role="button" class="btn btn-primary btn-sm" href="/store_add_edit">
           Sumar comercio
         </a>
-    </div>
+    </div>-->
     
     <div class="row">
         <div class="col-lg-3">
@@ -26,7 +26,7 @@
                 </button>
             </form>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Busco..." name="q" id="q" autocomplete="off">
+              <input type="text" class="form-control" placeholder="¿Qué busco? ¿Dónde lo busco?" name="q" id="q" autocomplete="off">
               <span class="input-group-btn">
                 <button class="btn btn-success" type="button" onclick="build_query()">DÚ!</button>
               </span>
@@ -48,11 +48,12 @@
     </div><!-- /row -->
 
     {% if items|length < 1 %}
-    <div class="row" style="margin-bottom: 2em;">
+    <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p style="text-align: center;">Comunidad de comercios basados en el <strong>Diseño Sustentable</strong>, el <strong>Comercio Justo</strong> y la <strong>Alimentación Consciente</strong></p>
+                    <!--<p style="text-align: center;">Comunidad de comercios basados en el <strong>Diseño Sustentable</strong>, el <strong>Comercio Justo</strong> y la <strong>Alimentación Consciente</strong></p>-->
+                    <p class="text-center lead"><strong>Explorá una vida más natural</strong></p>
                 </div>
             </div>
             <!--
@@ -64,15 +65,18 @@
                 </div>
             </div>
             -->
-            <div style="text-align: center;">
-                Página {{ page }}
-            </div>
         </div>
     </div>
-    {% endif %}
+    {% else %}
 
     {{ list_stores(items) }}
-
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+            <div style="text-align: center; margin-top: 2em;">Página {{ page }}</div>
+        </div>
+    </div>
+    
+    {% endif %}
 <!--</div>-->
 
 {{ msg }}
@@ -186,6 +190,7 @@ function any_place() {
     $('#q_latitude').val("");
     $('#q_longitude').val("");
     $('#q_location_name').val("");
+    $('#q_place_id').val("");
     
     $('#place_label').css('display', 'none');
     $('#place_label_here').css('display', 'none');

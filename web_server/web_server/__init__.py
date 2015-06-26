@@ -176,6 +176,7 @@ def home():
     place_id = ""
     place_full_name = ""
     location_name = "cualquier lado"
+    subtitle = ""
     items = []
 
     if 'store' in request.args:
@@ -207,13 +208,17 @@ def home():
         
         if latitude!='' and longitude!='':
             here = True
-            items = get('stores?products={0}&latitude={1}&longitude={2}&page={3}'.format(product, request.args['latitude'], request.args['longitude']), page)
+            items = get('stores?products={0}&latitude={1}&longitude={2}&max_results=4&page={3}'.format(product, request.args['latitude'], request.args['longitude'], page))
         elif place_id!='':
-            items = get('stores?products={0}&place_id={1}&page={2}'.format(product, place_id, page))
+            items = get('stores?products={0}&place_id={1}&max_results=4&page={2}'.format(product, place_id, page))
         else:
-            items = get('stores?products={0}&page={1}'.format(product, page))
+            items = get('stores?products={0}&max_results=4&page={1}'.format(product, page))
         query = request.args['product']
-        
+    
+        subtitle = " - {0}".format(product_name)
+        if place_id != '':
+            subtitle = "{0} en {1}".format(subtitle, place_full_name)
+    
     return render_template('home.html',
                            msg = msg,
                            items = items,
@@ -221,6 +226,7 @@ def home():
                            longitude = longitude,
                            page = page,
                            here = here,
+                           subtitle = subtitle,
                            location_name = location_name,
                            product = product,
                            product_name = product_name,
@@ -228,14 +234,12 @@ def home():
                            place_id = place_id)
 
 
-def get_form():
+def get_form(edit = False):
     store = {
         'name': request.form['name'],
         'description': request.form['description'],
         'address': request.form['address'],
-        'country': '554ce34116a24e0fe8197493',
         'place': None,
-        'highlight': False,
         'score': {
             'count': 0,
             'sum': 0
@@ -246,8 +250,6 @@ def get_form():
         'tel': [],
         'exact_location': False
     }
-    
-    
     
     websites_json = json.loads(request.form['websites_json'])
     store['website'] = websites_json
@@ -284,6 +286,11 @@ def get_form():
                  'location': {"type":"Point","coordinates":[latitude, longitude]}
                  }
         store['place'] = place
+    
+    # Highlight
+    #if edit:
+    #    'highlight': False,
+    
     return store
 
 @app.route('/build_query', methods=['POST'])
@@ -455,7 +462,11 @@ def edit_product():
     r = patch('products/{0}'.format(_id), product, _etag)
     print (r.text)
     return redirect('/products')
-    
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/send_payment_instructions')
 def send_payment_instructions():
     smtp_server = app.config['PAYMENT_SMTP_SERVER']
