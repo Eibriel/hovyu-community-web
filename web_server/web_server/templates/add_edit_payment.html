@@ -23,7 +23,8 @@
                 <div class="col-sm-10">
                     <select class="form-control"  name="payment_method" id="payment_method">
                         <option value="local_bank">Transferencia/Depósito Bancario</option>
-                        <option value="pagomiscuentas">Pagomiscuentas</option>
+                        <option value="pagomiscuentas">PagoMisCuentas</option>
+                        <option value="mercadopago">MercadoPago</option>
                         <option value="bitcoin">Bitcoin</option>
                         <option value="bonus">Bonus</option>
                     </select>
@@ -35,6 +36,14 @@
             <div class="col-sm-10">
                 <textarea name="description" id="payment_description" class="form-control" rows="3" >{{ edit_item.description }}</textarea>
                 <span id="payment_description_help" class="help-block">Detalles del pago</span>
+            </div>
+        </div>
+        <!-- EMail -->
+        <div class="form-group">
+            <label for="payment_email" class="col-sm-2 control-label">EMail</label>
+            <div class="col-sm-10">
+                <input type="text" name="email" id="payment_email" class="form-control" placeholder="tu@correo.com" value="{{ edit_item.email }}"></input>
+                <span id="payment_email_help" class="help-block">EMail del que paga</span>
             </div>
         </div>
         <!-- Start day -->

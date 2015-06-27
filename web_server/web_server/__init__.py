@@ -12,12 +12,9 @@ from flask import render_template
 from requests.exceptions import MissingSchema
 from requests.exceptions import ConnectionError
 
-from web_server.mail_client import send_mail
-
 app = Flask(__name__)
 
 app.config.from_object('web_server.config.Config')
-
 
 # nl2br ###########################
 import re
@@ -395,11 +392,13 @@ def payment_add_edit():
                             editing = editing,
                             edit_item = edit_item)
 
+
 def get_payment_form():
     payment = {
         'payment_method': request.form['payment_method'],
         'description': request.form['description'],
-        'store_id': '554ce34116a24e0fe8197493',
+        'email': request.form['email'],
+        'store_id': request.form['store_id'],
         'currency': request.form['currency'],
         'amount': float(request.form['amount']),
         'day_cost': float(request.form['day_cost']),
@@ -421,7 +420,8 @@ def add_payment():
     r = post('payments', payment)
     print (r.text)
     return redirect('/payments')
-    
+
+
 @app.route('/edit_payment', methods=['POST'])
 def edit_payment():
     payment = get_payment_form()
@@ -430,8 +430,8 @@ def edit_payment():
     patch('payments/{0}'.format(_id), payment, _etag)
     return redirect('/payments')
 
-# PRODUCTS
 
+# PRODUCTS
 @app.route('/products')
 def products():
     items = get('products')
@@ -484,12 +484,7 @@ def about():
 
 @app.route('/send_payment_instructions')
 def send_payment_instructions():
-    smtp_server = app.config['PAYMENT_SMTP_SERVER']
-    from_ = app.config['PAYMENT_MAIL_FROM']
-    username = app.config['PAYMENT_MAIL_USERNAME']
-    password = app.config['PAYMENT_MAIL_PASSWORD']
-
-    to = request.args.get('email')
+    email = request.args.get('email')
     amount = request.args.get('amount')
     method = request.args.get('method')
     name = request.args.get('name')
@@ -498,9 +493,9 @@ def send_payment_instructions():
 
     #print( request.args )
 
-    if not to or to == '':
+    if not email or email == '':
         return '', 403
-    if method not in ['pagomiscuentas', 'transfer', 'bitcoin']:
+    if method not in ['pagomiscuentas', 'mercadopago', 'transfer', 'bitcoin']:
         return '', 403
     if not name:
         return '', 403
@@ -512,83 +507,28 @@ def send_payment_instructions():
     if amount == 'year':
         amount_text = 'Pago de 1 año: $2000'
         saving_text = '$400'
+        amount_float = 2000.0
     elif amount == 'month':
         amount_text = 'Pago de 1 mes: $200'
         saving_text = '$0'
+        amount_float = 200.0
     else:
         return '', 403
-
-    text="""\
-¡Hola!
-Para destacar el comercio "{0}"(1) siga estas instrucciones.
-
-{2} (descuento: {3})
-
-Métodos de pago disponibles:
-
-Transferencia Bancaria
-----------------------
-Realice la transferencia a la siguiente cuenta,
-luego responda este correo con el comprobante de transferencia correspondiente.
-(Es importante que no modifique el asunto del correo)
-            
-Cuenta Corriente en pesos
-Banco: BBVA Frances
-Número: 270-7129/2
-CBU: 0170270720000000712925
-Titular: Gabriel Caraballo
-CUIT: 20311134451
-
-PagoMisCuentas
---------------
-(Próximamente)
-
-Bitcoin
--------
-(Próximamente)
-
-Atte.
-Gabriel Caraballo
-WIDU Transmedia
-
-    """.format(name, iid, amount_text, saving_text)
     
-    html="""\
-    <html>
-        <head></head>
-        <body>
-            <p>¡Hola!</p>
-            <p>Para destacar el comercio "{0}"({1}) siga estas instrucciones.</p>
-            <p>{2} (descuento: {3})</p>
-            <p>Métodos de pago disponibles</p>
-            <p>Transferencia Bancaria</p>
-            <p>
-            Realice la transferencia a la siguiente cuenta,<br>
-            luego responda este correo con el comprobante de transferencia correspondiente.<br>
-            (Es importante que no modifique el asunto del correo)
-            </p>
-            Cuenta Corriente en pesos<br>
-            Banco: BBVA Frances<br>
-            Número: 270-7129/2<br>
-            CBU: 0170270720000000712925<br>
-            Titular: Gabriel Caraballo<br>
-            CUIT: 20311134451<br>
-            </p>
-            
-            <p>PagoMisCuentas</p>
-            <p>(Próximamente)</p>
-
-            <p>Bitcoin</p>
-            <p>(Próximamente)</p>
-            
-            <p>Atte.<br>
-            Gabriel Caraballo<br>
-            WIDU Transmedia</p>
-        </body>
-    </html>
-    """.format(name, iid, amount_text, saving_text)
-
-    subject="Instrucciones de pago ({0})".format(iid)
+    payment = {
+        'payment_method': method,
+        'description': '',
+        'email': email,
+        'store_id': _id,
+        'currency': 'ar',
+        'amount': amount_float,
+        'day_cost': 1.0,
+        'completed': False,
+        'refunded': False,
+        'refund_description': '',
+    }
+        
+    r = post('payments', payment)
+    print (r.text)
     
-    send_mail(from_, to, subject, text, html, smtp_server, username, password)
     return ''
