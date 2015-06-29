@@ -24,7 +24,7 @@
                                     <input type="radio" name="method" id="payment_mercadopago" autocomplete="off" value="mercadopago"> MercadoPago
                                   </label>
                                   <label class="btn btn-primary active">
-                                    <input type="radio" name="method" id="payment_transfer" autocomplete="off" value="transfer" checked> Transferencia Bancária
+                                    <input type="radio" name="method" id="payment_transfer" autocomplete="off" value="local_bank" checked> Transferencia Bancária
                                   </label>
                                   <label class="btn btn-primary disabled">
                                     <input type="radio" name="method" id="payment_bitcoin" autocomplete="off" value="bitcoin"> Bitcoin
@@ -37,12 +37,12 @@
                         <div class="form-group">
                             <label for="new_store_name" class="col-sm-2 control-label">Cantidad</label>
                             <div class="col-sm-10">
-                                <div class="btn-group" data-toggle="buttons" id="amount_radio">
+                                <div class="btn-group" data-toggle="buttons" id="product_radio">
                                   <label class="btn btn-primary active">
-                                    <input type="radio" name="amount" id="payment_year" autocomplete="off" value="year" checked> Un Año
+                                    <input type="radio" name="product" id="payment_year" autocomplete="off" value="highlight_one_year" checked> Un Año
                                   </label>
                                   <label class="btn btn-primary">
-                                    <input type="radio" name="amount" id="payment_month" autocomplete="off" value="month"> Un Mes
+                                    <input type="radio" name="product" id="payment_month" autocomplete="off" value="highlight_one_month"> Un Mes
                                   </label>
                                 </div>
                                 <span id="new_store_name_help" class="help-block">¿Por cuánto tiempo querés destacar el comercio?</span>
@@ -79,9 +79,9 @@
 {% macro upgrade_modal_js() %}
 <script>
 function add_high(id, iid, name) {
-    $('#panel_store_'+id).addClass('panel-primary');
-    $('#panel_store_'+id).removeClass('panel-default');
-    $('#star_'+id).css('display', 'inline');
+    //$('#panel_store_'+id).addClass('panel-primary');
+    //$('#panel_store_'+id).removeClass('panel-default');
+    //$('#star_'+id).css('display', 'inline');
     
     $('#upgrade_store_id').val(id);
     $('#upgrade_store_iid').val(iid);
@@ -90,7 +90,7 @@ function add_high(id, iid, name) {
 
 function send_payment_instructions() {
     var method = $('input[name=method]:checked', '#method_radio').val();
-    var amount = $('input[name=amount]:checked', '#amount_radio').val();
+    var product = $('input[name=product]:checked', '#product_radio').val();
     var email = $('#payment_email').val();
     var id = $('#upgrade_store_id').val();
     var iid = $('#upgrade_store_iid').val();
@@ -102,7 +102,7 @@ function send_payment_instructions() {
       type: "json",
       data: { email: email,
               method: method,
-              amount: amount,
+              product: product,
               id: id,
               iid: iid,
               name: name }

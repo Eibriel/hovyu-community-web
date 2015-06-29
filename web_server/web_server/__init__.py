@@ -485,7 +485,7 @@ def about():
 @app.route('/send_payment_instructions')
 def send_payment_instructions():
     email = request.args.get('email')
-    amount = request.args.get('amount')
+    product = request.args.get('product')
     method = request.args.get('method')
     name = request.args.get('name')
     _id = request.args.get('id')
@@ -495,7 +495,7 @@ def send_payment_instructions():
 
     if not email or email == '':
         return '', 403
-    if method not in ['pagomiscuentas', 'mercadopago', 'transfer', 'bitcoin']:
+    if method not in ['pagomiscuentas', 'mercadopago', 'local_bank', 'bitcoin']:
         return '', 403
     if not name:
         return '', 403
@@ -503,26 +503,17 @@ def send_payment_instructions():
         return '', 403
     if not iid:
         return '', 403
-        
-    if amount == 'year':
-        amount_text = 'Pago de 1 año: $2000'
-        saving_text = '$400'
-        amount_float = 2000.0
-    elif amount == 'month':
-        amount_text = 'Pago de 1 mes: $200'
-        saving_text = '$0'
-        amount_float = 200.0
-    else:
+
+    if product not in ['highlight_one_year', 'highlight_one_month']:
         return '', 403
-    
+
     payment = {
         'payment_method': method,
         'description': '',
         'email': email,
+        'product': product,
         'store_id': _id,
         'currency': 'ar',
-        'amount': amount_float,
-        'day_cost': 1.0,
         'completed': False,
         'refunded': False,
         'refund_description': '',
