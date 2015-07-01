@@ -8,11 +8,16 @@ from flask import jsonify
 from flask import request
 from flask import redirect
 from flask import render_template
+from flask import make_response
+
+#from flask.ext.qrcode import QRcode
 
 from requests.exceptions import MissingSchema
 from requests.exceptions import ConnectionError
 
+
 app = Flask(__name__)
+#QRcode(app)
 
 app.config.from_object('web_server.config.Config')
 
@@ -49,6 +54,16 @@ def char2emoji(eval_ctx, value):
         value = Markup(value)
     return value
 
+@app.template_filter()
+@evalcontextfilter
+def money_scale_inverse(eval_ctx, value, currency):
+    if type(value) != int:
+        return "ERROR"
+    if currency == 'btc':
+        return "{0}".format(value / 100000000)
+    else:
+        return "{0}".format(value / 1000)
+    return value
 ###################################
 
 
@@ -75,14 +90,14 @@ def get(resource):
         msg = "MissingSchema"
     except ConnectionError:
         msg = "ConnectionError"
-        
+
     return items
 
 
 def post(resource, data):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json'}
-    
+
     try:
         r = requests.post('http://{0}/{1}/'.format(serverip, resource),
                           data=json.dumps(data),
@@ -91,14 +106,14 @@ def post(resource, data):
         msg = "MissingSchema"
     except ConnectionError:
         msg = "ConnectionError"
-    
+
     return r
 
 
 def patch(resource, data, eTag):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json', 'If-Match': eTag}
-    
+
     try:
         r = requests.patch('http://{0}/{1}'.format(serverip, resource),
                           data=json.dumps(data),
@@ -107,7 +122,7 @@ def patch(resource, data, eTag):
         msg = "MissingSchema"
     except ConnectionError:
         msg = "ConnectionError"
-    
+
     return r
 
 
@@ -115,9 +130,9 @@ def patch(resource, data, eTag):
 def store_add():
     editing = False
     edit_item = {}
-    
+
     products = get('products')
-    
+
     if 'e' in request.args:
         editing = True
         edit_item = get('stores/{0}'.format(request.args['e']))
@@ -130,7 +145,7 @@ def store_add():
         else:
             edit_item['websites_json'] = json.dumps([edit_item['website']])
             edit_item['website'] = [edit_item['website']]
-            
+
         edit_item['tels_json'] = json.dumps(edit_item['tel'])
         if 'products' in edit_item:
             products_json = []
@@ -151,13 +166,13 @@ def store_add():
                           'longitude': edit_item['place']['location']['coordinates'][1]
                          }
         edit_item['place_json'] = json.dumps(place_json)
-    
+
     if 'location' not in edit_item:
         edit_item['location'] = None
-    
+
     if 'place_json' not in edit_item:
         edit_item['place_json'] = json.dumps(None)
-    
+
     return render_template('add_edit_store.html',
                            products = products,
                            edit_item = edit_item,
@@ -213,7 +228,7 @@ def home():
         #    place_full_name = request.args['place_full_name']
         if 'page' in request.args:
             page = request.args['page']
-        
+
         if latitude!='' and longitude!='':
             here = True
             items = get('stores?products={0}&latitude={1}&longitude={2}&max_results=4&page={3}'.format(product, request.args['latitude'], request.args['longitude'], page))
@@ -222,11 +237,11 @@ def home():
         else:
             items = get('stores?products={0}&max_results=4&page={1}'.format(product, page))
         query = request.args['product']
-    
+
         subtitle = " - {0}".format(product_name)
         if place_id != '':
             subtitle = "{0} en {1}".format(subtitle, place_full_name)
-    
+
     return render_template('home.html',
                            msg = msg,
                            items = items,
@@ -258,31 +273,31 @@ def get_form(edit = False):
         'tel': [],
         'exact_location': False
     }
-    
+
     websites_json = json.loads(request.form['websites_json'])
     store['website'] = websites_json
-    
+
     tels_json = json.loads(request.form['tels_json'])
     store['tel'] = tels_json
-    
+
     products_json = json.loads(request.form['products_json'])
     products = []
     for product in products_json:
         products.append(product['_id'])
     store['products'] = products
-    
+
     if request.form['latitude'] != '' and request.form['longitude'] != '':
         latitude = float(request.form['latitude'])
         longitude = float(request.form['longitude'])
     else:
         latitude = 0.0
         longitude = 0.0
-        
+
     store['location'] = {"type":"Point","coordinates":[latitude, longitude]}
-    
+
     if 'exact_location' in request.form:
         store['exact_location'] = True
-    
+
     # Place
     place_json = json.loads(request.form['place_json'])
     if place_json:
@@ -294,15 +309,15 @@ def get_form(edit = False):
                  'location': {"type":"Point","coordinates":[latitude, longitude]}
                  }
         store['place'] = place
-    
+
     # Highlight
     #if edit:
     #    'highlight': False,
-    
+
     if not edit:
         store['iid']=0
         store['wid']=""
-    
+
     return store
 
 @app.route('/build_query', methods=['POST'])
@@ -311,7 +326,7 @@ def build_query():
     products_items = []
     for item in items:
         products_items.append({'_id': item['_id'], 'name': item['name']})
-        
+
     items = get('places?find_places={0}'.format(request.form['q']))
     place_items = []
     for item in items:
@@ -325,7 +340,7 @@ def build_query():
             full_name = "{0}, {1}".format(full_name, state)
         if country:
             full_name = "{0}, {1}".format(full_name, country)
-        
+
         if not city and not state and not country:
             near_name = item['near_place']['name']
             near_city = item['near_place']['city']
@@ -339,23 +354,23 @@ def build_query():
             if near_country:
                 full_name = "{0}, {1}".format(full_name, near_country)
             full_name = "{0})".format(full_name)
-            
+
         osm_id = item['osm_id']
         latitude = item['location']['coordinates'][0]
         longitude = item['location']['coordinates'][1]
-        
+
         place_items.append({'_id': item['_id'],
                             'name': item['name'],
                             'full_name': full_name,
                             'osm_id': osm_id,
                             'latitude': latitude,
                             'longitude': longitude})
-    
+
     r = {'products': products_items, 'places': place_items}
     return jsonify(r)
 
 @app.route('/new_store', methods=['POST'])
-def new_store(): 
+def new_store():
     store = get_form()
     r = post('stores', store)
     _id = r.json()['_id']
@@ -382,7 +397,7 @@ def payments():
 def payment_add_edit():
     editing = False
     edit_item = {}
-    
+
     if 'e' in request.args:
         editing = True
         edit_item = get('payments/{0}'.format(request.args['e']))
@@ -410,7 +425,7 @@ def get_payment_form():
         payment['completed'] = True
     if 'refunded' in request.form:
         payment['refunded'] = True
-        
+
     return payment
 
 
@@ -442,7 +457,7 @@ def products():
 def product_add_edit():
     editing = False
     edit_item = {}
-    
+
     if 'e' in request.args:
         editing = True
         edit_item = get('products/{0}'.format(request.args['e']))
@@ -457,7 +472,7 @@ def get_product_form():
         'description': request.form['description'],
         'wiktionary': request.form['wiktionary']
     }
-        
+
     return product
 
 
@@ -486,6 +501,7 @@ def about():
 def send_payment_instructions():
     email = request.args.get('email')
     product = request.args.get('product')
+    country = request.args.get('country')
     method = request.args.get('method')
     name = request.args.get('name')
     _id = request.args.get('id')
@@ -512,14 +528,46 @@ def send_payment_instructions():
         'description': '',
         'email': email,
         'product': product,
+        'country': country,
         'store_id': _id,
-        'currency': 'ar',
         'completed': False,
         'refunded': False,
         'refund_description': '',
     }
-        
+
     r = post('payments', payment)
     print (r.text)
-    
+
     return ''
+
+from bson import ObjectId
+@app.route('/bitcoin_callback/<payment_id>/<secret>')
+def bitcoin_callback(payment_id, secret):
+    return_text = ""
+    if not ObjectId.is_valid(payment_id):
+        return 'Invalid ObjectID', 400
+    input_address = request.args['input_address']
+    destination_address = request.args['destination_address']
+    transaction_hash = request.args['transaction_hash']
+    input_transaction_hash = request.args['input_transaction_hash']
+    confirmations = int(request.args['confirmations'])
+    value = int(request.args['value'])
+
+    item = get('payments/{0}?callback=bitcoin\
+&input_address={1}\
+&destination_address={2}\
+&transaction_hash={3}\
+&input_transaction_hash={4}\
+&confirmations={5}\
+&value={6}\
+&secret={7}'.format(payment_id, input_address, destination_address, transaction_hash, input_transaction_hash, confirmations, value, secret))
+
+    #print (item)
+    #print (item['_status'])
+    #print (r.status_code)
+    if '_status' in item and item['_status']=='ERR':
+        return '', 400
+    else:
+        resp = make_response('*ok*', 200)
+        resp.mimetype = 'text/plain'
+        return resp

@@ -8,29 +8,23 @@
                     <h4 class="modal-title" id="upgradeModalLabel">Destacar comercio</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Podés colocar este negocio entre los primeros, abonando solo $200 por mes, o $2.000 por año (ahorrando $400).</p>
-                    <p>¿Qué método de pago preferís?</p>
+                    <p>Podés colocar este negocio entre los primeros <strong>¡Abonando un año te regalamos 2 meses!</strong></p>
+                    <p>Paso 1 de 2</p>
                     
                     <div class="form-horizontal">
-                        <!-- Payment Method -->
+                        <!-- Country -->
                         <div class="form-group">
-                            <label for="new_store_name" class="col-sm-2 control-label">Método</label>
+                            <label for="payment_country" class="col-sm-2 control-label">País</label>
                             <div class="col-sm-10">
-                                <div class="btn-group" data-toggle="buttons" id="method_radio">
-                                  <label class="btn btn-primary active disabled">
-                                    <input type="radio" name="method" id="payment_pagomiscuentas" autocomplete="off" value="pagomiscuentas"> PagoMisCuentas
-                                  </label>
-                                  <label class="btn btn-primary">
-                                    <input type="radio" name="method" id="payment_mercadopago" autocomplete="off" value="mercadopago"> MercadoPago
-                                  </label>
-                                  <label class="btn btn-primary active">
-                                    <input type="radio" name="method" id="payment_transfer" autocomplete="off" value="local_bank" checked> Transferencia Bancária
-                                  </label>
-                                  <label class="btn btn-primary disabled">
-                                    <input type="radio" name="method" id="payment_bitcoin" autocomplete="off" value="bitcoin"> Bitcoin
-                                  </label>
-                                </div>
-                                <span id="new_store_name_help" class="help-block">Seleccionar método de pago</span>
+                                <select class="form-control"  name="country" id="payment_country">
+                                    <option value="ar">Argentina</option>
+                                    <option value="br">Brasil</option>
+                                    <option value="co">Colombia</option>
+                                    <option value="ve">Venezuela</option>
+                                    <option value="mx">México</option>
+                                    <option value="">Otros</option>
+                                </select>
+                                <span id="new_store_name_help" class="help-block">País desde donde se hará el pago</span>
                             </div>
                         </div>
                         <!-- Amount -->
@@ -48,9 +42,46 @@
                                 <span id="new_store_name_help" class="help-block">¿Por cuánto tiempo querés destacar el comercio?</span>
                             </div>
                         </div>
+                        <!-- Total -->
+                        <div class="form-group">
+                            <label for="payment_amount_to_pay" class="col-sm-2 control-label">Total a pagar</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="payment_amount_to_pay" class="form-control" placeholder="0" value="2000" disabled></input>
+                                <span id="new_store_name_help" class="help-block">El total que deberás abonar</span>
+                            </div>
+                        </div>
+                        <!-- Ahorro -->
+                        <div class="form-group">
+                            <label for="payment_amount_saved" class="col-sm-2 control-label">Total ahorrado</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="payment_amount_saved" class="form-control" placeholder="0" value="400" disabled></input>
+                                <span id="new_store_name_help" class="help-block">Lo que estás ahorrando al destacar el comercio por varios meses</span>
+                            </div>
+                        </div>
+                        <!-- Payment Method -->
+                        <div class="form-group">
+                            <label for="method_radio" class="col-sm-2 control-label">Método</label>
+                            <div class="col-sm-10">
+                                <div class="btn-group" data-toggle="buttons" id="method_radio">
+                                  <!--<label class="btn btn-primary active disabled">
+                                    <input type="radio" name="method" id="payment_pagomiscuentas" autocomplete="off" value="pagomiscuentas"> PagoMisCuentas
+                                  </label>-->
+                                  <label class="btn btn-primary active" id="payment_mercadopago_label">
+                                    <input type="radio" name="method" id="payment_mercadopago" autocomplete="off" value="mercadopago" checked> MercadoPago
+                                  </label>
+                                  <label class="btn btn-primary" id="payment_local_bank_label">
+                                    <input type="radio" name="method" id="payment_local_bank" autocomplete="off" value="local_bank"> Transferencia Bancária
+                                  </label>
+                                  <label class="btn btn-primary" id="payment_bitcoin_label">
+                                    <input type="radio" name="method" id="payment_bitcoin" autocomplete="off" value="bitcoin"> Bitcoin
+                                  </label>
+                                </div>
+                                <span id="new_store_name_help" class="help-block">Seleccionar método de pago</span>
+                            </div>
+                        </div>
                         <!-- EMail -->
                         <div class="form-group">
-                            <label for="new_store_name" class="col-sm-2 control-label">EMail</label>
+                            <label for="payment_email" class="col-sm-2 control-label">EMail</label>
                             <div class="col-sm-10">
                                 <input type="text" name="email" id="payment_email" class="form-control" placeholder="tu@correo.com" value=""></input>
                                 <span id="new_store_name_help" class="help-block">Enviar instrucciones de pago a éste correo</span>
@@ -86,11 +117,82 @@ function add_high(id, iid, name) {
     $('#upgrade_store_id').val(id);
     $('#upgrade_store_iid').val(iid);
     $('#upgrade_store_name').val(name);
+    
+    redraw_upgrade_modal();
 }
+
+function redraw_upgrade_modal() {
+    var country = $('#payment_country').val();
+    var product = $('input[name=product]:checked', '#product_radio').val();
+    
+    $('#payment_local_bank_label').removeClass('disabled');
+    $('#payment_mercadopago_label').removeClass('disabled');
+    $('#payment_bitcoin_label').removeClass('disabled');
+        
+    if (product == 'highlight_one_year') {
+        ars_pay = 'ARS 2000.0';
+        ars_saving = 'ARS 400.0';
+        usd_pay = 'USD 200.0';
+        usd_saving = 'USD 40.0';
+        btc_pay = 'BTC 0.8';
+        btc_saving = 'BTC 0.16';
+    } else if (product == 'highlight_one_month') {
+        ars_pay = 'ARS 200.0';
+        ars_saving = 'ARS 0.0';
+        usd_pay = 'USD 20.0';
+        usd_saving = 'USD 0.0';
+        btc_pay = 'BTC 0.08';
+        btc_saving = 'BTC 0.0';
+    }
+    
+    $('#payment_amount_to_pay').val(usd_pay);
+    $('#payment_amount_saved').val(usd_saving);
+    
+    if (country == '') {
+        $('#payment_local_bank_label').addClass('disabled');
+        $('#payment_mercadopago_label').addClass('disabled');
+        $('#payment_bitcoin').prop('checked', true);
+        $('#payment_mercadopago').prop('checked', false);
+        $('#payment_local_bank').prop('checked', false);
+        $('#payment_bitcoin_label').addClass('active');
+        $('#payment_mercadopago_label').removeClass('active');
+        $('#payment_local_bank_label').removeClass('active');
+    } else if (country == 'ar') {
+        $('#payment_amount_to_pay').val(ars_pay);
+        $('#payment_amount_saved').val(ars_saving);
+    } else {
+        $('#payment_local_bank_label').addClass('disabled');
+        $('#payment_mercadopago').prop('checked', true);
+        $('#payment_bitcoin').prop('checked', false);
+        $('#payment_local_bank').prop('checked', false);
+        $('#payment_mercadopago_label').addClass('active');
+        $('#payment_bitcoin_label').removeClass('active');
+        $('#payment_local_bank_label').removeClass('active');
+    }
+    
+    var method = $('input[name=method]:checked', '#method_radio').val();
+    
+    //console.log(method);
+    if (method == 'bitcoin') {
+        $('#payment_amount_to_pay').val(btc_pay);
+        $('#payment_amount_saved').val(btc_saving);
+    }
+    
+}
+
+$('#payment_country').change(redraw_upgrade_modal);
+//
+$('#payment_year').change(redraw_upgrade_modal);
+$('#payment_month').change(redraw_upgrade_modal);
+//
+$('#payment_mercadopago').change(redraw_upgrade_modal);
+$('#payment_local_bank').change(redraw_upgrade_modal);
+$('#payment_bitcoin').change(redraw_upgrade_modal);
 
 function send_payment_instructions() {
     var method = $('input[name=method]:checked', '#method_radio').val();
     var product = $('input[name=product]:checked', '#product_radio').val();
+    var country = $('#payment_country').val();
     var email = $('#payment_email').val();
     var id = $('#upgrade_store_id').val();
     var iid = $('#upgrade_store_iid').val();
@@ -103,6 +205,7 @@ function send_payment_instructions() {
       data: { email: email,
               method: method,
               product: product,
+              country: country,
               id: id,
               iid: iid,
               name: name }
