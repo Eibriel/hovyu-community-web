@@ -574,7 +574,7 @@ def bitcoin_callback(payment_id, secret):
         resp.mimetype = 'text/plain'
         return resp
 
-@app.route('/mercadopago_callback/<payment_id>/<secret>')
+@app.route('/mercadopago_callback/<payment_id>/<secret>', methods=['POST'])
 def mercadopago_callback(payment_id, secret):
     print (request.args)
     topic = request.args['topic']
