@@ -21,6 +21,8 @@ app = Flask(__name__)
 
 app.config.from_object('web_server.config.Config')
 
+app.debug = app.config['DEBUG']
+
 # nl2br ###########################
 import re
 
@@ -573,7 +575,7 @@ def bitcoin_callback(payment_id, secret):
         return resp
 
 @app.route('/mercadopago_callback/<payment_id>/<secret>')
-def mercadopago_callback():
+def mercadopago_callback(payment_id, secret):
     print (request.args)
     topic = request.args['topic']
     notification_id = request.args['id']
