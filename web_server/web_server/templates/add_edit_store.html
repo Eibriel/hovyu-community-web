@@ -142,7 +142,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <input type="hidden" id="new_store_place_json" name="place_json" value="{{ edit_item.place_json }}"></input>
-                    <div><span class="label label-info" id="zone_name_button"></span></div>
+                    <div><span class="label label-primary" id="zone_name_button"></span></div>
                     <div id="query_items"></div>
                 </div>
             </div>
@@ -249,7 +249,7 @@ if ($('#new_store_products_json').val()=='') {
 function print_products() {
     var html = "";
     for (var item in products) {
-      html = html + "<p>"+products[item]['name']+" <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return remove_product(\""+products[item]['_id']+"\");'>Eliminar</a></p>";
+      html = html + '<p><span class="label label-primary" id="zone_name_button">'+products[item]['name']+"</span> <a class='btn btn-default btn-xs' href='#' role='button' onclick='return remove_product(\""+products[item]['_id']+"\");'>Eliminar</a></p>";
     }
     $('#products_list').html(html);
 }
@@ -462,7 +462,8 @@ function add_query_product(_id, name) {
     products.push(new_product);
     $('#new_store_products_json').val(JSON.stringify(products))
     print_products();
-
+    $('#new_store_product').val('');
+    $("#query_products").html('');
     return false;
 }
 </script>
