@@ -47,10 +47,10 @@ wid_chars = [ 0x1f31e, 0x1f33d, 0x1f34e, 0x1f433, 0x1f427,
 
 @app.template_filter()
 @evalcontextfilter
-def char2emoji(eval_ctx, value):
+def char2emoji(eval_ctx, value, size='36'):
     for wid_char in wid_chars:
         img_name = "{0:x}".format(wid_char)
-        img_tag = '<img src="/static/twemoji/36x36/{0}.png" alt="{1}"/>'.format(img_name, chr(wid_char))
+        img_tag = '<img src="/static/twemoji/{2}x{2}/{0}.png" alt="{1}"/>'.format(img_name, chr(wid_char), size)
         value = value.replace(chr(wid_char), img_tag)
     if eval_ctx.autoescape:
         value = Markup(value)
@@ -233,11 +233,11 @@ def home():
 
         if latitude!='' and longitude!='':
             here = True
-            items = get('stores?products={0}&latitude={1}&longitude={2}&max_results=4&page={3}'.format(product, request.args['latitude'], request.args['longitude'], page))
+            items = get('stores?products={0}&latitude={1}&longitude={2}&page={3}'.format(product, request.args['latitude'], request.args['longitude'], page))
         elif place_id!='':
-            items = get('stores?products={0}&place_id={1}&max_results=4&page={2}'.format(product, place_id, page))
+            items = get('stores?products={0}&place_id={1}&page={2}'.format(product, place_id, page))
         else:
-            items = get('stores?products={0}&max_results=4&page={1}'.format(product, page))
+            items = get('stores?products={0}&page={1}'.format(product, page))
         query = request.args['product']
 
         subtitle = " - {0}".format(product_name)
