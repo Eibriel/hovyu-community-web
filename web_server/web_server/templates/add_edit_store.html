@@ -72,7 +72,7 @@
         <div class="form-group">
             <label for="new_store_website" class="col-sm-2 control-label">Sitios Web</label>
             <div class="col-sm-10">
-                
+
                 <div class="col-sm-4">
                     <input type="text" name="website" id="new_store_website" class="form-control" placeholder="http://comercio.com" value=""></input>
                 </div>
@@ -99,7 +99,7 @@
         <div class="form-group">
             <label for="new_store_website" class="col-sm-2 control-label">Teléfonos</label>
             <div class="col-sm-10">
-                
+
                 <div class="col-sm-4">
                     <select class="form-control"  name="tel_type" id="new_store_tel_type">
                         <option value="line">Línea</option>
@@ -130,7 +130,12 @@
         <div class="form-group">
             <label for="new_store_name" class="col-sm-2 control-label">Zona</label>
             <div class="col-sm-10">
-                <input type="text" id="new_store_place" class="form-control" placeholder="Córdoba" value=""></input>
+                <div class="col-sm-8">
+                    <input type="text" id="new_store_place" class="form-control" placeholder="Córdoba" value=""></input>
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn btn-primary" href="#" role="button" onclick="return search_place();">Buscar Lugar</a>
+                </div>
             </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
@@ -168,16 +173,17 @@
         <div class="form-group">
             <label for="new_store_product" class="col-sm-2 control-label">Productos</label>
             <div class="col-sm-10">
-                
+
                 <div class="col-sm-8">
-                    <select class="form-control"  name="tel_type" id="new_store_product">
+                    <input type="text" id="new_store_product" class="form-control" placeholder="Milanesa" value=""></input>
+                    <!--<select class="form-control"  name="tel_type" id="new_store_product">
                         {% for product in products %}
                         <option value="{{ product._id }}" id="product_{{ product._id }}">{{ product.name }}</option>
                         {% endfor %}
-                    </select>
+                    </select>-->
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-primary" href="#" role="button" onclick="return add_product();">Agregar Producto</a>
+                    <a class="btn btn-primary" href="#" role="button" onclick="return search_product();">Buscar Producto</a>
                 </div>
             </div>
         </div>
@@ -187,6 +193,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <input type="hidden" id="new_store_products_json" name="products_json" value="{{ edit_item.products_json }}"></input>
+                        <div id="query_products"></div>
                         <div id="products_list"></div>
                     </div>
                 </div>
@@ -255,39 +262,39 @@ function add_website() {
     url = $('#new_store_website').val();
     text = $('#new_store_website_title').val();
     var done = false;
-    
+
     if (url=='' || text=='') {
         return false;
     }
-    
+
     for (var website in websites) {
         if (websites[website]['url'] == url) {
             websites[website]['text'] = text;
             done = true;
         }
     }
-    
+
     if (! done) {
         var new_website = new Object();
         new_website['url'] = url;
         new_website['text'] = text;
         websites.push(new_website);
     }
-    
+
     $('#new_store_websites_json').val(JSON.stringify(websites))
     print_websites();
-    
+
     return false;
 }
 
 function add_tel() {
     number = $('#new_store_tel').val();
     type = $('#new_store_tel_type').val();
-    
+
     if (number=='' || type=='') {
         return false;
     }
-    
+
     var new_tel = new Object();
     new_tel['type'] = type;
     new_tel['number'] = number;
@@ -295,28 +302,7 @@ function add_tel() {
     tels.push(new_tel);
     $('#new_store_tels_json').val(JSON.stringify(tels))
     print_tels();
-    
-    return false;
-}
 
-function add_product() {
-    _id = $('#new_store_product').val();
-    name = $('#product_'+_id).text();
-    
-    for (var product in products) {
-        if (products[product]['_id'] == _id) {
-            return false;
-        }
-    }
-    
-    var new_product = new Object();
-    new_product['_id'] = _id;
-    new_product['name'] = name;
-
-    products.push(new_product);
-    $('#new_store_products_json').val(JSON.stringify(products))
-    print_products();
-    
     return false;
 }
 
@@ -383,9 +369,11 @@ function edit_tel(number) {
 </script>
 
 <script>
-$("#new_store_place").keyup(function() {
+$("#new_store_place").keyup(search_place);
+
+function search_place() {
     if ($('#new_store_place').val()=="") {
-        return;
+        return false;
     }
     $.ajax({
       method: "POST",
@@ -393,28 +381,27 @@ $("#new_store_place").keyup(function() {
       type: "json",
       data: { q: $('#new_store_place').val() }
     })
-      .done(function( msg ) {
-        var html = '<p style="line-height: 3em">';
-        var name = "";
-        var _id = "";
-        for (var index in msg['places']) {
-        _id = msg['places'][index]['_id'];
-        //name = msg['places'][index]['name'];
-        osm_id = msg['places'][index]['osm_id'];
-        full_name = msg['places'][index]['full_name'];
-        latitude = msg['places'][index]['latitude'];
-        longitude = msg['places'][index]['longitude'];
-            html += "<a class='btn btn-info btn-sm' role='button' href='#' onclick='return add_query_place(\""+_id+"\", \""+osm_id+"\", \""+full_name+"\", \""+latitude+"\", \""+longitude+"\")'>"+full_name+"</a> ";
-        }
-        html += "</p>";
-        $("#query_items").html(html);
-      });
-});
+        .done(function( msg ) {
+            var html = '<p style="line-height: 3em">';
+            var name = "";
+            var _id = "";
+            for (var index in msg['places']) {
+                _id = msg['places'][index]['_id'];
+                osm_id = msg['places'][index]['osm_id'];
+                full_name = msg['places'][index]['full_name'];
+                latitude = msg['places'][index]['latitude'];
+                longitude = msg['places'][index]['longitude'];
+                html += "<a class='btn btn-info btn-sm' role='button' href='#' onclick='return add_query_place(\""+_id+"\", \""+osm_id+"\", \""+full_name+"\", \""+latitude+"\", \""+longitude+"\")'>"+full_name+"</a> ";
+            }
+            html += "</p>";
+            $("#query_items").html(html);
+        });
+
+    return false;
+}
 
 function add_query_place(_id, osm_id, full_name, latitude, longitude) {
     $("#zone_name_button").html(full_name);
-    //$('#q_product').val(_id);
-    //$('#q_product_name').val(name);
     $("#query_items").html("");
     $('#new_store_place').val("");
     place = new Object()
@@ -424,12 +411,59 @@ function add_query_place(_id, osm_id, full_name, latitude, longitude) {
     place.longitude = longitude;
     place.latitude = latitude;
     $('#new_store_place_json').val(JSON.stringify(place))
-    
+
     return false;
 }
 
 place_json = JSON.parse($('#new_store_place_json').val())
 $("#zone_name_button").html(place_json.full_name);
 
+</script>
+<script>
+$("#new_store_product").keyup(search_product);
+
+function search_product() {
+    if ($('#new_store_product').val()=="") {
+        return false;
+    }
+    $.ajax({
+      method: "POST",
+      url: "/build_query",
+      type: "json",
+      data: { q: $('#new_store_product').val() }
+    })
+        .done(function( msg ) {
+            var html = '<p style="line-height: 3em">';
+            var name = "";
+            var _id = "";
+            for (var index in msg['products']) {
+                _id = msg['products'][index]['_id'];
+                name = msg['products'][index]['name'];
+                html += "<a class='btn btn-info btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+            }
+            html += "</p>";
+            $("#query_products").html(html);
+        });
+
+     return false;
+}
+
+function add_query_product(_id, name) {
+    for (var product in products) {
+        if (products[product]['_id'] == _id) {
+            return false;
+        }
+    }
+
+    var new_product = new Object();
+    new_product['_id'] = _id;
+    new_product['name'] = name;
+
+    products.push(new_product);
+    $('#new_store_products_json').val(JSON.stringify(products))
+    print_products();
+
+    return false;
+}
 </script>
 {% endblock %}
