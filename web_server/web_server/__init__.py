@@ -285,7 +285,8 @@ def get_form(edit = False):
 
     products_json = json.loads(request.form['products_json'])
     products = []
-    print(products_json)
+    print (request.form['products_json'])
+    print (products_json)
     if products_json:
         for product in products_json:
             print(ObjectId.is_valid(product['_id']))
@@ -379,6 +380,7 @@ def build_query():
 def new_store():
     store = get_form()
     r = post('stores', store)
+    print (r)
     _id = r.json()['_id']
     return redirect('/?store={0}'.format(_id))
 
