@@ -174,7 +174,7 @@ def store_add():
         edit_item['place_json'] = json.dumps(None)
 
     if 'products_json' not in edit_item:
-        edit_item['products_json'] = json.dumps(None)
+        edit_item['products_json'] = json.dumps([])
 
     return render_template('add_edit_store.html',
                            #products = products,
