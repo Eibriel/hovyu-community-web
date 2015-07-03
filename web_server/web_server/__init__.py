@@ -285,9 +285,11 @@ def get_form(edit = False):
 
     products_json = json.loads(request.form['products_json'])
     products = []
-    for product in products_json:
-        print(ObjectId.is_valid(product['_id']))
-        products.append(product['_id'])
+    print(products_json)
+    if products_json:
+        for product in products_json:
+            print(ObjectId.is_valid(product['_id']))
+            products.append(product['_id'])
     store['products'] = products
 
     if request.form['latitude'] != '' and request.form['longitude'] != '':
