@@ -11,12 +11,12 @@
           Sumar comercio
         </a>
     </div>-->
-    
+
     <div class="row">
         <div class="col-lg-3">
-        </div> 
+        </div>
         <div class="col-lg-6">
-            <form action="/" method="GET">
+            <form action="/" method="GET" id="query_form">
                 <input type="hidden" name="latitude" id="q_latitude" value="{{latitude}}">
                 <input type="hidden" name="longitude" id="q_longitude" value="{{longitude}}">
                 <input type="hidden" name="product" id="q_product" value="{{product}}">
@@ -26,7 +26,9 @@
                 </button>
             </form>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="¿Qué busco? ¿Dónde lo busco?" name="q" id="q" autocomplete="off">
+                <form id="q_form" onsubmit="return add_q();">
+                    <input type="text" class="form-control" placeholder="¿Qué busco? ¿Dónde lo busco?" name="q" id="q" autocomplete="off">
+                </form>
               <span class="input-group-btn">
                 <button class="btn btn-success" type="button" onclick="build_query()">DÚ!</button>
               </span>
@@ -42,9 +44,9 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="col-lg-3">
-        </div> 
+        </div>
     </div><!-- /row -->
 
     {% if items|length < 1 %}
@@ -87,7 +89,7 @@
             </p>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
@@ -115,7 +117,7 @@
             <div style="text-align: center; margin-top: 2em;">Página {{ page }}</div>
         </div>
     </div>
-    
+
     {% endif %}
 <!--</div>-->
 
@@ -131,8 +133,28 @@
 <script>
 $("#q").keyup(build_query);
 
+var first_product_id = null;
+var first_product_name = null;
+var first_place_id = null;
+var first_place_full_name = null;
+var product_set = false;
+
+function add_q() {
+    if ($('#q').val()=="") {
+        $('#query_form').submit();
+    }
+    if (first_product_id && first_product_name && !product_set) {
+        add_query_product(first_product_id, first_product_name);
+    } else if (first_place_id && first_place_full_name && product_set) {
+        add_query_place(first_place_id, first_place_full_name);
+    }
+    return false;
+}
+
 function build_query() {
     if ($('#q').val()=="") {
+        $("#common_query_items").css('display', 'block');
+        $("#query_items").html('');
         return;
     }
     $.ajax({
@@ -145,9 +167,17 @@ function build_query() {
         var html = '<p style="line-height: 3em">';
         var name = "";
         var _id = "";
+        first_product_id = null;
+        first_product_name = null;
+        first_place_id = null;
+        first_place_full_name = null;
         for (var index in msg['products']) {
             name = msg['products'][index]['name'];
             _id = msg['products'][index]['_id'];
+            if (!first_product_id && !first_product_name) {
+                first_product_id = _id;
+                first_product_name = name;
+            }
             html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
         }
         html += '</p><p style="line-height: 3em">';
@@ -155,6 +185,10 @@ function build_query() {
             name = msg['places'][index]['name'];
             full_name = msg['places'][index]['full_name'];
             _id = msg['places'][index]['_id'];
+            if (!first_place_id && !first_place_full_name) {
+                first_place_id = _id;
+                first_place_full_name = full_name;
+            }
             html += "<a class='btn btn-success btn-sm' role='button' href='#' onclick='return add_query_place(\""+_id+"\", \""+full_name+"\")'>"+full_name+"</a> ";
         }
         html += "</p>";
@@ -169,8 +203,9 @@ function add_query_product(_id, name) {
     $('#q_product_name').val(name);
     $("#query_items").html("");
     $('#q').val("");
-    
+
     $("#common_query_items").css('display', 'inline');
+    product_set = true;
     return false;
 }
 
@@ -183,7 +218,7 @@ function add_query_place(_id, full_name) {
     $('#q').val("");
     $('#new_store_place').val("");
     this_place();
-    
+
     $("#common_query_items").css('display', 'inline');
     return false;
 }
@@ -202,14 +237,14 @@ function here() {
         navigator.geolocation.getCurrentPosition(function(position) {
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
-          
+
           print_here();
-          
+
         }, function(err) {
           $('#query_place').html( $('#q_location_name').val() );
         });
     }
-    
+
     return false;
 }
 
@@ -231,25 +266,25 @@ function any_place() {
     $('#q_longitude').val("");
     $('#q_location_name').val("");
     $('#q_place_id').val("");
-    
+
     $('#place_label').css('display', 'none');
     $('#place_label_here').css('display', 'none');
     $('#place_label_near_to').css('display', 'none');
     $('#place_label_in').css('display', 'none');
-    
+
     return false;
 }
 
 function this_place() {
     $('#q_latitude').val("");
     $('#q_longitude').val("");
-    
+
     $('#place_label').css('display', 'inline');
     $('#place_label_here').css('display', 'none');
     $('#place_label_near_to').css('display', 'none');
     $('#place_label_in').css('display', 'inline');
     $('#query_place').css('display', 'inline');
-    
+
     return false;
 }
 

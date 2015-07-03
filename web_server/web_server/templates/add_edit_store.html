@@ -416,7 +416,9 @@ function add_query_place(_id, osm_id, full_name, latitude, longitude) {
 }
 
 place_json = JSON.parse($('#new_store_place_json').val())
-$("#zone_name_button").html(place_json.full_name);
+if (place_json) {
+    $("#zone_name_button").html(place_json.full_name);
+}
 
 </script>
 <script>
