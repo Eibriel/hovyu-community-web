@@ -26,21 +26,21 @@
             </div>
         </div>
         <!-- Description -->
-        <div class="form-group">
+        <!--<div class="form-group">
             <label for="payment_description" class="col-sm-2 control-label">Descripción</label>
             <div class="col-sm-10">
                 <textarea name="description" id="payment_description" class="form-control" rows="3" >{{ edit_item.description }}</textarea>
                 <span id="payment_description_help" class="help-block">Descripción del producto</span>
             </div>
-        </div>
+        </div>-->
         <!-- Wiktionary -->
-        <div class="form-group">
+        <!--<div class="form-group">
             <label for="product_wiktionary" class="col-sm-2 control-label">Wiktionary URL</label>
             <div class="col-sm-10">
                 <input type="text" name="wiktionary" id="product_wiktionary" class="form-control" placeholder="https://es.wiktionary.org/wiki/banana" value="{{ edit_item.wiktionary }}"></input>
                 <span id="product_wiktionary_help" class="help-block">URL de la definición en Wiktionary</span>
             </div>
-        </div>
+        </div>-->
 
         {% if editing %}
         <input type="hidden" name="_id" value="{{ edit_item._id }}">

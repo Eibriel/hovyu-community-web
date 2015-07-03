@@ -471,8 +471,8 @@ def product_add_edit():
 def get_product_form():
     product = {
         'name': request.form['name'],
-        'description': request.form['description'],
-        'wiktionary': request.form['wiktionary']
+        #'description': request.form['description'],
+        #'wiktionary': request.form['wiktionary']
     }
 
     return product
