@@ -153,9 +153,11 @@ def store_add():
             products_json = []
             products = get('products')
             for product in edit_item['products']:
-                for product_ in products:
-                    if product_['_id'] == product:
-                        products_json.append(product_)
+                product_ = get('products/{0}'.format(product))
+                products_json.append(product_)
+                #for product_ in products:
+                #    if product_['_id'] == product:
+                #        products_json.append(product_)
             edit_item['products_json'] = json.dumps(products_json)
         else:
             edit_item['products_json'] = []
