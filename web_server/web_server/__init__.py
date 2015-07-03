@@ -21,8 +21,6 @@ app = Flask(__name__)
 
 app.config.from_object('web_server.config.Config')
 
-app.debug = app.config['DEBUG']
-
 # nl2br ###########################
 import re
 
@@ -151,7 +149,7 @@ def store_add():
         edit_item['tels_json'] = json.dumps(edit_item['tel'])
         if 'products' in edit_item:
             products_json = []
-            products = get('products')
+            #products = get('products')
             for product in edit_item['products']:
                 product_ = get('products/{0}'.format(product))
                 products_json.append(product_)
@@ -159,8 +157,6 @@ def store_add():
                 #    if product_['_id'] == product:
                 #        products_json.append(product_)
             edit_item['products_json'] = json.dumps(products_json)
-        else:
-            edit_item['products_json'] = []
         place_json = None
         if edit_item.get('place'):
             place_json = {'place_id': edit_item['place']['place_id'],
@@ -177,8 +173,11 @@ def store_add():
     if 'place_json' not in edit_item:
         edit_item['place_json'] = json.dumps(None)
 
+    if 'products_json' not in edit_item:
+        edit_item['products_json'] = json.dumps(None)
+
     return render_template('add_edit_store.html',
-                           products = products,
+                           #products = products,
                            edit_item = edit_item,
                            editing = editing)
 
@@ -287,6 +286,7 @@ def get_form(edit = False):
     products_json = json.loads(request.form['products_json'])
     products = []
     for product in products_json:
+        print(ObjectId.is_valid(product['_id']))
         products.append(product['_id'])
     store['products'] = products
 
@@ -386,7 +386,9 @@ def edit_store():
     store = get_form(edit=True)
     _etag = request.form['_etag']
     _id = request.form['_id']
-    patch('stores/{0}'.format(_id), store, _etag)
+    print (store)
+    r = patch('stores/{0}'.format(_id), store, _etag)
+    print (r.text)
     return redirect('/?store={0}'.format(_id))
 
 
@@ -484,7 +486,7 @@ def get_product_form():
 def add_product():
     product = get_product_form()
     r = post('products', product)
-    print (r.text)
+    #print (r.text)
     return redirect('/products')
 
 
@@ -494,7 +496,7 @@ def edit_product():
     _etag = request.form['_etag']
     _id = request.form['_id']
     r = patch('products/{0}'.format(_id), product, _etag)
-    print (r.text)
+    #print (r.text)
     return redirect('/products')
 
 @app.route('/about')
