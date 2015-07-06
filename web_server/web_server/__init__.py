@@ -1,5 +1,6 @@
 import os
 import json
+import random
 import requests
 
 from flask import Flask
@@ -245,6 +246,10 @@ def home():
         if place_id != '':
             subtitle = "{0} en {1}".format(subtitle, place_full_name)
 
+    tiptrick = get('tipstricks')
+    if len(tiptrick) > 0:
+        tiptrick = random.choice(tiptrick)
+
     return render_template('home.html',
                            msg = msg,
                            items = items,
@@ -257,7 +262,8 @@ def home():
                            product = product,
                            product_name = product_name,
                            place_full_name = place_full_name,
-                           place_id = place_id)
+                           place_id = place_id,
+                           tiptrick = tiptrick['text'])
 
 
 def get_form(edit = False):
@@ -381,7 +387,7 @@ def new_store():
     store = get_form()
     print (store['products'])
     r = post('stores', store)
-    print (r.text)
+    #print (r.text)
     _id = r.json()['_id']
     return redirect('/?store={0}'.format(_id))
 
@@ -393,7 +399,7 @@ def edit_store():
     _id = request.form['_id']
     print (store)
     r = patch('stores/{0}'.format(_id), store, _etag)
-    print (r.text)
+    #print (r.text)
     return redirect('/?store={0}'.format(_id))
 
 
@@ -551,6 +557,48 @@ def send_payment_instructions():
 
     return ''
 
+# TIPS & TRICKS
+@app.route('/tipstricks')
+def tipstricks():
+    items = get('tipstricks')
+    print (items)
+    return render_template('tipstricks.html', items=items)
+
+def get_tiptrick_form():
+    tiptrick = {
+        'text': request.form['text']
+    }
+    return tiptrick
+
+@app.route('/new_tiptrick', methods=['POST'])
+def add_tiptrick():
+    tiptrick = get_tiptrick_form()
+    r = post('tipstricks', tiptrick)
+    #print (r.text)
+    return redirect('/tipstricks')
+
+@app.route('/edit_tiptrick', methods=['POST'])
+def edit_tiptrick():
+    tiptrick = get_tiptrick_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    r = patch('tipstricks/{0}'.format(_id), tiptrick, _etag)
+    print (r.text)
+    return redirect('/tipstricks')
+
+@app.route('/tiptrick_add_edit')
+def tiptrick_add_edit():
+    editing = False
+    edit_item = {}
+
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('tipstricks/{0}'.format(request.args['e']))
+    return render_template('add_edit_tipstricks.html',
+                            editing = editing,
+                            edit_item = edit_item)
+
+# CALLBAKS
 from bson import ObjectId
 @app.route('/bitcoin_callback/<payment_id>/<secret>')
 def bitcoin_callback(payment_id, secret):
