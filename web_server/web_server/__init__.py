@@ -379,8 +379,9 @@ def build_query():
 @app.route('/new_store', methods=['POST'])
 def new_store():
     store = get_form()
+    print (store['products'])
     r = post('stores', store)
-    print (r)
+    print (r.text)
     _id = r.json()['_id']
     return redirect('/?store={0}'.format(_id))
 
