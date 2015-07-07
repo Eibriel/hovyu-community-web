@@ -484,7 +484,6 @@ function add_query_product(_id, name) {
 $("#new_store_name").keyup(search_store);
 
 function search_store() {
-    console.log($('#new_store_name').val());
     if ($('#new_store_name').val()=="") {
         $("#similar_stores").html('');
         return false;

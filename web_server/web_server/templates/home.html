@@ -200,6 +200,12 @@ function build_query() {
             }
             html += "<a class='btn btn-success btn-sm' role='button' href='#' onclick='return add_query_place(\""+_id+"\", \""+full_name+"\")'>"+full_name+"</a> ";
         }
+        html += '</p><p style="line-height: 3em">';
+        for (var index in msg['stores']) {
+            _id = msg['stores'][index]['_id'];
+            full_name = msg['stores'][index]['full_name'];
+            html += "<a class='btn btn-default btn-sm' role='button' href='/?store="+_id+"'>"+full_name+"</a> ";
+        }
         html += "</p>";
         $("#query_items").html(html);
         $("#common_query_items").css('display', 'none');
