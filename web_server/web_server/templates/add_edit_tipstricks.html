@@ -17,15 +17,7 @@
     {% else %}
     <form action="new_tiptrick" method="POST" class="form-horizontal">
     {% endif %}
-        <!-- Name -->
-        <!--<div class="form-group">
-            <label for="product_name" class="col-sm-2 control-label">Nombre</label>
-            <div class="col-sm-10">
-                <input type="text" name="name" id="product_name" class="form-control" placeholder="Banana" value="{{ edit_item.name }}"></input>
-                <span id="product_name_help" class="help-block">Nombre del Consejo / Truco</span>
-            </div>
-        </div>-->
-        <!-- Description -->
+        <!-- Text -->
         <div class="form-group">
             <label for="tiptrick_text" class="col-sm-2 control-label">Texto</label>
             <div class="col-sm-10">
@@ -33,15 +25,16 @@
                 <span id="tiptrick_text_help" class="help-block">Descripción del Consejo / Truco</span>
             </div>
         </div>
-        <!-- Wiktionary -->
-        <!--<div class="form-group">
-            <label for="product_wiktionary" class="col-sm-2 control-label">Wiktionary URL</label>
-            <div class="col-sm-10">
-                <input type="text" name="wiktionary" id="product_wiktionary" class="form-control" placeholder="https://es.wiktionary.org/wiki/banana" value="{{ edit_item.wiktionary }}"></input>
-                <span id="product_wiktionary_help" class="help-block">URL de la definición en Wiktionary</span>
+        <!-- Image -->
+        <div class="form-group">
+            <label for="tiptrick_image" class="col-sm-2 control-label">Imagen</label>
+                <div class="col-sm-10">
+                    <select class="form-control"  name="image" id="tiptrick_image">
+                        <option value="stickers_amorzorzores/zzra_riendo_b.png">Amorzorzora Riendo</option>
+                        <option value="stickers_amorzorzores/zzr_saltando_b.png">Amorzorzor Saltando</option>
+                    </select>
             </div>
-        </div>-->
-
+        </div>
         {% if editing %}
         <input type="hidden" name="_id" value="{{ edit_item._id }}">
         <input type="hidden" name="_etag" value="{{ edit_item._etag }}">

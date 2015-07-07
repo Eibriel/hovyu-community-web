@@ -263,7 +263,7 @@ def home():
                            product_name = product_name,
                            place_full_name = place_full_name,
                            place_id = place_id,
-                           tiptrick = tiptrick['text'])
+                           tiptrick = tiptrick)
 
 
 def get_form(edit = False):
@@ -566,7 +566,8 @@ def tipstricks():
 
 def get_tiptrick_form():
     tiptrick = {
-        'text': request.form['text']
+        'text': request.form['text'],
+        'image': request.form['image']
     }
     return tiptrick
 
@@ -583,7 +584,7 @@ def edit_tiptrick():
     _etag = request.form['_etag']
     _id = request.form['_id']
     r = patch('tipstricks/{0}'.format(_id), tiptrick, _etag)
-    print (r.text)
+    #print (r.text)
     return redirect('/tipstricks')
 
 @app.route('/tiptrick_add_edit')
