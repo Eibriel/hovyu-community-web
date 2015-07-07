@@ -280,7 +280,8 @@ def get_form(edit = False):
         'email': request.form['email'],
         'website': [],
         'tel': [],
-        'exact_location': False
+        'exact_location': False,
+        'edit_reason': request.form['edit_reason'],
     }
 
     websites_json = json.loads(request.form['websites_json'])
@@ -335,6 +336,12 @@ def get_form(edit = False):
 
 @app.route('/build_query', methods=['POST'])
 def build_query():
+    items = get('stores?find_stores={0}'.format(request.form['q']))
+    stores_items = []
+    for item in items:
+        full_name = "{0}({1})".format(item['name'], item.get('address', ''))
+        stores_items.append({'_id': item['_id'], 'full_name': full_name})
+
     items = get('products?find_products={0}'.format(request.form['q']))
     products_items = []
     for item in items:
@@ -379,7 +386,7 @@ def build_query():
                             'latitude': latitude,
                             'longitude': longitude})
 
-    r = {'products': products_items, 'places': place_items}
+    r = {'products': products_items, 'places': place_items, 'stores': stores_items}
     return jsonify(r)
 
 @app.route('/new_store', methods=['POST'])

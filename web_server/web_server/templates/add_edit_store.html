@@ -21,13 +21,6 @@
                     <p class="text-center lead">¡Sumalo ahora!</p>
                 </div>
             </div>
-            <!--<div class="panel panel-default">
-                <div class="panel-body" >
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="//www.youtube-nocookie.com/embed/LTYDj_pqnDI?rel=0&amp;controls=0&amp;showinfo=0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>-->
         </div>
     </div>
     {% endif %}
@@ -40,8 +33,16 @@
         <div class="form-group">
             <label for="new_store_name" class="col-sm-2 control-label">Nombre</label>
             <div class="col-sm-10">
-                <input type="text" name="name" id="new_store_name" class="form-control" placeholder="Comercio Sustentable" value="{{ edit_item.name }}"></input>
+                <input type="text" name="name" id="new_store_name" class="form-control" placeholder="Comercio Sustentable" value="{{ edit_item.name }}" autocomplete="off"></input>
                 <span id="new_store_name_help" class="help-block">Nombre del comercio que quiere sumar</span>
+            </div>
+        </div>
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="similar_stores"></div>
+                    <span id="similar_stores_help" class="help-block">Verifique que el comercio ya no esté en WIDÚ.</span>
+                </div>
             </div>
         </div>
         <!-- Description -->
@@ -131,7 +132,7 @@
             <label for="new_store_name" class="col-sm-2 control-label">Zona</label>
             <div class="col-sm-10">
                 <div class="col-sm-8">
-                    <input type="text" id="new_store_place" class="form-control" placeholder="Córdoba" value=""></input>
+                    <input type="text" id="new_store_place" class="form-control" placeholder="Córdoba" value="" autocomplete="off"></input>
                 </div>
                 <div class="col-sm-2">
                     <a class="btn btn-primary" href="#" role="button" onclick="return search_place();">Buscar Lugar</a>
@@ -175,7 +176,7 @@
             <div class="col-sm-10">
 
                 <div class="col-sm-8">
-                    <input type="text" id="new_store_product" class="form-control" placeholder="Milanesa" value=""></input>
+                    <input type="text" id="new_store_product" class="form-control" placeholder="Milanesa" value="" autocomplete="off"></input>
                     <!--<select class="form-control"  name="tel_type" id="new_store_product">
                         {% for product in products %}
                         <option value="{{ product._id }}" id="product_{{ product._id }}">{{ product.name }}</option>
@@ -202,6 +203,16 @@
         {% if editing %}
         <input type="hidden" name="_id" value="{{ edit_item._id }}">
         <input type="hidden" name="_etag" value="{{ edit_item._etag }}">
+        <!-- Edit Reason -->
+        <div class="form-group">
+            <label for="new_store_edit_reason" class="col-sm-2 control-label">Descripcion de la edición</label>
+            <div class="col-sm-10">
+                <input type="text" name="edit_reason" id="new_store_edit_reason" class="form-control" placeholder="Editado porque..." value=""></input>
+                <span id="new_store_edit_reason_help" class="help-block">Breve descripción de la edición</span>
+            </div>
+        </div>
+        {% else %}
+        <input type="hidden" name="edit_reason" value="">
         {% endif %}
         {% if editing %}
         <button type="submit" class="btn btn-primary">Editar</button>
@@ -466,6 +477,37 @@ function add_query_product(_id, name) {
     print_products();
     $('#new_store_product').val('');
     $("#query_products").html('');
+    return false;
+}
+</script>
+<script>
+$("#new_store_name").keyup(search_store);
+
+function search_store() {
+    console.log($('#new_store_name').val());
+    if ($('#new_store_name').val()=="") {
+        $("#similar_stores").html('');
+        return false;
+    }
+    $.ajax({
+      method: "POST",
+      url: "/build_query",
+      type: "json",
+      data: { q: $('#new_store_name').val() }
+    })
+        .done(function( msg ) {
+            var html = '<p style="line-height: 3em">';
+            var full_name = "";
+            var _id = "";
+            for (var index in msg['stores']) {
+                _id = msg['stores'][index]['_id'];
+                full_name = msg['stores'][index]['full_name'];
+                html += "<a class='btn btn-default btn-sm' role='button' href='/?store="+_id+"' target='_blank'>"+full_name+"</a> ";
+            }
+            html += "</p>";
+            $("#similar_stores").html(html);
+        });
+
     return false;
 }
 </script>
