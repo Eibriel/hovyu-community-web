@@ -125,6 +125,160 @@ def patch(resource, data, eTag):
 
     return r
 
+# HOME
+@app.route("/")
+def home():
+    if 'interpolate_places' in request.args:
+        get('places?interpolate_places')
+        return ("Interpolation OK")
+    elif 'rebuild_places' in request.args:
+        get('places?rebuild_places')
+        return ("Rebuild OK")
+
+    msg = ""
+    query = ""
+    product = ""
+    product_name = "todo"
+    activity = ""
+    activity_name = ""
+    latitude = ""
+    longitude = ""
+    page = "1"
+    here = False
+    place_id = ""
+    place_full_name = ""
+    location_name = "cualquier lado"
+    subtitle = ""
+    items = []
+
+    if 'store' in request.args:
+        items = get('stores/{0}'.format(request.args['store']))
+    elif 'product' in request.args and request.args['product']!='':
+        product = request.args['product']
+        product_db = get('products/{0}'.format(product))
+        if product_db:
+            product_name = product_db['name']
+        query = request.args['product']
+    elif 'activity' in request.args and request.args['activity']!='':
+        activity = request.args['activity']
+        activity_db = get('activities/{0}'.format(activity))
+        print (activity_db)
+        if activity_db:
+            activity_name = activity_db['name']
+
+    if 'location_name' in request.args:
+        location_name = request.args['location_name']
+    if 'latitude' in request.args:
+        latitude = request.args['latitude']
+    if 'longitude' in request.args:
+        longitude = request.args['longitude']
+    if 'place_id' in request.args:
+        place_id = request.args['place_id']
+        if place_id != '':
+            place = get('places/{0}'.format(place_id))
+            if place:
+                place_full_name = place['name']
+    if 'page' in request.args:
+        page = request.args['page']
+
+    if latitude!='' and longitude!='':
+        here = True
+    if product!="" and activity!="":
+        items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
+    subtitle = " - {0}".format(product_name)
+    if place_id != '':
+        subtitle = "{0} en {1}".format(subtitle, place_full_name)
+
+    tiptrick = get('tipstricks')
+    if len(tiptrick) > 0:
+        tiptrick = random.choice(tiptrick)
+
+    return render_template('home.html',
+                           msg = msg,
+                           items = items,
+                           latitude = latitude,
+                           longitude = longitude,
+                           page = page,
+                           here = here,
+                           subtitle = subtitle,
+                           location_name = location_name,
+                           product = product,
+                           product_name = product_name,
+                           activity = activity,
+                           activity_name = activity_name,
+                           place_full_name = place_full_name,
+                           place_id = place_id,
+                           tiptrick = tiptrick)
+
+
+# STORE
+def get_form(edit = False):
+    store = {
+        'name': request.form['name'],
+        'description': request.form['description'],
+        'address': request.form['address'],
+        'place': None,
+        'score': {
+            'count': 0,
+            'sum': 0
+        },
+        'views': 0,
+        'email': request.form['email'],
+        'website': [],
+        'tel': [],
+        'exact_location': False,
+        'edit_reason': request.form['edit_reason'],
+    }
+
+    websites_json = json.loads(request.form['websites_json'])
+    store['website'] = websites_json
+
+    tels_json = json.loads(request.form['tels_json'])
+    store['tel'] = tels_json
+
+    products_json = json.loads(request.form['products_json'])
+    products = []
+    #print (request.form['products_json'])
+    #print (products_json)
+    if products_json:
+        for product in products_json:
+            #print(ObjectId.is_valid(product['_id']))
+            products.append(product['_id'])
+    store['products'] = products
+
+    if request.form['latitude'] != '' and request.form['longitude'] != '':
+        latitude = float(request.form['latitude'])
+        longitude = float(request.form['longitude'])
+    else:
+        latitude = 0.0
+        longitude = 0.0
+
+    store['location'] = {"type":"Point","coordinates":[latitude, longitude]}
+
+    if 'exact_location' in request.form:
+        store['exact_location'] = True
+
+    # Place
+    place_json = json.loads(request.form['place_json'])
+    if place_json:
+        latitude = float(place_json['latitude'])
+        longitude = float(place_json['longitude'])
+        place = {'place_id': place_json['place_id'],
+                 'osm_id': place_json['osm_id'],
+                 'full_name': place_json['full_name'],
+                 'location': {"type":"Point","coordinates":[latitude, longitude]}
+                 }
+        store['place'] = place
+
+    # Highlight
+    #if edit:
+    #    'highlight': False,
+
+    if not edit:
+        store['iid']=0
+        store['wid']=""
+    return store
+
 
 @app.route("/store_add_edit")
 def store_add():
@@ -182,159 +336,379 @@ def store_add():
                            editing = editing)
 
 
-@app.route("/")
-def home():
-    if 'interpolate_places' in request.args:
-        get('places?interpolate_places')
-        return ("Interpolation OK")
-    elif 'rebuild_places' in request.args:
-        get('places?rebuild_places')
-        return ("Rebuild OK")
-
-    msg = ""
-    query = ""
-    product = ""
-    product_name = "todo"
-    latitude = ""
-    longitude = ""
-    page = "1"
-    here = False
-    place_id = ""
-    place_full_name = ""
-    location_name = "cualquier lado"
-    subtitle = ""
-    items = []
-
-    if 'store' in request.args:
-        items = get('stores/{0}'.format(request.args['store']))
-    elif 'product' in request.args:
-        product = request.args['product']
-        #if 'product_name' in request.args:
-        #    product_name = request.args['product_name']
-        if product != '':
-            product_db = get('products/{0}'.format(product))
-            if product_db:
-                product_name = product_db['name']
-        if 'location_name' in request.args:
-            location_name = request.args['location_name']
-        if 'latitude' in request.args:
-            latitude = request.args['latitude']
-        if 'longitude' in request.args:
-            longitude = request.args['longitude']
-        if 'place_id' in request.args:
-            place_id = request.args['place_id']
-            if place_id != '':
-                place = get('places/{0}'.format(place_id))
-                if place:
-                    place_full_name = place['name']
-        #if 'place_full_name' in request.args:
-        #    place_full_name = request.args['place_full_name']
-        if 'page' in request.args:
-            page = request.args['page']
-
-        if latitude!='' and longitude!='':
-            here = True
-            items = get('stores?products={0}&latitude={1}&longitude={2}&page={3}'.format(product, request.args['latitude'], request.args['longitude'], page))
-        elif place_id!='':
-            items = get('stores?products={0}&place_id={1}&page={2}'.format(product, place_id, page))
-        else:
-            items = get('stores?products={0}&page={1}'.format(product, page))
-        query = request.args['product']
-
-        subtitle = " - {0}".format(product_name)
-        if place_id != '':
-            subtitle = "{0} en {1}".format(subtitle, place_full_name)
-
-    tiptrick = get('tipstricks')
-    if len(tiptrick) > 0:
-        tiptrick = random.choice(tiptrick)
-
-    return render_template('home.html',
-                           msg = msg,
-                           items = items,
-                           latitude = latitude,
-                           longitude = longitude,
-                           page = page,
-                           here = here,
-                           subtitle = subtitle,
-                           location_name = location_name,
-                           product = product,
-                           product_name = product_name,
-                           place_full_name = place_full_name,
-                           place_id = place_id,
-                           tiptrick = tiptrick)
+def check_human_data(check_id, option):
+    check = get('human_checks/{0}'.format(check_id))
+    print (check)
+    if check and check['right_option'] == option:
+        return True
+    else:
+        return False
 
 
-def get_form(edit = False):
-    store = {
-        'name': request.form['name'],
+@app.route('/new_store', methods=['POST'])
+def new_store():
+    if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
+        return '', 403
+    store = get_form()
+    print (store['products'])
+    r = post('stores', store)
+    #print (r.text)
+    _id = r.json()['_id']
+    return redirect('/?store={0}'.format(_id))
+
+
+@app.route('/edit_store', methods=['POST'])
+def edit_store():
+    if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
+        return '', 403
+    store = get_form(edit=True)
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    print (store)
+    r = patch('stores/{0}'.format(_id), store, _etag)
+    #print (r.text)
+    return redirect('/?store={0}'.format(_id))
+
+
+# PAYMENTS
+def get_payment_form():
+    payment = {
+        'payment_method': request.form['payment_method'],
         'description': request.form['description'],
-        'address': request.form['address'],
-        'place': None,
-        'score': {
-            'count': 0,
-            'sum': 0
-        },
-        'views': 0,
         'email': request.form['email'],
-        'website': [],
-        'tel': [],
-        'exact_location': False,
-        'edit_reason': request.form['edit_reason'],
+        'store_id': request.form['store_id'],
+        'currency': request.form['currency'],
+        'amount': float(request.form['amount']),
+        'day_cost': float(request.form['day_cost']),
+        'completed': False,
+        'refunded': False,
+        'refund_description': request.form['refund_description'],
     }
+    if 'completed' in request.form:
+        payment['completed'] = True
+    if 'refunded' in request.form:
+        payment['refunded'] = True
+    return payment
 
-    websites_json = json.loads(request.form['websites_json'])
-    store['website'] = websites_json
 
-    tels_json = json.loads(request.form['tels_json'])
-    store['tel'] = tels_json
+@app.route('/payments')
+def payments():
+    items = get('payments')
+    stats = get('payment_stats')[0]
+    return render_template('payments.html', items=items, stats=stats)
 
+
+@app.route('/payment_add_edit')
+def payment_add_edit():
+    editing = False
+    edit_item = {}
+
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('payments/{0}'.format(request.args['e']))
+        #print (edit_item)
+        #edit_item = edit_item[0]
+    return render_template('add_edit_payment.html',
+                            editing = editing,
+                            edit_item = edit_item)
+
+
+@app.route('/new_payment', methods=['POST'])
+def add_payment():
+    payment = get_payment_form()
+    r = post('payments', payment)
+    #print (r.text)
+    return redirect('/payments')
+
+
+@app.route('/edit_payment', methods=['POST'])
+def edit_payment():
+    payment = get_payment_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    patch('payments/{0}'.format(_id), payment, _etag)
+    return redirect('/payments')
+
+
+@app.route('/send_payment_instructions')
+def send_payment_instructions():
+    email = request.args.get('email')
+    product = request.args.get('product')
+    country = request.args.get('country')
+    method = request.args.get('method')
+    name = request.args.get('name')
+    _id = request.args.get('id')
+    iid = request.args.get('iid')
+
+    if not email or email == '':
+        return '', 403
+    if method not in ['pagomiscuentas', 'mercadopago', 'local_bank', 'bitcoin']:
+        return '', 403
+    if not name:
+        return '', 403
+    if not _id:
+        return '', 403
+    if not iid:
+        return '', 403
+
+    if product not in ['highlight_one_year', 'highlight_one_month']:
+        return '', 403
+
+    payment = {
+        'payment_method': method,
+        'description': '',
+        'email': email,
+        'product': product,
+        'country': country,
+        'store_id': _id,
+        'completed': False,
+        'refunded': False,
+        'refund_description': '',
+    }
+    r = post('payments', payment)
+    print (r.text)
+    return ''
+
+
+# PRODUCTS
+def get_product_form():
+    product = {
+        'name': request.form['name'],
+    }
+    return product
+
+
+@app.route('/products')
+def products():
+    items = get('products')
+    return render_template('products.html', items=items)
+
+
+@app.route('/product_add_edit')
+def product_add_edit():
+    editing = False
+    edit_item = {}
+
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('products/{0}'.format(request.args['e']))
+    return render_template('add_edit_product.html',
+                            editing = editing,
+                            edit_item = edit_item)
+
+
+@app.route('/new_product', methods=['POST'])
+def add_product():
+    product = get_product_form()
+    r = post('products', product)
+    #print (r.text)
+    return redirect('/products')
+
+
+@app.route('/edit_product', methods=['POST'])
+def edit_product():
+    product = get_product_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    r = patch('products/{0}'.format(_id), product, _etag)
+    #print (r.text)
+    return redirect('/products')
+
+
+# ABOUT
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+# TIPS & TRICKS
+@app.route('/tipstricks')
+def tipstricks():
+    items = get('tipstricks')
+    print (items)
+    return render_template('tipstricks.html', items=items)
+
+
+def get_tiptrick_form():
+    tiptrick = {
+        'text': request.form['text'],
+        'image': request.form['image']
+    }
+    return tiptrick
+
+
+@app.route('/new_tiptrick', methods=['POST'])
+def add_tiptrick():
+    tiptrick = get_tiptrick_form()
+    r = post('tipstricks', tiptrick)
+    #print (r.text)
+    return redirect('/tipstricks')
+
+
+@app.route('/edit_tiptrick', methods=['POST'])
+def edit_tiptrick():
+    tiptrick = get_tiptrick_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    r = patch('tipstricks/{0}'.format(_id), tiptrick, _etag)
+    #print (r.text)
+    return redirect('/tipstricks')
+
+
+@app.route('/tiptrick_add_edit')
+def tiptrick_add_edit():
+    editing = False
+    edit_item = {}
+
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('tipstricks/{0}'.format(request.args['e']))
+    return render_template('add_edit_tipstricks.html',
+                            editing = editing,
+                            edit_item = edit_item)
+
+
+# ACTIVITIES
+def get_activity_form():
+    activity = {
+        'name': request.form['name'],
+        'products': []
+    }
     products_json = json.loads(request.form['products_json'])
     products = []
-    print (request.form['products_json'])
-    print (products_json)
     if products_json:
         for product in products_json:
-            print(ObjectId.is_valid(product['_id']))
             products.append(product['_id'])
-    store['products'] = products
+        activity['products'] = products
+    return activity
 
-    if request.form['latitude'] != '' and request.form['longitude'] != '':
-        latitude = float(request.form['latitude'])
-        longitude = float(request.form['longitude'])
+
+@app.route('/activities')
+def activities():
+    items = get('activities')
+    #print (items)
+    return render_template('activities.html', items=items)
+
+
+@app.route('/new_activity', methods=['POST'])
+def add_activity():
+    activity = get_activity_form()
+    #print (activity)
+    r = post('activities', activity)
+    #print (r.text)
+    return redirect('/activities')
+
+
+@app.route('/edit_activity', methods=['POST'])
+def edit_activity():
+    activity = get_activity_form()
+    _etag = request.form['_etag']
+    _id = request.form['_id']
+    r = patch('activities/{0}'.format(_id), activity, _etag)
+    #print (r.text)
+    return redirect('/activities')
+
+
+@app.route('/activity_add_edit')
+def activity_add_edit():
+    editing = False
+    edit_item = {}
+
+    if 'e' in request.args:
+        editing = True
+        edit_item = get('activities/{0}'.format(request.args['e']))
+        if 'products' in edit_item:
+            products_json = []
+            for product in edit_item['products']:
+                product_ = get('products/{0}'.format(product))
+                products_json.append(product_)
+            edit_item['products_json'] = json.dumps(products_json)
+    return render_template('add_edit_activities.html',
+                            editing = editing,
+                            edit_item = edit_item)
+
+
+# HUMAN CHECK
+@app.route('/human_check_add')
+def human_check_add():
+    emoji = random.choice(wid_chars)
+    options = []
+    for ch in wid_chars:
+        options.append("{0:x}".format(ch))
+    human_check = {
+        'image': 'twemoji/36x36/{0:x}.png'.format(emoji),
+        'options': options,
+        'right_option': '{0:x}'.format(emoji),
+        'type': 'emoji'
+    }
+    r = post('human_checks', human_check)
+
+    return jsonify({'_id': r.json()['_id'],
+                    'options': human_check['options'],
+                    'type': 'emoji'})
+
+
+@app.route('/human_check_image/<check_id>')
+def human_check_image(check_id):
+    check = get('human_checks/{0}'.format(check_id))
+    return app.send_static_file(check['image'])
+
+
+# CALLBAKS
+from bson import ObjectId
+@app.route('/bitcoin_callback/<payment_id>/<secret>')
+def bitcoin_callback(payment_id, secret):
+    return_text = ""
+    if not ObjectId.is_valid(payment_id):
+        return 'Invalid ObjectID', 400
+    input_address = request.args['input_address']
+    destination_address = request.args['destination_address']
+    transaction_hash = request.args['transaction_hash']
+    input_transaction_hash = request.args['input_transaction_hash']
+    confirmations = int(request.args['confirmations'])
+    value = int(request.args['value'])
+
+    item = get('payments/{0}?callback=bitcoin\
+&input_address={1}\
+&destination_address={2}\
+&transaction_hash={3}\
+&input_transaction_hash={4}\
+&confirmations={5}\
+&value={6}\
+&secret={7}'.format(payment_id, input_address, destination_address, transaction_hash, input_transaction_hash, confirmations, value, secret))
+
+    #print (item)
+    #print (item['_status'])
+    #print (r.status_code)
+    if '_status' in item and item['_status']=='ERR':
+        return '', 400
     else:
-        latitude = 0.0
-        longitude = 0.0
+        resp = make_response('*ok*', 200)
+        resp.mimetype = 'text/plain'
+        return resp
 
-    store['location'] = {"type":"Point","coordinates":[latitude, longitude]}
 
-    if 'exact_location' in request.form:
-        store['exact_location'] = True
+@app.route('/mercadopago_callback/<payment_id>/<secret>', methods=['POST'])
+def mercadopago_callback(payment_id, secret):
+    print (request.args)
+    topic = request.args['topic']
+    notification_id = request.args['id']
+    item = get('payments/{0}?callback=mercadopago&topic={1}&notification_id={2}'.format(payment_id, topic, notification_id))
+    #print (item)
+    if '_status' in item and item['_status']=='ERR':
+        return '', 400
+    else:
+        return '', 200
 
-    # Place
-    place_json = json.loads(request.form['place_json'])
-    if place_json:
-        latitude = float(place_json['latitude'])
-        longitude = float(place_json['longitude'])
-        place = {'place_id': place_json['place_id'],
-                 'osm_id': place_json['osm_id'],
-                 'full_name': place_json['full_name'],
-                 'location': {"type":"Point","coordinates":[latitude, longitude]}
-                 }
-        store['place'] = place
 
-    # Highlight
-    #if edit:
-    #    'highlight': False,
-
-    if not edit:
-        store['iid']=0
-        store['wid']=""
-
-    return store
-
+#BUILD QUERY
 @app.route('/build_query', methods=['POST'])
 def build_query():
+    items = get('activities?find_activities={0}'.format(request.form['q']))
+    activities_items = []
+    for item in items:
+        activities_items.append({'_id': item['_id'], 'name': item['name']})
+
     items = get('stores?find_stores={0}'.format(request.form['q']))
     stores_items = []
     for item in items:
@@ -385,303 +759,5 @@ def build_query():
                             'latitude': latitude,
                             'longitude': longitude})
 
-    r = {'products': products_items, 'places': place_items, 'stores': stores_items}
+    r = {'products': products_items, 'places': place_items, 'stores': stores_items, 'activities': activities_items}
     return jsonify(r)
-
-def check_human_data(check_id, option):
-    check = get('human_checks/{0}'.format(check_id))
-    print (check)
-    if check and check['right_option'] == option:
-        return True
-    else:
-        return False
-
-@app.route('/new_store', methods=['POST'])
-def new_store():
-    if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
-        return '', 403
-    store = get_form()
-    print (store['products'])
-    r = post('stores', store)
-    #print (r.text)
-    _id = r.json()['_id']
-    return redirect('/?store={0}'.format(_id))
-
-
-@app.route('/edit_store', methods=['POST'])
-def edit_store():
-    if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
-        return '', 403
-    store = get_form(edit=True)
-    _etag = request.form['_etag']
-    _id = request.form['_id']
-    print (store)
-    r = patch('stores/{0}'.format(_id), store, _etag)
-    #print (r.text)
-    return redirect('/?store={0}'.format(_id))
-
-
-@app.route('/payments')
-def payments():
-    items = get('payments')
-    stats = get('payment_stats')[0]
-    return render_template('payments.html', items=items, stats=stats)
-
-
-@app.route('/payment_add_edit')
-def payment_add_edit():
-    editing = False
-    edit_item = {}
-
-    if 'e' in request.args:
-        editing = True
-        edit_item = get('payments/{0}'.format(request.args['e']))
-        #print (edit_item)
-        #edit_item = edit_item[0]
-    return render_template('add_edit_payment.html',
-                            editing = editing,
-                            edit_item = edit_item)
-
-
-def get_payment_form():
-    payment = {
-        'payment_method': request.form['payment_method'],
-        'description': request.form['description'],
-        'email': request.form['email'],
-        'store_id': request.form['store_id'],
-        'currency': request.form['currency'],
-        'amount': float(request.form['amount']),
-        'day_cost': float(request.form['day_cost']),
-        'completed': False,
-        'refunded': False,
-        'refund_description': request.form['refund_description'],
-    }
-    if 'completed' in request.form:
-        payment['completed'] = True
-    if 'refunded' in request.form:
-        payment['refunded'] = True
-
-    return payment
-
-
-@app.route('/new_payment', methods=['POST'])
-def add_payment():
-    payment = get_payment_form()
-    r = post('payments', payment)
-    #print (r.text)
-    return redirect('/payments')
-
-
-@app.route('/edit_payment', methods=['POST'])
-def edit_payment():
-    payment = get_payment_form()
-    _etag = request.form['_etag']
-    _id = request.form['_id']
-    patch('payments/{0}'.format(_id), payment, _etag)
-    return redirect('/payments')
-
-
-# PRODUCTS
-@app.route('/products')
-def products():
-    items = get('products')
-    return render_template('products.html', items=items)
-
-
-@app.route('/product_add_edit')
-def product_add_edit():
-    editing = False
-    edit_item = {}
-
-    if 'e' in request.args:
-        editing = True
-        edit_item = get('products/{0}'.format(request.args['e']))
-    return render_template('add_edit_product.html',
-                            editing = editing,
-                            edit_item = edit_item)
-
-
-def get_product_form():
-    product = {
-        'name': request.form['name'],
-        #'description': request.form['description'],
-        #'wiktionary': request.form['wiktionary']
-    }
-
-    return product
-
-
-@app.route('/new_product', methods=['POST'])
-def add_product():
-    product = get_product_form()
-    r = post('products', product)
-    #print (r.text)
-    return redirect('/products')
-
-
-@app.route('/edit_product', methods=['POST'])
-def edit_product():
-    product = get_product_form()
-    _etag = request.form['_etag']
-    _id = request.form['_id']
-    r = patch('products/{0}'.format(_id), product, _etag)
-    #print (r.text)
-    return redirect('/products')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/send_payment_instructions')
-def send_payment_instructions():
-    email = request.args.get('email')
-    product = request.args.get('product')
-    country = request.args.get('country')
-    method = request.args.get('method')
-    name = request.args.get('name')
-    _id = request.args.get('id')
-    iid = request.args.get('iid')
-
-    #print( request.args )
-
-    if not email or email == '':
-        return '', 403
-    if method not in ['pagomiscuentas', 'mercadopago', 'local_bank', 'bitcoin']:
-        return '', 403
-    if not name:
-        return '', 403
-    if not _id:
-        return '', 403
-    if not iid:
-        return '', 403
-
-    if product not in ['highlight_one_year', 'highlight_one_month']:
-        return '', 403
-
-    payment = {
-        'payment_method': method,
-        'description': '',
-        'email': email,
-        'product': product,
-        'country': country,
-        'store_id': _id,
-        'completed': False,
-        'refunded': False,
-        'refund_description': '',
-    }
-
-    r = post('payments', payment)
-    print (r.text)
-
-    return ''
-
-# TIPS & TRICKS
-@app.route('/tipstricks')
-def tipstricks():
-    items = get('tipstricks')
-    print (items)
-    return render_template('tipstricks.html', items=items)
-
-def get_tiptrick_form():
-    tiptrick = {
-        'text': request.form['text'],
-        'image': request.form['image']
-    }
-    return tiptrick
-
-@app.route('/new_tiptrick', methods=['POST'])
-def add_tiptrick():
-    tiptrick = get_tiptrick_form()
-    r = post('tipstricks', tiptrick)
-    #print (r.text)
-    return redirect('/tipstricks')
-
-@app.route('/edit_tiptrick', methods=['POST'])
-def edit_tiptrick():
-    tiptrick = get_tiptrick_form()
-    _etag = request.form['_etag']
-    _id = request.form['_id']
-    r = patch('tipstricks/{0}'.format(_id), tiptrick, _etag)
-    #print (r.text)
-    return redirect('/tipstricks')
-
-@app.route('/tiptrick_add_edit')
-def tiptrick_add_edit():
-    editing = False
-    edit_item = {}
-
-    if 'e' in request.args:
-        editing = True
-        edit_item = get('tipstricks/{0}'.format(request.args['e']))
-    return render_template('add_edit_tipstricks.html',
-                            editing = editing,
-                            edit_item = edit_item)
-
-# HUMAN CHECK
-@app.route('/human_check_add')
-def human_check_add():
-    emoji = random.choice(wid_chars)
-    options = []
-    for ch in wid_chars:
-        options.append("{0:x}".format(ch))
-    human_check = {
-        'image': 'twemoji/36x36/{0:x}.png'.format(emoji),
-        'options': options,
-        'right_option': '{0:x}'.format(emoji),
-        'type': 'emoji'
-    }
-    r = post('human_checks', human_check)
-
-    return jsonify({'_id': r.json()['_id'],
-                    'options': human_check['options'],
-                    'type': 'emoji'})
-
-@app.route('/human_check_image/<check_id>')
-def human_check_image(check_id):
-    check = get('human_checks/{0}'.format(check_id))
-    return app.send_static_file(check['image'])
-
-# CALLBAKS
-from bson import ObjectId
-@app.route('/bitcoin_callback/<payment_id>/<secret>')
-def bitcoin_callback(payment_id, secret):
-    return_text = ""
-    if not ObjectId.is_valid(payment_id):
-        return 'Invalid ObjectID', 400
-    input_address = request.args['input_address']
-    destination_address = request.args['destination_address']
-    transaction_hash = request.args['transaction_hash']
-    input_transaction_hash = request.args['input_transaction_hash']
-    confirmations = int(request.args['confirmations'])
-    value = int(request.args['value'])
-
-    item = get('payments/{0}?callback=bitcoin\
-&input_address={1}\
-&destination_address={2}\
-&transaction_hash={3}\
-&input_transaction_hash={4}\
-&confirmations={5}\
-&value={6}\
-&secret={7}'.format(payment_id, input_address, destination_address, transaction_hash, input_transaction_hash, confirmations, value, secret))
-
-    #print (item)
-    #print (item['_status'])
-    #print (r.status_code)
-    if '_status' in item and item['_status']=='ERR':
-        return '', 400
-    else:
-        resp = make_response('*ok*', 200)
-        resp.mimetype = 'text/plain'
-        return resp
-
-@app.route('/mercadopago_callback/<payment_id>/<secret>', methods=['POST'])
-def mercadopago_callback(payment_id, secret):
-    print (request.args)
-    topic = request.args['topic']
-    notification_id = request.args['id']
-    item = get('payments/{0}?callback=mercadopago&topic={1}&notification_id={2}'.format(payment_id, topic, notification_id))
-    #print (item)
-    if '_status' in item and item['_status']=='ERR':
-        return '', 400
-    else:
-        return '', 200

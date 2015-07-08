@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="row">
+        {% if editing %}
+        <h1 style="text-align: center;">Editar Actividad</h1>
+        {% else %}
+        <h1 style="text-align: center;">Agregar Actividad</h1>
+        {% endif %}
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <a role="button" class="btn btn-primary btn-sm" href="/activities">
+          Cancelar
+        </a>
+    </div>
+    {% if editing %}
+    <form action="edit_activity" method="POST" class="form-horizontal">
+    {% else %}
+    <form action="new_activity" method="POST" class="form-horizontal">
+    {% endif %}
+        <!-- Name -->
+        <div class="form-group">
+            <label for="tiptrick_text" class="col-sm-2 control-label">Texto</label>
+            <div class="col-sm-10">
+                <input type="text" name="name" id="activity_name" class="form-control" placeholder="Andar en Bicicleta" value="{{ edit_item.name }}"></input>
+                <span id="tiptrick_text_help" class="help-block">Nombre de la actividad</span>
+            </div>
+        </div>
+        <!-- Products -->
+        <div class="form-group">
+            <label for="activity_product" class="col-sm-2 control-label">Productos</label>
+            <div class="col-sm-10">
+
+                <div class="col-sm-8">
+                    <input type="text" id="activity_product" class="form-control" placeholder="Bicicleta" value="" autocomplete="off"></input>
+                </div>
+                <div class="col-sm-2">
+                    <a class="btn btn-primary" href="#" role="button" onclick="return search_product();">Buscar Producto</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <input type="hidden" id="activity_products_json" name="products_json" value="{{ edit_item.products_json }}"></input>
+                        <div id="query_products"></div>
+                        <div id="products_list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if editing %}
+        <input type="hidden" name="_id" value="{{ edit_item._id }}">
+        <input type="hidden" name="_etag" value="{{ edit_item._etag }}">
+        {% endif %}
+        {% if editing %}
+        <button type="submit" class="btn btn-primary">Editar</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary">Agregar</button>
+        {% endif %}
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* PRODUCTS */
+if ($('#activity_products_json').val()=='') {
+    $('#activity_products_json').val('[]');
+}
+function print_products() {
+    var html = "";
+    for (var item in products) {
+      html = html + '<p><span class="label label-primary" id="zone_name_button">'+products[item]['name']+"</span> <a class='btn btn-default btn-xs' href='#' role='button' onclick='return remove_product(\""+products[item]['_id']+"\");'>Eliminar</a></p>";
+    }
+    $('#products_list').html(html);
+}
+var products = JSON.parse($('#activity_products_json').val());
+print_products();
+$("#activity_product").keyup(search_product);
+
+function search_product() {
+    if ($('#activity_product').val()=="") {
+        return false;
+    }
+    $.ajax({
+      method: "POST",
+      url: "/build_query",
+      type: "json",
+      data: { q: $('#activity_product').val() }
+    })
+        .done(function( msg ) {
+            var html = '<p style="line-height: 3em">';
+            var name = "";
+            var _id = "";
+            for (var index in msg['products']) {
+                _id = msg['products'][index]['_id'];
+                name = msg['products'][index]['name'];
+                html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+            }
+            html += "</p>";
+            $("#query_products").html(html);
+        });
+
+     return false;
+}
+
+function add_query_product(_id, name) {
+    for (var product in products) {
+        if (products[product]['_id'] == _id) {
+            return false;
+        }
+    }
+
+    var new_product = new Object();
+    new_product['_id'] = _id;
+    new_product['name'] = name;
+
+    products.push(new_product);
+    $('#activity_products_json').val(JSON.stringify(products))
+    print_products();
+    $('#activity_product').val('');
+    $("#query_products").html('');
+    return false;
+}
+
+function remove_product(_id) {
+    var new_products = new Array;
+    for (var product in products) {
+        if (products[product]['_id'] != _id) {
+            new_products.push(products[product]);
+        }
+    }
+    products = new_products;
+    $('#activity_products_json').val(JSON.stringify(products))
+    print_products();
+    return false;
+}
+</script>
+{% endblock %}

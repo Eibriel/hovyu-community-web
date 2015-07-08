@@ -20,9 +20,10 @@
                 <input type="hidden" name="latitude" id="q_latitude" value="{{latitude}}">
                 <input type="hidden" name="longitude" id="q_longitude" value="{{longitude}}">
                 <input type="hidden" name="product" id="q_product" value="{{product}}">
+                <input type="hidden" name="activity" id="q_activity" value="{{activity}}">
                 <input type="hidden" name="place_id" id="q_place_id" value="{{place_id}}">
                 <button type="submit" class="btn btn-default btn-lg" style="margin-bottom: 1em;">
-                    <div>Busco <span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
+                    <div>Busco <span class="label label-warning" id="query_activity">{{activity_name}}</span><span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
                 </button>
             </form>
             <div class="input-group">
@@ -49,7 +50,7 @@
         </div>
     </div><!-- /row -->
 
-    {% if items|length < 1 %}
+    {#
     <!--<div class="row">
         <div class="col-sm-offset-2 col-sm-8 text-center">
             <p>
@@ -89,7 +90,9 @@
             </p>
         </div>
     </div>-->
+    #}
 
+    {% if items|length < 1 %}
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
@@ -190,6 +193,7 @@ function build_query() {
             html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
         }
         html += '</p><p style="line-height: 3em">';
+        count = 0;
         for (var index in msg['places']) {
             name = msg['places'][index]['name'];
             full_name = msg['places'][index]['full_name'];
@@ -199,6 +203,10 @@ function build_query() {
                 first_place_full_name = full_name;
             }
             html += "<a class='btn btn-success btn-sm' role='button' href='#' onclick='return add_query_place(\""+_id+"\", \""+full_name+"\")'>"+full_name+"</a> ";
+            count ++;
+            if (count >= 6) {
+                break;
+            }
         }
         html += '</p><p style="line-height: 3em">';
         for (var index in msg['stores']) {
@@ -206,10 +214,22 @@ function build_query() {
             full_name = msg['stores'][index]['full_name'];
             html += "<a class='btn btn-default btn-sm' role='button' href='/?store="+_id+"'>"+full_name+"</a> ";
         }
+        html += '</p><p style="line-height: 3em">';
+        for (var index in msg['activities']) {
+            _id = msg['activities'][index]['_id'];
+            name = msg['activities'][index]['name'];
+            html += "<a class='btn btn-warning btn-sm' role='button' href='#' onclick='return add_query_activity(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+        }
         html += "</p>";
         $("#query_items").html(html);
         $("#common_query_items").css('display', 'none');
       });
+}
+
+function clean_product() {
+    $("#query_product").html('');
+    $('#q_product').val('');
+    $('#q_product_name').val('');
 }
 
 function add_query_product(_id, name) {
@@ -235,6 +255,19 @@ function add_query_place(_id, full_name) {
     this_place();
 
     $("#common_query_items").css('display', 'inline');
+    return false;
+}
+
+function add_query_activity(_id, name) {
+    $("#query_activity").html(name);
+    $('#q_activity').val(_id);
+    $('#q_activity_name').val(name);
+    $("#query_items").html("");
+    $('#q').val("");
+    clean_product();
+
+    $("#common_query_items").css('display', 'inline');
+    product_set = true;
     return false;
 }
 
@@ -303,12 +336,20 @@ function this_place() {
     return false;
 }
 
+function print_activity() {
+    $('#query_product').css('display', 'none');
+}
+
 {% if here %}
 print_here();
 {% elif place_id=="" %}
 any_place();
 {% else %}
 this_place();
+{% endif %}
+
+{% if activity!='' %}
+print_activity();
 {% endif %}
 
 function all_products() {
