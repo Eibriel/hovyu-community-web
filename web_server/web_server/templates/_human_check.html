@@ -1,0 +1,52 @@
+{% macro human_check() %}
+<!-- Human Check -->
+<!--<div class="form-group">
+    <label for="human_check_options" class="col-sm-2 control-label">¿Qué se ve en la imagen?</label>
+    <div class="col-sm-10">
+        <input type="hidden" name="human_check_id" id="human_check_id" value="">
+        <select class="form-control" name="human_check_options" id="human_check_options"></select>
+    </div>
+</div>-->
+<div class="col-sm-offset-2 col-sm-10">
+    <div class="panel panel-default">
+        <input type="hidden" name="human_check_id" id="human_check_id" value="">
+        <input type="hidden" name="human_check_selected" id="human_check_selected" value="">
+        <div class="panel-body"><span id="human_check_images"></span> = <span id="human_check_selected_image"></span></div>
+    </div>
+</div>
+<div class="col-sm-offset-2 col-sm-10">
+    <div class="panel panel-default">
+        <div class="panel-body" id="human_check_options"></div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro human_check_js() %}
+<script>
+$.ajax({
+  method: "GET",
+  url: "/human_check_add",
+  type: "json"
+})
+.done(function( msg ) {
+    console.log(msg);
+    id = msg['_id'];
+    var html = "<img src='human_check_image/"+id+"' />";
+    $("#human_check_images").html(html);
+    $("#human_check_id").val(id);
+
+    var html = '';
+    for (var index in msg['options']) {
+        option = msg['options'][index]
+        html += '<img width="32px" src="/static/twemoji/16x16/'+option+'.png" onclick="human_check_select_image(\''+option+'\')">&nbsp;';
+    }
+    $("#human_check_options").html(html);
+});
+
+function human_check_select_image(option) {
+    html = '<img src="/static/twemoji/36x36/'+option+'.png">';
+    $("#human_check_selected_image").html(html);
+    $("#human_check_selected").val(option);
+}
+</script>
+{% endmacro %}

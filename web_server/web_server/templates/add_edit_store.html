@@ -1,4 +1,6 @@
 {% extends "layout.html" %}
+{% from '_human_check.html' import human_check, human_check_js %}
+
 {% block body %}
     <div class="row">
         {% if editing %}
@@ -214,6 +216,9 @@
         {% else %}
         <input type="hidden" name="edit_reason" value="">
         {% endif %}
+
+        {{ human_check() }}
+
         {% if editing %}
         <button type="submit" class="btn btn-primary">Editar</button>
         {% else %}
@@ -510,4 +515,5 @@ function search_store() {
     return false;
 }
 </script>
+{{ human_check_js() }}
 {% endblock %}

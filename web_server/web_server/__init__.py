@@ -10,7 +10,6 @@ from flask import request
 from flask import redirect
 from flask import render_template
 from flask import make_response
-
 #from flask.ext.qrcode import QRcode
 
 from requests.exceptions import MissingSchema
@@ -389,8 +388,18 @@ def build_query():
     r = {'products': products_items, 'places': place_items, 'stores': stores_items}
     return jsonify(r)
 
+def check_human_data(check_id, option):
+    check = get('human_checks/{0}'.format(check_id))
+    print (check)
+    if check and check['right_option'] == option:
+        return True
+    else:
+        return False
+
 @app.route('/new_store', methods=['POST'])
 def new_store():
+    if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
+        return '', 403
     store = get_form()
     print (store['products'])
     r = post('stores', store)
@@ -401,6 +410,8 @@ def new_store():
 
 @app.route('/edit_store', methods=['POST'])
 def edit_store():
+    if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
+        return '', 403
     store = get_form(edit=True)
     _etag = request.form['_etag']
     _id = request.form['_id']
@@ -457,7 +468,7 @@ def get_payment_form():
 def add_payment():
     payment = get_payment_form()
     r = post('payments', payment)
-    print (r.text)
+    #print (r.text)
     return redirect('/payments')
 
 
@@ -605,6 +616,30 @@ def tiptrick_add_edit():
     return render_template('add_edit_tipstricks.html',
                             editing = editing,
                             edit_item = edit_item)
+
+# HUMAN CHECK
+@app.route('/human_check_add')
+def human_check_add():
+    emoji = random.choice(wid_chars)
+    options = []
+    for ch in wid_chars:
+        options.append("{0:x}".format(ch))
+    human_check = {
+        'image': 'twemoji/36x36/{0:x}.png'.format(emoji),
+        'options': options,
+        'right_option': '{0:x}'.format(emoji),
+        'type': 'emoji'
+    }
+    r = post('human_checks', human_check)
+
+    return jsonify({'_id': r.json()['_id'],
+                    'options': human_check['options'],
+                    'type': 'emoji'})
+
+@app.route('/human_check_image/<check_id>')
+def human_check_image(check_id):
+    check = get('human_checks/{0}'.format(check_id))
+    return app.send_static_file(check['image'])
 
 # CALLBAKS
 from bson import ObjectId
