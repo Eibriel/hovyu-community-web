@@ -162,7 +162,7 @@ def home():
     elif 'activity' in request.args and request.args['activity']!='':
         activity = request.args['activity']
         activity_db = get('activities/{0}'.format(activity))
-        print (activity_db)
+        #print (activity_db)
         if activity_db:
             activity_name = activity_db['name']
 
@@ -183,7 +183,7 @@ def home():
 
     if latitude!='' and longitude!='':
         here = True
-    if product!="" and activity!="":
+    if product!="" or activity!="":
         items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
     subtitle = " - {0}".format(product_name)
     if place_id != '':
