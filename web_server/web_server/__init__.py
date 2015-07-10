@@ -30,6 +30,11 @@ from web_server.modules.products import products
 from web_server.modules.products import add_product
 from web_server.modules.products import edit_product
 from web_server.modules.products import product_add_edit
+# PRODUCTS PROPERTIES
+from web_server.modules.products_properties import products_properties
+from web_server.modules.products_properties import add_product_property
+from web_server.modules.products_properties import edit_product_property
+from web_server.modules.products_properties import product_property_add_edit
 # TIPS & TRICKS
 from web_server.modules.tipstricks import tipstricks
 from web_server.modules.tipstricks import add_tiptrick
