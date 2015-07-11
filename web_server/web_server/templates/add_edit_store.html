@@ -145,7 +145,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <input type="hidden" id="new_store_place_json" name="place_json" value="{{ edit_item.place_json }}"></input>
-                    <div><span class="label label-primary" id="zone_name_button"></span></div>
+                    <div><span class="label label-success" id="zone_name_button"></span></div>
                     <div id="query_items"></div>
                 </div>
             </div>
@@ -178,7 +178,7 @@
             <div class="col-sm-10">
 
                 <div class="col-sm-8">
-                    <input type="text" id="new_store_product" class="form-control" placeholder="Milanesa" value="" autocomplete="off"></input>
+                    <input type="text" id="new_store_product" class="form-control" placeholder="Milanesa / de soja" value="" autocomplete="off"></input>
                 </div>
                 <div class="col-sm-2">
                     <a class="btn btn-primary" href="#" role="button" onclick="return search_product();">Buscar Producto</a>
@@ -190,8 +190,24 @@
             <div class="col-sm-10">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <input type="hidden" id="new_store_products_json" name="products_json" value="{{ edit_item.products_json }}"></input>
                         <div id="query_products"></div>
+                        <div>
+                            <p><span class="label label-primary" id="new_store_edit_product_name"></span></p>
+                            <div id="products_properties_list" ></div>
+                            <input type="text" id="new_product_brand" class="form-control" placeholder="Marca Acme / 100% natural" value="" /><br>
+                            <input type="text" id="new_product_price" class="form-control" placeholder="$5 el Kg" value="" /><br>
+                            <a class="btn btn-default" role="button" href="#" onclick="return add_product();">Agregar</a> <a class="btn btn-default btn-xs" role="button" href="#">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <input type="hidden" id="new_store_products_json" name="products_json" value="{{ edit_item.products_json }}"></input>
                         <div id="products_list"></div>
                     </div>
                 </div>
@@ -232,7 +248,7 @@ if ($('#new_store_websites_json').val()=='') {
 function print_websites() {
     var html = "";
     for (var item in websites) {
-      html = html + "<p><a href='"+websites[item]['url']+"' target='_blank'> "+websites[item]['text']+"</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return remove_website(\""+websites[item]['url']+"\");'>Eliminar</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return edit_website(\""+websites[item]['url']+"\");'>Editar</a></p>";
+      html = html + "<p><a href='"+websites[item]['url']+"' target='_blank'> "+websites[item]['text']+"</a> <a class='btn btn-default btn-xs' href='#' role='button' onclick='return remove_website(\""+websites[item]['url']+"\");'>Eliminar</a> <a class='btn btn-default btn-xs' href='#' role='button' onclick='return edit_website(\""+websites[item]['url']+"\");'>Editar</a></p>";
     }
     $('#websites_list').html(html);
 }
@@ -246,7 +262,7 @@ if ($('#new_store_tels_json').val()=='') {
 function print_tels() {
     var html = "";
     for (var item in tels) {
-      html = html + "<p><strong>Tipo:</strong> "+tels[item]['type']+" <strong>Número:</strong> "+tels[item]['number']+" <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return remove_tel(\""+tels[item]['number']+"\");'>Eliminar</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return edit_tel(\""+tels[item]['number']+"\");'>Editar</a></p>";
+      html = html + "<p><strong>Tipo:</strong> "+tels[item]['type']+" <strong>Número:</strong> "+tels[item]['number']+" <a class='btn btn-default btn-xs' href='#' role='button' onclick='return remove_tel(\""+tels[item]['number']+"\");'>Eliminar</a> <a class='btn btn-primary btn-xs' href='#' role='button' onclick='return edit_tel(\""+tels[item]['number']+"\");'>Editar</a></p>";
     }
     $('#tels_list').html(html);
 }
@@ -254,19 +270,164 @@ var tels = JSON.parse($('#new_store_tels_json').val());
 print_tels();
 
 /* PRODUCTS */
+$("#new_store_product").keyup(search_product);
+
+function search_product() {
+    if ($("#new_store_product").val()=="") {
+        $("#query_products").html("");
+        return false;
+    }
+    $.ajax({
+      method: "POST",
+      url: "/build_query",
+      type: "json",
+      data: { q: $('#new_store_product').val() }
+    })
+        .done(function( msg ) {
+            var html = '<p style="line-height: 3em">';
+            var name = "";
+            var _id = "";
+            for (var index in msg['products']) {
+                _id = msg['products'][index]['_id'];
+                name = msg['products'][index]['name'];
+                html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return edit_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+            }
+            html += "</p><p>";
+            for (var index in msg['products_properties']) {
+                _id = msg['products_properties'][index]['_id'];
+                name = msg['products_properties'][index]['name'];
+                html += "<a class='btn btn-warning btn-sm' role='button' href='#' onclick='return add_product_property(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+            }
+            html += "</p>";
+            $("#query_products").html(html);
+        });
+     return false;
+}
+
 if ($('#new_store_products_json').val()=='') {
     $('#new_store_products_json').val('[]');
 }
 function print_products() {
     var html = "";
     for (var item in products) {
-      html = html + '<p><span class="label label-primary" id="zone_name_button">'+products[item]['name']+"</span> <a class='btn btn-default btn-xs' href='#' role='button' onclick='return remove_product(\""+products[item]['_id']+"\");'>Eliminar</a></p>";
+        html = html + '<p>';
+        html = html + '<span class="label label-primary">'+products[item]['name']+'</span>';
+        for (var prop_item in products[item]['properties']) {
+            html = html + ' <span class="label label-warning">'+products[item]['properties'][prop_item]['name']+'</span>';
+        }
+        html = html + ' <span class="label label-info">'+products[item]['brand']+'</span>';
+        html = html + ' <span class="label label-info">'+products[item]['price']+'</span>';
+        html = html + ' <a class="btn btn-default btn-xs" href="#" role="button" onclick="return remove_product(\''+products[item]['tmp_id']+'\');">Eliminar</a>';
+        html = html + ' <a class="btn btn-default btn-xs" href="#" role="button" onclick="return edit_product(\''+products[item]['tmp_id']+'\');">Editar</a>';
+        html = html + '</p>';
     }
     $('#products_list').html(html);
 }
 var products = JSON.parse($('#new_store_products_json').val());
 print_products();
 
+function remove_product(tmp_id) {
+    var new_products = new Array;
+    for (var product in products) {
+        if (products[product]['tmp_id'] != tmp_id) {
+            new_products.push(products[product]);
+        }
+    }
+    products = new_products;
+    $('#new_store_products_json').val(JSON.stringify(products))
+    print_products();
+    return false;
+}
+
+// Returns a random integer between min (included) and max (excluded)
+// Using Math.round() will give you a non-uniform distribution!
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+edit_product_properties = new Array();
+function add_product() {
+    var new_product = new Object();
+    while (true) {
+        new_product['tmp_id'] = getRandomInt(0,99999);
+        repeated = false;
+        for (item in products) {
+            if (products[item]['tmp_id'] == new_product['tmp_id']){
+                repeated = true;
+            }
+        }
+        if (!repeated) {
+            break;
+        }
+    }
+    new_product['product'] = editing_product['_id'];
+    new_product['name'] = editing_product['name'];
+    new_product['properties'] = edit_product_properties;
+    new_product['brand'] = $('#new_product_brand').val();
+    new_product['price'] = $('#new_product_price').val();
+
+    products.push(new_product);
+    $('#new_store_products_json').val(JSON.stringify(products))
+    print_products();
+    $('#new_store_product').val('');
+    $("#query_products").html('');
+    $('#new_product_brand').val('');
+    $('#new_product_price').val('');
+    edit_product_properties = new Array();
+    print_products_properties();
+    return false;
+}
+
+editing_product = Object();
+function edit_product(_id, name) {
+    $('#new_store_edit_product_name').html(name);
+    $('#new_store_product').val('');
+    $("#query_products").html('');
+    editing_product['_id'] = _id;
+    editing_product['name'] = name;
+    return false;
+}
+
+function add_product_property(_id, name) {
+    //$('#new_store_edit_product_property').html(name);
+    $('#new_store_product').val('');
+    $("#query_products").html('');
+    for (item in edit_product_properties) {
+        if (edit_product_properties[item]['_id']==_id) {
+            return false;
+        }
+    }
+
+    prop = new Object();
+    prop['_id'] = _id;
+    prop['name'] = name;
+    edit_product_properties.push(prop);
+    print_products_properties();
+    return false;
+}
+
+function remove_product_property(_id) {
+    new_properites = new Array();
+    for (item in edit_product_properties) {
+        if (edit_product_properties[item]['_id']!=_id) {
+            new_properites.push(edit_product_properties[item]);
+        }
+    }
+    edit_product_properties = new_properites;
+    print_products_properties();
+    return false;
+}
+
+function print_products_properties() {
+    var html = "";
+    for (var item in edit_product_properties) {
+        html = html + '<p>';
+        html = html + '<span class="label label-warning">'+edit_product_properties[item]['name']+'</span>';
+        html = html + ' <a class="btn btn-default btn-xs" role="button" href="#" onclick="return remove_product_property(\''+edit_product_properties[item]['_id']+'\')">Eliminar</a>';
+        html = html + '</p>';
+    }
+    $('#products_properties_list').html(html);
+}
 
 /* ADD */
 function add_website() {
@@ -344,19 +505,6 @@ function remove_tel(number) {
     return false;
 }
 
-function remove_product(_id) {
-    var new_products = new Array;
-    for (var product in products) {
-        if (products[product]['_id'] != _id) {
-            new_products.push(products[product]);
-        }
-    }
-    products = new_products;
-    $('#new_store_products_json').val(JSON.stringify(products))
-    print_products();
-    return false;
-}
-
 /* EDIT */
 function edit_website(url) {
     for (var website in websites) {
@@ -431,54 +579,6 @@ if (place_json) {
     $("#zone_name_button").html(place_json.full_name);
 }
 
-</script>
-<script>
-$("#new_store_product").keyup(search_product);
-
-function search_product() {
-    if ($('#new_store_product').val()=="") {
-        return false;
-    }
-    $.ajax({
-      method: "POST",
-      url: "/build_query",
-      type: "json",
-      data: { q: $('#new_store_product').val() }
-    })
-        .done(function( msg ) {
-            var html = '<p style="line-height: 3em">';
-            var name = "";
-            var _id = "";
-            for (var index in msg['products']) {
-                _id = msg['products'][index]['_id'];
-                name = msg['products'][index]['name'];
-                html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
-            }
-            html += "</p>";
-            $("#query_products").html(html);
-        });
-
-     return false;
-}
-
-function add_query_product(_id, name) {
-    for (var product in products) {
-        if (products[product]['_id'] == _id) {
-            return false;
-        }
-    }
-
-    var new_product = new Object();
-    new_product['_id'] = _id;
-    new_product['name'] = name;
-
-    products.push(new_product);
-    $('#new_store_products_json').val(JSON.stringify(products))
-    print_products();
-    $('#new_store_product').val('');
-    $("#query_products").html('');
-    return false;
-}
 </script>
 <script>
 $("#new_store_name").keyup(search_store);

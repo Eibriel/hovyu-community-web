@@ -45,15 +45,12 @@ def get_form(edit = False):
     tels_json = json.loads(request.form['tels_json'])
     store['tel'] = tels_json
 
-    products_json = json.loads(request.form['products_json'])
-    products = []
-    #print (request.form['products_json'])
-    #print (products_json)
-    if products_json:
-        for product in products_json:
-            #print(ObjectId.is_valid(product['_id']))
-            products.append(product['_id'])
-    store['products'] = products
+    #products_json = json.loads(request.form['products_json'])
+    #products = []
+    #if products_json:
+    #    for product in products_json:
+    #        products.append(product['_id'])
+    #store['products'] = products
 
     if request.form['latitude'] != '' and request.form['longitude'] != '':
         latitude = float(request.form['latitude'])
@@ -93,7 +90,6 @@ def get_form(edit = False):
 def store_add():
     editing = False
     edit_item = {}
-
     products = get('products')
 
     if 'e' in request.args:
@@ -101,25 +97,54 @@ def store_add():
         edit_item = get('stores/{0}'.format(request.args['e']))
         edit_item = edit_item[0]
         websites = []
-        if type(edit_item['website']) == list:
-            for website in edit_item['website']:
-                websites.append(website)
-            edit_item['websites_json'] = json.dumps(websites)
-        else:
-            edit_item['websites_json'] = json.dumps([edit_item['website']])
-            edit_item['website'] = [edit_item['website']]
+        for website in edit_item['website']:
+            websites.append(website)
+        edit_item['websites_json'] = json.dumps(websites)
 
         edit_item['tels_json'] = json.dumps(edit_item['tel'])
-        if 'products' in edit_item:
-            products_json = []
-            #products = get('products')
-            for product in edit_item['products']:
-                product_ = get('products/{0}'.format(product))
-                products_json.append(product_)
-                #for product_ in products:
-                #    if product_['_id'] == product:
-                #        products_json.append(product_)
-            edit_item['products_json'] = json.dumps(products_json)
+        #if 'products' in edit_item:
+        #    products_json = []
+        #    for product in edit_item['products']:
+        #        product_ = get('products/{0}'.format(product))
+        #        products_json.append(product_)
+        #    edit_item['products_json'] = json.dumps(products_json)
+
+        products_store = get('products_stores?where=store=="{0}"'.format(request.args['e']))
+        #print (products_store)
+        products_json = []
+        for product in products_store:
+            product_json = {
+                'brand': product['brand'],
+                'price': product['price'],
+                '_id': product['_id'],
+                'product': product['product']
+            }
+
+            while True:
+                product_json['tmp_id'] = random.randint(1, 99999)
+                repeat = False
+                for product_2 in products_json:
+                    if product_2['tmp_id'] == product_json['tmp_id']:
+                        repeat = True
+                if not repeat:
+                    break
+
+            properties = []
+            for prod_prop in product['properties']:
+                prop = get('products_properties/{0}'.format(prod_prop))
+                property_ = {
+                    '_id': prod_prop,
+                    'name': prop['name']
+                }
+                properties.append(property_)
+            product_json['properties'] = properties
+            prod = get('products/{0}'.format(product['product']))
+            #print (prod)
+            product_json['name'] = prod['name']
+            products_json.append(product_json)
+        #print (product_json)
+        edit_item['products_json'] = json.dumps(products_json)
+
         place_json = None
         if edit_item.get('place'):
             place_json = {'place_id': edit_item['place']['place_id'],
@@ -149,9 +174,9 @@ def new_store():
     if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
         return '', 403
     store = get_form()
-    print (store['products'])
+    #print (store['products'])
     r = post('stores', store)
-    #print (r.text)
+
     _id = r.json()['_id']
     return redirect('/?store={0}'.format(_id))
 
@@ -163,7 +188,25 @@ def edit_store():
     store = get_form(edit=True)
     _etag = request.form['_etag']
     _id = request.form['_id']
-    print (store)
     r = patch('stores/{0}'.format(_id), store, _etag)
-    #print (r.text)
+
+    products_json = json.loads(request.form['products_json'])
+    for product in products_json:
+        product_store = {
+            'store': request.form['_id'],
+            'product': product['product'],
+            'properties': [],
+            'brand': product['brand'],
+            'price': product['price']
+        }
+        for prod_prop in product['properties']:
+            product_store['properties'].append(prod_prop['_id'])
+        if '_id' in product:
+            print ('PATCH')
+            r = get('products_stores/{0}'.format(product['_id']))
+            r = patch('products_stores/{0}'.format(r['_id']), product_store, r['_etag'])
+        else:
+            print ('POST')
+            r = post('products_stores', product_store)
+
     return redirect('/?store={0}'.format(_id))
