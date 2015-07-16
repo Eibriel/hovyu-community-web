@@ -18,6 +18,13 @@
                                 <span class="sr-only">Información:</span>
                                 {{ item.description|char2emoji|nl2br }}
                             </div>
+                            <div>
+                                <ul>
+                                    {% for product in item['products_documents'] %}
+                                    <li>{{product['full_name']}} {{product['brand']}} {{product['price']}}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             <address><small>
                                 <!--<strong>{{ item.name }}</strong><br>-->
                                 {% if item.address %}

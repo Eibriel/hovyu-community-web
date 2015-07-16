@@ -131,21 +131,12 @@ def store_add():
         edit_item['websites_json'] = json.dumps(websites)
 
         edit_item['tels_json'] = json.dumps(edit_item['tel'])
-        #if 'products' in edit_item:
-        #    products_json = []
-        #    for product in edit_item['products']:
-        #        product_ = get('products/{0}'.format(product))
-        #        products_json.append(product_)
-        #    edit_item['products_json'] = json.dumps(products_json)
 
-        #products_store = get('products_stores?where=store=="{0}"'.format(request.args['e']))
-        #print (products_store)
         products_json = []
         for product in edit_item['products_documents']:
             product_json = {
                 'brand': product['brand'],
                 'price': product['price'],
-                #'_id': product['_id'],
                 'product': product['product']
             }
 
@@ -168,10 +159,8 @@ def store_add():
                 properties.append(property_)
             product_json['properties'] = properties
             prod = get('products/{0}'.format(product['product']))
-            #print (prod)
             product_json['name'] = prod['name']
             products_json.append(product_json)
-        #print (product_json)
         edit_item['products_json'] = json.dumps(products_json)
 
         place_json = None
@@ -203,9 +192,7 @@ def new_store():
     if not check_human_data(request.form['human_check_id'], request.form['human_check_selected']):
         return '', 403
     store = get_form()
-    #print (store['products'])
     r = post('stores', store)
-    print (r.text)
     _id = r.json()['_id']
     return redirect('/?store={0}'.format(_id))
 
@@ -218,30 +205,5 @@ def edit_store():
     _etag = request.form['_etag']
     _id = request.form['_id']
     r = patch('stores/{0}'.format(_id), store, _etag)
-
-    #store_products = get('products_stores/?where=store=="{0}"'.format(_id))
-    #print (store_products)
-
-    #for store_product in store_products:
-    #    exists = False
-    #    for product in products_json:
-    #        if store_product['_id'] == product['_id']:
-    #            exists = True
-    #    if not exists:
-    #        r = delete('products_stores/{0}'.format(store_product['_id']), store_product['_etag'])
-    #        print (r.text)
-
-
-
-    #    for prod_prop in product['properties']:
-    #        product_store['properties'].append(prod_prop['_id'])
-    #    if '_id' in product:
-    #        print ('PATCH: {0}'.format(product['_id']))
-    #        r = get('products_stores/{0}'.format(product['_id']))
-    #        #print (r)
-    #        r = patch('products_stores/{0}'.format(r['_id']), product_store, r['_etag'])
-    #    else:
-    #        print ('POST')
-    #        r = post('products_stores', product_store)
-
+    print (r.text)
     return redirect('/?store={0}'.format(_id))
