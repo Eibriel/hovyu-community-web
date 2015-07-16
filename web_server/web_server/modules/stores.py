@@ -1,6 +1,8 @@
 import json
 import random
 
+from bson import ObjectId
+
 from web_server import app
 
 from flask import request
@@ -10,6 +12,7 @@ from flask import render_template
 from web_server.modules.server_requests import get
 from web_server.modules.server_requests import post
 from web_server.modules.server_requests import patch
+from web_server.modules.server_requests import delete
 
 
 def check_human_data(check_id, option):
@@ -80,9 +83,35 @@ def get_form(edit = False):
     #if edit:
     #    'highlight': False,
 
+    # Products
+    products_json = json.loads(request.form['products_json'])
+    products_documents = []
+    products = []
+    products_properties = []
+    for product in products_json:
+        product_store = {
+            'product': product['product'],
+            'properties': [],
+            'brand': product['brand'],
+            'price': product['price']
+        }
+        for product_property in product['properties']:
+            products_properties.append(product_property['_id'])
+            product_store['properties'].append(product_property['_id'])
+        #print (product['properties'])
+        products_documents.append(product_store)
+        products.append(product['product'])
+        #products_properties = products_properties + product['properties']
+
+    store['products_documents'] = products_documents
+    store['products'] = list(set(products))
+    store['products_properties'] = list(set(products_properties))
+
+    # IID WID
     if not edit:
         store['iid']=0
         store['wid']=""
+
     return store
 
 
@@ -109,14 +138,14 @@ def store_add():
         #        products_json.append(product_)
         #    edit_item['products_json'] = json.dumps(products_json)
 
-        products_store = get('products_stores?where=store=="{0}"'.format(request.args['e']))
+        #products_store = get('products_stores?where=store=="{0}"'.format(request.args['e']))
         #print (products_store)
         products_json = []
-        for product in products_store:
+        for product in edit_item['products_documents']:
             product_json = {
                 'brand': product['brand'],
                 'price': product['price'],
-                '_id': product['_id'],
+                #'_id': product['_id'],
                 'product': product['product']
             }
 
@@ -176,7 +205,7 @@ def new_store():
     store = get_form()
     #print (store['products'])
     r = post('stores', store)
-
+    print (r.text)
     _id = r.json()['_id']
     return redirect('/?store={0}'.format(_id))
 
@@ -190,23 +219,29 @@ def edit_store():
     _id = request.form['_id']
     r = patch('stores/{0}'.format(_id), store, _etag)
 
-    products_json = json.loads(request.form['products_json'])
-    for product in products_json:
-        product_store = {
-            'store': request.form['_id'],
-            'product': product['product'],
-            'properties': [],
-            'brand': product['brand'],
-            'price': product['price']
-        }
-        for prod_prop in product['properties']:
-            product_store['properties'].append(prod_prop['_id'])
-        if '_id' in product:
-            print ('PATCH')
-            r = get('products_stores/{0}'.format(product['_id']))
-            r = patch('products_stores/{0}'.format(r['_id']), product_store, r['_etag'])
-        else:
-            print ('POST')
-            r = post('products_stores', product_store)
+    #store_products = get('products_stores/?where=store=="{0}"'.format(_id))
+    #print (store_products)
+
+    #for store_product in store_products:
+    #    exists = False
+    #    for product in products_json:
+    #        if store_product['_id'] == product['_id']:
+    #            exists = True
+    #    if not exists:
+    #        r = delete('products_stores/{0}'.format(store_product['_id']), store_product['_etag'])
+    #        print (r.text)
+
+
+
+    #    for prod_prop in product['properties']:
+    #        product_store['properties'].append(prod_prop['_id'])
+    #    if '_id' in product:
+    #        print ('PATCH: {0}'.format(product['_id']))
+    #        r = get('products_stores/{0}'.format(product['_id']))
+    #        #print (r)
+    #        r = patch('products_stores/{0}'.format(r['_id']), product_store, r['_etag'])
+    #    else:
+    #        print ('POST')
+    #        r = post('products_stores', product_store)
 
     return redirect('/?store={0}'.format(_id))

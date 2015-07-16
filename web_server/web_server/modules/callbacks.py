@@ -1,7 +1,6 @@
-
+from bson import ObjectId
 
 # CALLBAKS
-from bson import ObjectId
 @app.route('/bitcoin_callback/<payment_id>/<secret>')
 def bitcoin_callback(payment_id, secret):
     return_text = ""

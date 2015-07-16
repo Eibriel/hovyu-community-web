@@ -196,7 +196,9 @@
                             <div id="products_properties_list" ></div>
                             <input type="text" id="new_product_brand" class="form-control" placeholder="Marca Acme / 100% natural" value="" /><br>
                             <input type="text" id="new_product_price" class="form-control" placeholder="$5 el Kg" value="" /><br>
-                            <a class="btn btn-default" role="button" href="#" onclick="return add_product();">Agregar</a> <a class="btn btn-default btn-xs" role="button" href="#">Cancelar</a>
+                            <span id="product_add_button"><a class="btn btn-default" role="button" href="#" onclick="return add_product();">Agregar</a>&nbsp;</span>
+                            <span id="product_save_edit_button" class="hide"><a class="btn btn-default" role="button" href="#" onclick="return save_edit_product();">Editar</a>&nbsp;</span>
+                            <a class="btn btn-default btn-xs" role="button" href="#" onclick="return cancel_add_edit_product();">Cancelar</a>
                         </div>
                     </div>
                 </div>
@@ -318,7 +320,7 @@ function print_products() {
         html = html + ' <span class="label label-info">'+products[item]['brand']+'</span>';
         html = html + ' <span class="label label-info">'+products[item]['price']+'</span>';
         html = html + ' <a class="btn btn-default btn-xs" href="#" role="button" onclick="return remove_product(\''+products[item]['tmp_id']+'\');">Eliminar</a>';
-        html = html + ' <a class="btn btn-default btn-xs" href="#" role="button" onclick="return edit_product(\''+products[item]['tmp_id']+'\');">Editar</a>';
+        html = html + ' <a class="btn btn-default btn-xs" href="#" role="button" onclick="return add_edit_product(\''+products[item]['tmp_id']+'\');">Editar</a>';
         html = html + '</p>';
     }
     $('#products_list').html(html);
@@ -339,6 +341,40 @@ function remove_product(tmp_id) {
     return false;
 }
 
+editing_product = Object();
+function edit_product(_id, name) {
+    $('#new_store_edit_product_name').html(name);
+    $('#new_store_product').val('');
+    $("#query_products").html('');
+    editing_product['_id'] = _id;
+    editing_product['name'] = name;
+    return false;
+}
+
+function add_edit_product(tmp_id) {
+    product = undefined;
+    for (item in products) {
+        if (products[item]['tmp_id'] == tmp_id) {
+            product = products[item];
+            break;
+        }
+    }
+    //console.log(product);
+    editing_product = product;
+    edit_product_properties = product['properties'];
+    print_products_properties();
+    $('#new_store_edit_product_name').html(product['name']);
+    $('#new_product_brand').val(product['brand']);
+    $('#new_product_price').val(product['price']);
+    $('#product_add_button').addClass('hide');
+    $('#product_save_edit_button').removeClass('hide');
+    return false;
+}
+
+function cancel_add_edit_product() {
+    reset_edit_product();
+    return false;
+}
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 function getRandomInt(min, max) {
@@ -369,23 +405,43 @@ function add_product() {
     products.push(new_product);
     $('#new_store_products_json').val(JSON.stringify(products))
     print_products();
+    reset_edit_product();
+    return false;
+}
+
+function save_edit_product() {
+    for (item in products) {
+        if (products[item]['tmp_id'] == editing_product['tmp_id']){
+            products[item]['product'] = editing_product['product'];
+            products[item]['name'] = editing_product['name'];
+            products[item]['properties'] = edit_product_properties;
+            products[item]['brand'] = $('#new_product_brand').val();
+            products[item]['price'] = $('#new_product_price').val();
+            break;
+        }
+    }
+    $('#new_store_products_json').val(JSON.stringify(products))
+    print_products();
+    reset_edit_product();
+    return false;
+}
+
+function reset_edit_product() {
+    editing_product = new Object();
+    edit_product_properties = new Array();
+    print_products_properties();
+    $('#new_store_edit_product_name').html('');
+    $('#new_product_brand').val('');
+    $('#new_product_price').val('');
+    $('#product_add_button').removeClass('hide');
+    $('#product_save_edit_button').addClass('hide');
+
     $('#new_store_product').val('');
     $("#query_products").html('');
     $('#new_product_brand').val('');
     $('#new_product_price').val('');
     edit_product_properties = new Array();
     print_products_properties();
-    return false;
-}
-
-editing_product = Object();
-function edit_product(_id, name) {
-    $('#new_store_edit_product_name').html(name);
-    $('#new_store_product').val('');
-    $("#query_products").html('');
-    editing_product['_id'] = _id;
-    editing_product['name'] = name;
-    return false;
 }
 
 function add_product_property(_id, name) {

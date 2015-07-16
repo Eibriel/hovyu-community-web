@@ -62,3 +62,17 @@ def patch(resource, data, eTag):
         msg = "ConnectionError"
 
     return r
+
+def delete(resource, eTag):
+    serverip = getserverip()
+    headers = {'Content-Type': 'application/json', 'If-Match': eTag}
+
+    try:
+        r = requests.delete('http://{0}/{1}'.format(serverip, resource),
+                          headers=headers)
+    except MissingSchema:
+        msg = "MissingSchema"
+    except ConnectionError:
+        msg = "ConnectionError"
+
+    return r
