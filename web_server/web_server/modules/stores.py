@@ -193,7 +193,11 @@ def new_store():
         return '', 403
     store = get_form()
     r = post('stores', store)
-    _id = r.json()['_id']
+    r_json = r.json()
+    if r_json['_status']=='ERR':
+        print (r)
+        return '', 403
+    _id = r_json['_id']
     return redirect('/?store={0}'.format(_id))
 
 
