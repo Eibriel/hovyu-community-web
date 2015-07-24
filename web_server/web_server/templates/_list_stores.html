@@ -44,7 +44,11 @@
                                 {% endfor %}
                                 {% endif %}
                                 {% if item.distance_klm %}
-                                {{ (180/item.distance_klm)|round|int }} min en bicicleta.<br>
+                                    {% if item.distance_klm < 1 %}
+                                        {{ (item.distance_klm * 9)|round|int }} minutos a pie<br>
+                                    {% else %}
+                                        {{ (180/item.distance_klm)|round|int }} mininutos en bicicleta<br>
+                                    {% endif %}
                                 {% endif %}
                             </small></address>
                             <a class="btn btn-default btn-xs" href="/store_add_edit?e={{ item._id }}" role="button">
