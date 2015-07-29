@@ -66,7 +66,7 @@ def home():
     if latitude!='' and longitude!='':
         here = True
     if 'product' in request.args or 'activity' in request.args:
-        items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
+        items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&place_id={4}&page={5}'.format(product, activity, latitude, longitude, place_id, page))
     subtitle = " - {0}".format(product_name)
     if place_id != '':
         subtitle = "{0} en {1}".format(subtitle, place_full_name)
