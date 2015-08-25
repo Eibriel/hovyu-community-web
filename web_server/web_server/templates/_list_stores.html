@@ -37,6 +37,9 @@
                                 {% for website in item.website %}
                                 <a href="{{ website.url }}">{{ website.text }}</a><br>
                                 {% endfor %}
+                                {% if item.email %}
+                                <strong>{{ item.email }}</strong><br>
+                                {% endif %}
 
                                 {% if item.tel %}
                                 {% for tel in item.tel %}
