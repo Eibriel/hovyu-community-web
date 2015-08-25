@@ -389,7 +389,7 @@ function getRandomInt(min, max) {
 
 edit_product_properties = new Array();
 function add_product() {
-    if (!editing_product) {
+    if (!editing_product['name']) {
         return false;
     }
     var new_product = new Object();
