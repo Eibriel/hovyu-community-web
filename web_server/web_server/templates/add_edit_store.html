@@ -389,6 +389,9 @@ function getRandomInt(min, max) {
 
 edit_product_properties = new Array();
 function add_product() {
+    if (!editing_product) {
+        return false;
+    }
     var new_product = new Object();
     while (true) {
         new_product['tmp_id'] = getRandomInt(0,99999);
