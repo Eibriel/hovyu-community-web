@@ -59,8 +59,8 @@ def build_query():
             full_name = "{0})".format(full_name)
 
         osm_id = item['osm_id']
-        latitude = item['location']['coordinates'][0]
-        longitude = item['location']['coordinates'][1]
+        longitude = item['location']['coordinates'][0]
+        latitude = item['location']['coordinates'][1]
 
         place_items.append({'_id': item['_id'],
                             'name': item['name'],

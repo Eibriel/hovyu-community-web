@@ -63,7 +63,7 @@ def get_form(edit = False):
         latitude = 0.0
         longitude = 0.0
 
-    store['location'] = {"type":"Point","coordinates":[latitude, longitude]}
+    store['location'] = {"type":"Point","coordinates":[longitude, latitude]}
 
     if 'exact_location' in request.form:
         store['exact_location'] = True
@@ -76,7 +76,7 @@ def get_form(edit = False):
         place = {'place_id': place_json['place_id'],
                  'osm_id': place_json['osm_id'],
                  'full_name': place_json['full_name'],
-                 'location': {"type":"Point","coordinates":[latitude, longitude]}
+                 'location': {"type":"Point","coordinates":[longitude, latitude]}
                  }
         store['place'] = place
 
@@ -169,8 +169,8 @@ def store_add():
             place_json = {'place_id': edit_item['place']['place_id'],
                           'osm_id': edit_item['place']['osm_id'],
                           'full_name': edit_item['place']['full_name'],
-                          'latitude': edit_item['place']['location']['coordinates'][0],
-                          'longitude': edit_item['place']['location']['coordinates'][1]
+                          'longitude': edit_item['place']['location']['coordinates'][0],
+                          'latitude': edit_item['place']['location']['coordinates'][1]
                          }
         edit_item['place_json'] = json.dumps(place_json)
 
