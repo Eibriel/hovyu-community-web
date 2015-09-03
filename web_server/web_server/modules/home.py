@@ -35,7 +35,7 @@ def home():
 
     if 'store' in request.args:
         items = get('stores/{0}'.format(request.args['store']))
-        product_name = items['name']
+        product_name = items[0]['name']
 
     elif 'product' in request.args and request.args['product']!='':
         product = request.args['product']
