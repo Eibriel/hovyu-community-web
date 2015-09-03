@@ -135,8 +135,13 @@
                 </div>
             </div>
         </div>
+        <!-- Advanced-->
+        <div class="col-sm-offset-2 col-sm-10">
+            <a class="btn btn-default" href="#" role="button" onclick="return toggle_advanced_form();">Opciones Avanzadas</a>
+        </div>
+
         <!-- Place -->
-        <div class="form-group hide">
+        <div class="form-group advanced_form hide">
             <label for="new_store_name" class="col-sm-2 control-label">Zona</label>
             <div class="col-sm-10">
                 <div class="col-sm-8">
@@ -147,7 +152,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-offset-2 col-sm-10 hide">
+        <div class="col-sm-offset-2 col-sm-10 advanced_form hide">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <input type="hidden" id="new_store_place_json" name="place_json" value="{{ edit_item.place_json }}"></input>
@@ -157,7 +162,7 @@
             </div>
         </div>
         <!-- Location -->
-        <div class="form-group hide">
+        <div class="form-group advanced_form hide">
             <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
                     <label>
@@ -166,20 +171,20 @@
                 </div>
             </div>
         </div>
-        <div class="form-group hide">
+        <div class="form-group advanced_form hide">
             <label for="new_store_name" class="col-sm-2 control-label">Latitud</label>
             <div class="col-sm-10">
                 <input type="text" name="latitude" id="new_store_latitude" class="form-control" placeholder="-0.00000" value="{% if edit_item.location %}{{edit_item.location.coordinates[1]}}{% endif %}"></input>
             </div>
         </div>
-        <div class="form-group hide">
+        <div class="form-group advanced_form hide">
             <label for="new_store_longitude" class="col-sm-2 control-label">Longitud</label>
             <div class="col-sm-10">
                 <input type="text" name="longitude" id="new_store_longitude" class="form-control" placeholder="0.00000" value="{% if edit_item.location %}{{edit_item.location.coordinates[0]}}{% endif %}"></input>
             </div>
         </div>
         <!-- Products -->
-        <div class="form-group hide">
+        <div class="form-group advanced_form hide">
             <label for="new_store_product" class="col-sm-2 control-label">Productos</label>
             <div class="col-sm-10">
 
@@ -191,7 +196,7 @@
                 </div>
             </div>
         </div>
-        <div class="row hide">
+        <div class="row advanced_form hide">
             <div class="col-sm-2"></div>
             <div class="col-sm-10">
                 <div class="panel panel-default">
@@ -210,7 +215,7 @@
                 </div>
             </div>
         </div>
-        <div class="row hide">
+        <div class="row advanced_form hide">
             <div class="col-sm-2"></div>
             <div class="col-sm-10">
                 <div class="panel panel-default">
@@ -249,6 +254,10 @@
 
 {% block scripts %}
 <script>
+/* ADVANCED */
+function toggle_advanced_form() {
+    $('.advanced_form').toggleClass('hide');
+}
 /* WEBSITES */
 if ($('#new_store_websites_json').val()=='') {
     $('#new_store_websites_json').val('[]');
