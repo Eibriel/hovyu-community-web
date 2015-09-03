@@ -20,7 +20,7 @@ def home():
     msg = ""
     query = ""
     product = ""
-    product_name = "todo"
+    product_name = ""
     activity = ""
     activity_name = ""
     latitude = ""
@@ -39,12 +39,15 @@ def home():
         product_name = items[0]['name']
         page_description = items[0]['description']
 
-    elif 'product' in request.args and request.args['product']!='':
-        product = request.args['product']
-        product_db = get('products/{0}'.format(product))
-        if product_db:
-            product_name = product_db['name']
-        query = request.args['product']
+    elif 'product' in request.args:
+        if request.args['product']!='':
+            product = request.args['product']
+            product_db = get('products/{0}'.format(product))
+            if product_db:
+                product_name = product_db['name']
+            query = request.args['product']
+        else:
+            product_name = "todo"
     elif 'activity' in request.args and request.args['activity']!='':
         activity = request.args['activity']
         activity_db = get('activities/{0}'.format(activity))
