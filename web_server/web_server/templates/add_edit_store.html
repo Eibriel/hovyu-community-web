@@ -136,7 +136,7 @@
             </div>
         </div>
         <!-- Advanced-->
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-sm-offset-2 col-sm-10" style="margin-bottom: 2em;">
             <a class="btn btn-default" href="#" role="button" onclick="return toggle_advanced_form();">Opciones Avanzadas</a>
         </div>
 
@@ -257,6 +257,7 @@
 /* ADVANCED */
 function toggle_advanced_form() {
     $('.advanced_form').toggleClass('hide');
+    return false;
 }
 /* WEBSITES */
 if ($('#new_store_websites_json').val()=='') {
