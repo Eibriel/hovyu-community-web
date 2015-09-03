@@ -31,11 +31,13 @@ def home():
     place_full_name = ""
     location_name = "cualquier lado"
     subtitle = ""
+    page_description = "Alimentación Consciente, Vida Sustentable y Comercio Justo"
     items = []
 
     if 'store' in request.args:
         items = get('stores/{0}'.format(request.args['store']))
         product_name = items[0]['name']
+        page_description = items[0]['description']
 
     elif 'product' in request.args and request.args['product']!='':
         product = request.args['product']
@@ -86,6 +88,7 @@ def home():
                            page = page,
                            here = here,
                            subtitle = subtitle,
+                           page_description = page_description,
                            location_name = location_name,
                            product = product,
                            product_name = product_name,
