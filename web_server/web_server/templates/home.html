@@ -184,7 +184,7 @@ function build_query() {
             }
             html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
         }
-        html += '</p><p style="line-height: 3em">';
+        /*html += '</p><p style="line-height: 3em">';
         count = 0;
         for (var index in msg['places']) {
             name = msg['places'][index]['name'];
@@ -199,7 +199,7 @@ function build_query() {
             if (count >= 6) {
                 break;
             }
-        }
+        }*/
         html += '</p><p style="line-height: 3em">';
         for (var index in msg['stores']) {
             _id = msg['stores'][index]['_id'];
