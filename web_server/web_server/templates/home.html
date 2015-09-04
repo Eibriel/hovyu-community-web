@@ -319,8 +319,10 @@ $('#world_map').click(function (e) {
         width = $('#world_map').width()
         height = $('#world_map').height()
 
-        var lat = (y/(height/180)-90)/-1;
-        var lng = x/(width/360)-180;
+        //var lat = (y/(height/180)-90)/-1;
+        //var lng = x/(width/360)-180;
+        var lat = ((height/180)*y)-90;
+        var lng = ((width/360)*x)-180;
 
         console.log(x + ' , ' + y + ', ' + lat + ', ' + lng);
         latitude = lat;
