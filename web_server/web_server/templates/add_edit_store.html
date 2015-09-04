@@ -713,7 +713,8 @@ $('#world_map').click(function (e) { //Relative ( to its parent) mouse position
         var lat = (y/(height/180)-90)/-1;
         var lng = x/(width/360)-180;
 
-        //alert(x + ' , ' + y + ', ' + lat + ', ' + lng);
+        console.log(x + ' , ' + y + ', ' + lat + ', ' + lng);
+
         $('#new_store_latitude').val(lat);
         $('#new_store_longitude').val(lng);
 
