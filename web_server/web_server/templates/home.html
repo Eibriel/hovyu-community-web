@@ -84,6 +84,26 @@
     </div>-->
     #}
 
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Haz click en la imagen para seleccionar la región de búsqueda
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <span class="thumbnail"><img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra"></span>
+                        <small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% if items|length < 1 %}
     <div class="row">
         <div class="col-sm-offset-2 col-sm-8">
@@ -287,6 +307,28 @@ function here() {
 
     return false;
 }
+
+/* COORDINATES */
+$('#world_map').click(function (e) {
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top;
+
+        var y = e.pageY - posY ;
+        var x = e.pageX - posX ;
+
+        width = $('#world_map').width()
+        height = $('#world_map').height()
+
+        var lat = (y/(height/180)-90)/-1;
+        var lng = x/(width/360)-180;
+
+        console.log(x + ' , ' + y + ', ' + lat + ', ' + lng);
+        latitude = lat;
+        longitude = lng;
+
+        print_here();
+
+    });
 
 function print_here() {
     $('#q_latitude').val(latitude);

@@ -167,7 +167,7 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <span class="thumbnail"><img id="world_map" src="/static/img/world.topo.200412.3x5400x2700.jpg" alt="Imágen satelital de la tierra"></span>
+                    <span class="thumbnail"><img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra"></span>
                     <small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
                 </div>
             </div>
@@ -703,7 +703,8 @@ function search_store() {
     return false;
 }
 
-$('#world_map').click(function (e) { //Relative ( to its parent) mouse position 
+/* COORDINATES */
+$('#world_map').click(function (e) {
         var posX = $(this).offset().left,
             posY = $(this).offset().top;
 
