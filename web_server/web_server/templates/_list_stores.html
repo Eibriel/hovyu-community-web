@@ -79,7 +79,7 @@
                                 <div class="col-lg-6">
                                     {% if item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
                                     <a class="thumbnail" href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">
-                                        <img src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{% if item.exact_location %}pin-l-shop+482({{ item.location.coordinates[0] }},{{ item.location.coordinates[1] }})/{% endif %}{{ item.location.coordinates[0] }},{{ item.location.coordinates[1] }},{% if item.exact_location %}15{% else %}8{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
+                                        <img src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{% if item.exact_location %}pin-l-shop+482({{ item.location.coordinates[0] }},{{ item.location.coordinates[1] }})/{% endif %}{{ item.location.coordinates[0] }},{{ item.location.coordinates[1] }},{% if item.exact_location %}15{% else %}5{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
                                     </a>
                                     {% elif item.place %}
                                     <a class="thumbnail" href="http://www.openstreetmap.org/#map=13/{{ item.place.location.coordinates[1] }}/{{ item.place.location.coordinates[0] }}" target="_blank">
