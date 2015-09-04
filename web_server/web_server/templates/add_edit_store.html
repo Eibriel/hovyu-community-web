@@ -701,8 +701,8 @@ function search_store() {
 }
 
 $('#world_map').click(function (e) { //Relative ( to its parent) mouse position 
-        var posX = $(this).position().left,
-            posY = $(this).position().top;
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top;
 
         var y = e.pageY - posY ;
         var x = e.pageX - posX ;
