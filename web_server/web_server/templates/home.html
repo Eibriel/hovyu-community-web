@@ -333,7 +333,7 @@ $('#world_map').click(function (e) {
 function print_here() {
     $('#q_latitude').val(latitude);
     $('#q_longitude').val(longitude);
-    $('#q_location_name').val('aquí');
+    $('#q_location_name').val(latitude + ', ' + longitude);
     $('#q_place_id').val("");
 
     $('#place_label').css('display', 'inline');
