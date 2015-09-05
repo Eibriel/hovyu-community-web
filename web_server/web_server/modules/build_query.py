@@ -30,7 +30,7 @@ def build_query():
     for item in items:
         products_properties_items.append({'_id': item['_id'], 'name': item['name']})
 
-    items = get('places?find_places={0}'.format(request.form['q']))
+    """items = get('places?find_places={0}'.format(request.form['q']))
     place_items = []
     for item in items:
         full_name = item['name']
@@ -67,11 +67,11 @@ def build_query():
                             'full_name': full_name,
                             'osm_id': osm_id,
                             'latitude': latitude,
-                            'longitude': longitude})
+                            'longitude': longitude})"""
 
     r = {'products': products_items,
         'products_properties': products_properties_items,
-        'places': place_items,
+        #'places': place_items,
         'stores': stores_items,
         'activities': activities_items}
     return jsonify(r)

@@ -10,12 +10,12 @@ from web_server.modules.server_requests import get
 # HOME
 @app.route("/")
 def home():
-    if 'interpolate_places' in request.args:
-        get('places?interpolate_places')
-        return ("Interpolation OK")
-    elif 'rebuild_places' in request.args:
-        get('places?rebuild_places')
-        return ("Rebuild OK")
+    #if 'interpolate_places' in request.args:
+    #    get('places?interpolate_places')
+    #    return ("Interpolation OK")
+    #elif 'rebuild_places' in request.args:
+    #    get('places?rebuild_places')
+    #    return ("Rebuild OK")
 
     msg = ""
     query = ""
@@ -27,8 +27,8 @@ def home():
     longitude = ""
     page = "1"
     here = False
-    place_id = ""
-    place_full_name = ""
+    #place_id = ""
+    #place_full_name = ""
     location_name = "cualquier lado"
     subtitle = ""
     page_description = "Alimentación Consciente, Vida Sustentable y Comercio Justo"
@@ -61,23 +61,23 @@ def home():
         latitude = request.args['latitude']
     if 'longitude' in request.args:
         longitude = request.args['longitude']
-    if 'place_id' in request.args:
-        place_id = request.args['place_id']
-        if place_id != '':
-            place = get('places/{0}'.format(place_id))
-            if place:
-                place_full_name = place['name']
+    #if 'place_id' in request.args:
+    #    place_id = request.args['place_id']
+    #    if place_id != '':
+    #        place = get('places/{0}'.format(place_id))
+    #        if place:
+    #            place_full_name = place['name']
     if 'page' in request.args:
         page = request.args['page']
 
     if latitude!='' and longitude!='':
         here = True
     if 'product' in request.args or 'activity' in request.args:
-        items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&place_id={4}&page={5}'.format(product, activity, latitude, longitude, place_id, page))
+        items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&page={5}'.format(product, activity, latitude, longitude, page))
     
     subtitle = " - {0}".format(product_name)
-    if place_id != '':
-        subtitle = "{0} en {1}".format(subtitle, place_full_name)
+    #if place_id != '':
+    #    subtitle = "{0} en {1}".format(subtitle, place_full_name)
 
     tiptrick = get('tipstricks')
     if len(tiptrick) > 0:
@@ -97,6 +97,6 @@ def home():
                            product_name = product_name,
                            activity = activity,
                            activity_name = activity_name,
-                           place_full_name = place_full_name,
-                           place_id = place_id,
+                           #place_full_name = place_full_name,
+                           #place_id = place_id,
                            tiptrick = tiptrick)

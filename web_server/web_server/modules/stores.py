@@ -30,7 +30,7 @@ def get_form(edit = False):
         'name': request.form['name'],
         'description': request.form['description'],
         'address': request.form['address'],
-        'place': None,
+        #'place': None,
         'score': {
             'count': 0,
             'sum': 0
@@ -69,7 +69,7 @@ def get_form(edit = False):
         store['exact_location'] = True
 
     # Place
-    place_json = json.loads(request.form['place_json'])
+    """place_json = json.loads(request.form['place_json'])
     if place_json:
         latitude = float(place_json['latitude'])
         longitude = float(place_json['longitude'])
@@ -78,7 +78,7 @@ def get_form(edit = False):
                  'full_name': place_json['full_name'],
                  'location': {"type":"Point","coordinates":[longitude, latitude]}
                  }
-        store['place'] = place
+        store['place'] = place"""
 
     # Highlight
     #if edit:
@@ -164,7 +164,7 @@ def store_add():
             products_json.append(product_json)
         edit_item['products_json'] = json.dumps(products_json)
 
-        place_json = None
+        """place_json = None
         if edit_item.get('place'):
             place_json = {'place_id': edit_item['place']['place_id'],
                           'osm_id': edit_item['place']['osm_id'],
@@ -172,13 +172,13 @@ def store_add():
                           'longitude': edit_item['place']['location']['coordinates'][0],
                           'latitude': edit_item['place']['location']['coordinates'][1]
                          }
-        edit_item['place_json'] = json.dumps(place_json)
+        edit_item['place_json'] = json.dumps(place_json)"""
 
     if 'location' not in edit_item:
         edit_item['location'] = None
 
-    if 'place_json' not in edit_item:
-        edit_item['place_json'] = json.dumps(None)
+    """if 'place_json' not in edit_item:
+        edit_item['place_json'] = json.dumps(None)"""
 
     if 'products_json' not in edit_item:
         edit_item['products_json'] = json.dumps([])
