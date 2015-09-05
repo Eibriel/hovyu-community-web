@@ -7,6 +7,11 @@
     <meta name="description" content="{{ page_description }}">
     <meta name="author" content="Eibriel">
     <link rel="icon" href="/static/favicon.png">
+    {% if items and items|length == 1 and items[0].location and items[0].location.coordinates[0]!=0 and items[0].location.coordinates[1]!=0 %}
+    <meta property="og:image" content="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{% if items[0].exact_location %}pin-l-shop+482({{ items[0].location.coordinates[0] }},{{ items[0].location.coordinates[1] }})/{% endif %}{{ items[0].location.coordinates[0] }},{{ items[0].location.coordinates[1] }},{% if items[0].exact_location %}15{% else %}5{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A"/>
+    {% else %}
+    <meta property="og:image" content="/static/favicon.png"/>
+    {% endif %}
 
     <title>Hovyũ{{ subtitle }}</title>
 
