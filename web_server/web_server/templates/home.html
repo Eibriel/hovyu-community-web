@@ -377,10 +377,9 @@ function print_activity() {
 
 {% if here %}
 print_here();
-{% elif place_id=="" %}
-any_place();
 {% else %}
-this_place();
+any_place();
+//this_place();
 {% endif %}
 
 {% if activity!='' %}
