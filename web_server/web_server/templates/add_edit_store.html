@@ -708,8 +708,8 @@ $('#world_map').click(function (e) {
         var posX = $(this).offset().left,
             posY = $(this).offset().top;
 
-        var y = e.pageY - posY ;
-        var x = e.pageX - posX ;
+        var y = e.pageY - posY - 1;
+        var x = e.pageX - posX - 1;
 
         width = $('#world_map').width()
         height = $('#world_map').height()
