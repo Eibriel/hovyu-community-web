@@ -52,7 +52,7 @@
                                     {% elif item.distance_klm < 30 %}
                                         {{ ((item.distance_klm / 18)*60)|round|int }} minutos en bicicleta<br>
                                     {% else %}
-                                        {{ ((item.distance_klm / 40)*60)|round|int }} minutos en colectivo<br>
+                                        {{ ((item.distance_klm / 40)*60)|round|int }} minutos en transporte público<br>
                                     {% endif %}
                                 {% endif %}
                             </small></address>
