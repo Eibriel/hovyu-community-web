@@ -49,7 +49,7 @@
                                 {% if item.distance_klm %}
                                     {% if item.distance_klm < 1 %}
                                         {{ (item.distance_klm * 9)|round|int }} minutos a pie<br>
-                                    {% elseif item.distance_klm < 30 %}
+                                    {% elif item.distance_klm < 30 %}
                                         {{ ((item.distance_klm / 18)*60)|round|int }} minutos en bicicleta<br>
                                     {% else %}
                                         {{ ((item.distance_klm / 40)*60)|round|int }} minutos en colectivo<br>
