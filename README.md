@@ -1,2 +1,2 @@
-# widu-community-web
-Web server for WIDÚ Community
+# hovyu-community-web
+Web server for HOVYU Community
