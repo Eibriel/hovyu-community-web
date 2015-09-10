@@ -186,6 +186,7 @@ def store_add():
 
     return render_template('add_edit_store.html',
                            #products = products,
+                           subtitle = "",
                            edit_item = edit_item,
                            editing = editing,
                            noindex = True)
