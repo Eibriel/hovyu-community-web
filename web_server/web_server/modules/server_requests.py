@@ -11,6 +11,10 @@ def getserverip():
     try:
         ip = os.environ['WIDU_MAIN_1_PORT_80_TCP_ADDR']
     except KeyError:
+        pass
+    try:
+        ip = os.environ['WIDUDEV_DEVMAIN_1_PORT_80_TCP_ADDR']
+    except KeyError:
         ip = '127.0.0.1:5000'
     #print ("IP: {0}".format(ip))
     return ip
@@ -41,7 +45,7 @@ def post(resource, data, password = None):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json'}
     if password != None:
-        auth = ('admin', password)
+        auth = ('a', password)
     else:
         auth = None
 
@@ -62,7 +66,7 @@ def patch(resource, data, eTag, password = None):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json', 'If-Match': eTag}
     if password != None:
-        auth = ('admin', password)
+        auth = ('a', password)
     else:
         auth = None
 

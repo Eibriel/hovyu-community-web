@@ -1,4 +1,5 @@
 import json
+import logging
 #import random
 
 from web_server import app
@@ -24,6 +25,7 @@ def get_product_form():
 @app.route('/products')
 def products():
     items = get('products')
+    #logging.error(items)
     return render_template('products.html', items=items, noindex = True)
 
 
@@ -43,7 +45,7 @@ def product_add_edit():
 @app.route('/new_product', methods=['POST'])
 def add_product():
     product = get_product_form()
-    passwoord = reques.form['adimin_password']
+    password = request.form['admin_password']
     r = post('products', product, password)
     #print (r.text)
     return redirect('/products')
@@ -52,7 +54,7 @@ def add_product():
 @app.route('/edit_product', methods=['POST'])
 def edit_product():
     product = get_product_form()
-    passwoord = reques.form['adimin_password']
+    password = request.form['admin_password']
     _etag = request.form['_etag']
     _id = request.form['_id']
     r = patch('products/{0}'.format(_id), product, _etag, password)
