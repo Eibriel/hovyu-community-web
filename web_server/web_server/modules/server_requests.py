@@ -4,6 +4,7 @@ import requests
 
 from requests.exceptions import MissingSchema
 from requests.exceptions import ConnectionError
+from requests.auth import HTTPBasicAuth
 
 def getserverip():
     ip = None
@@ -13,6 +14,10 @@ def getserverip():
         ip = '127.0.0.1:5000'
     #print ("IP: {0}".format(ip))
     return ip
+
+
+#def credentials(username, password):
+#   return b64encode(b"{0}:{1}".format(username, password)).decode("ascii")
 
 
 def get(resource):
@@ -32,14 +37,19 @@ def get(resource):
     return items
 
 
-def post(resource, data):
+def post(resource, data, password = None):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json'}
+    if password != None:
+        auth = ('admin', password)
+    else:
+        auth = None
 
     try:
         r = requests.post('http://{0}/{1}/'.format(serverip, resource),
                           data=json.dumps(data),
-                          headers=headers)
+                          headers=headers,
+                          auth = auth)
     except MissingSchema:
         msg = "MissingSchema"
     except ConnectionError:
@@ -48,14 +58,19 @@ def post(resource, data):
     return r
 
 
-def patch(resource, data, eTag):
+def patch(resource, data, eTag, password = None):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json', 'If-Match': eTag}
+    if password != None:
+        auth = ('admin', password)
+    else:
+        auth = None
 
     try:
         r = requests.patch('http://{0}/{1}'.format(serverip, resource),
                           data=json.dumps(data),
-                          headers=headers)
+                          headers=headers,
+                          auth = auth)
     except MissingSchema:
         msg = "MissingSchema"
     except ConnectionError:

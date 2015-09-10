@@ -35,7 +35,6 @@ def get_form(edit = False):
             'count': 0,
             'sum': 0
         },
-        'views': 0,
         'email': request.form['email'],
         'website': [],
         'tel': [],
@@ -108,10 +107,12 @@ def get_form(edit = False):
     store['products'] = list(set(products))
     store['products_properties'] = list(set(products_properties))
 
-    # IID WID
+    # IID WID, VIEWS
     if not edit:
         store['iid']=0
         store['wid']=""
+        store['views'] = 0
+
 
     return store
 
@@ -186,7 +187,8 @@ def store_add():
     return render_template('add_edit_store.html',
                            #products = products,
                            edit_item = edit_item,
-                           editing = editing)
+                           editing = editing,
+                           noindex = True)
 
 @app.route('/new_store', methods=['POST'])
 def new_store():

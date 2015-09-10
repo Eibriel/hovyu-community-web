@@ -23,7 +23,7 @@ def get_product_property_form():
 @app.route('/products_properties')
 def products_properties():
     items = get('products_properties')
-    return render_template('products_properties.html', items=items)
+    return render_template('products_properties.html', items=items, noindex = True)
 
 
 @app.route('/product_property_add_edit')

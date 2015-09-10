@@ -16,6 +16,7 @@ from web_server.modules.server_requests import patch
 def get_product_form():
     product = {
         'name': request.form['name'],
+#        'admin_password': request.form['admin_password']
     }
     return product
 
@@ -23,7 +24,7 @@ def get_product_form():
 @app.route('/products')
 def products():
     items = get('products')
-    return render_template('products.html', items=items)
+    return render_template('products.html', items=items, noindex = True)
 
 
 @app.route('/product_add_edit')
@@ -42,7 +43,8 @@ def product_add_edit():
 @app.route('/new_product', methods=['POST'])
 def add_product():
     product = get_product_form()
-    r = post('products', product)
+    passwoord = reques.form['adimin_password']
+    r = post('products', product, password)
     #print (r.text)
     return redirect('/products')
 
@@ -50,8 +52,9 @@ def add_product():
 @app.route('/edit_product', methods=['POST'])
 def edit_product():
     product = get_product_form()
+    passwoord = reques.form['adimin_password']
     _etag = request.form['_etag']
     _id = request.form['_id']
-    r = patch('products/{0}'.format(_id), product, _etag)
+    r = patch('products/{0}'.format(_id), product, _etag, password)
     #print (r.text)
     return redirect('/products')

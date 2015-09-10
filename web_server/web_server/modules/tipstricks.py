@@ -56,4 +56,5 @@ def tiptrick_add_edit():
         edit_item = get('tipstricks/{0}'.format(request.args['e']))
     return render_template('add_edit_tipstricks.html',
                             editing = editing,
-                            edit_item = edit_item)
+                            edit_item = edit_item,
+                            noindex = True)

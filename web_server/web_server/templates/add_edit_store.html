@@ -162,17 +162,19 @@
         <!-- Location -->
 
         <div class="col-sm-offset-2 col-sm-10">
-            <div class="panel panel-default">
+            <!--<div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         Haz click en la imagen para obtener las coordenadas
                     </h4>
                 </div>
-                <div class="panel-body">
-                    <span class="thumbnail"><img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra"></span>
-                    <small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
+                <div class="panel-body">-->
+                    <span class="thumbnail">
+                        <div id="location-point" style="position: absolute; top: 5px; left: 20px;  background-color: red; width: 4px; height: 4px; border-radius: 2px;"></div>
+<img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra"></span>
+                    <!--<small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div class="form-group ">
@@ -182,6 +184,7 @@
                         <input type="checkbox" name="exact_location" {% if edit_item.exact_location %}checked="checked"{% endif %}> Posición exacta
                     </label>
                 </div>
+                <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">Detectar Posición</a>
             </div>
         </div>
 
@@ -274,6 +277,74 @@
 
 {% block scripts %}
 <script>
+/* HERE */
+latitude = 0;
+longitude = 0;
+function here() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+
+          print_here();
+
+        }, function(err) {
+          //$('#query_place').html( $('#q_location_name').val() );
+        });
+    }
+
+    return false;
+}
+
+/* COORDINATES */
+$('#world_map').click(function (e) {
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top;
+
+        var y = e.pageY - posY - 1 ;
+        var x = e.pageX - posX - 1 ;
+
+        width = $('#world_map').width()
+        height = $('#world_map').height()
+
+        var lat = (y/(height/180)-90)/-1;
+        var lng = x/(width/360)-180;
+
+        //console.log(x + ' , ' + y + ', ' + lat + ', ' + lng);
+        //console.log(e);
+        console.log(e.offsetY + ' , ' + e.offsetX );
+        latitude = lat;
+        longitude = lng;
+
+        $('#location-point').css('top', (e.offsetY+5-1-2)+'px');
+        $('#location-point').css('left', (e.offsetX+20-1-2)+'px');
+
+        print_here();
+
+    });
+
+function print_here() {
+    $('#new_store_latitude').val(latitude);
+    $('#new_store_longitude').val(longitude);
+    //$('#q_location_name').val("aquí");
+    //$('#q_place_id').val("");
+
+    width = $('#world_map').width()
+    height = $('#world_map').height()
+    var y = Math.round(((-1 * latitude) + 90) * (height / 180));
+    var x = Math.round((longitude + 180) * (width / 360));
+
+    $('#location-point').css('top', (y+5-1-2)+'px');
+    $('#location-point').css('left', (x+20-1-2)+'px');
+
+    //$('#place_label').css('display', 'inline');
+    //$('#place_label_here').css('display', 'inline');
+    //$('#place_label_here').html(latitude + ', ' + longitude);
+    //$('#place_label_near_to').css('display', 'inline');
+    //$('#place_label_in').css('display', 'none');
+    //$('#query_place').css('display', 'none');
+}
+
 /* ADVANCED */
 function toggle_advanced_form() {
     $('.advanced_form').toggleClass('hide');

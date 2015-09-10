@@ -5,16 +5,35 @@
 {% block body %}
 
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-sm-offset-3 col-sm-6">
+            <!--<div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        Haz click en la imagen para seleccionar la región de búsqueda
+                    </h4>
+                </div>
+	        <div class="panel-body">-->
+                    <span class="thumbnail">
+                        <div id="location-point" style="position: absolute; top: 5px; left: 20px;  background-color: red; width: 4px; height: 4px; border-radius: 2px;"></div>
+                        <img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra">
+                   </span>
+		   <!-- <small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
+	        </div>
+            </div>-->
         </div>
-        <div class="col-lg-6">
+    </div>
+
+    <div class="row">
+        <!--<div class="col-lg-3">
+        </div>-->
+        <div class="col-lg-offset-1 col-lg-10">
             <form action="/" method="GET" id="query_form">
                 <input type="hidden" name="latitude" id="q_latitude" value="{{latitude}}">
                 <input type="hidden" name="longitude" id="q_longitude" value="{{longitude}}">
                 <input type="hidden" name="product" id="q_product" value="{{product}}">
                 <input type="hidden" name="activity" id="q_activity" value="{{activity}}">
-                <input type="hidden" name="place_id" id="q_place_id" value="{{place_id}}">
-                <button type="submit" class="btn btn-default btn-lg" style="margin-bottom: 1em;">
+                <!--<input type="hidden" name="place_id" id="q_place_id" value="{{place_id}}">-->
+                <button type="submit" class="btn btn-default btn-lg hide" style="margin-bottom: 1em;">
                     <div>Busco <span class="label label-warning" id="query_activity">{{activity_name}}</span><span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
                 </button>
             </form>
@@ -38,8 +57,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-        </div>
+        <!--<div class="col-lg-3">
+        </div>-->
     </div><!-- /row -->
 
     {#
@@ -84,25 +103,6 @@
     </div>-->
     #}
 
-    <div class="row">
-        <div class="col-sm-offset-1 col-sm-10">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        Haz click en la imagen para seleccionar la región de búsqueda
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
-                        <span class="thumbnail"><img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra"></span>
-                        <small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {% if items|length < 1 %}
     <div class="row">
@@ -124,7 +124,7 @@
         </div>
     </div>
 
-    <div class="row">
+    {#<div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -133,6 +133,7 @@
             </div>
         </div>
     </div>
+    #}
     {% else %}
 
     {{ list_stores(items) }}
@@ -159,8 +160,8 @@ $("#q").keyup(build_query);
 
 var first_product_id = null;
 var first_product_name = null;
-var first_place_id = null;
-var first_place_full_name = null;
+//var first_place_id = null;
+//var first_place_full_name = null;
 var product_set = false;
 
 function add_q() {
@@ -169,23 +170,30 @@ function add_q() {
     }
     if (first_product_id && first_product_name && !product_set) {
         add_query_product(first_product_id, first_product_name);
-    } else if (first_place_id && first_place_full_name && product_set) {
-        add_query_place(first_place_id, first_place_full_name);
     }
+    //} else if (first_place_id && first_place_full_name && product_set) {
+    //    add_query_place(first_place_id, first_place_full_name);
+    //}
     return false;
 }
 
-function build_query() {
-    if ($('#q').val()=="") {
-        $("#common_query_items").css('display', 'block');
-        $("#query_items").html('');
-        return;
+function build_query(all) {
+    if (all != true) {
+        all = false;
+    }
+    if (all) {
+        qstring = "";
+    } else {
+        qstring = $('#q').val();
+    }
+    if (qstring=="") {
+        all = true;
     }
     $.ajax({
       method: "POST",
       url: "/build_query",
       type: "json",
-      data: { q: $('#q').val() }
+      data: { q: qstring }
     })
       .done(function( msg ) {
         var html = '<p style="line-height: 3em">';
@@ -193,8 +201,8 @@ function build_query() {
         var _id = "";
         first_product_id = null;
         first_product_name = null;
-        first_place_id = null;
-        first_place_full_name = null;
+        //first_place_id = null;
+        //first_place_full_name = null;
         for (var index in msg['products']) {
             name = msg['products'][index]['name'];
             _id = msg['products'][index]['_id'];
@@ -221,22 +229,34 @@ function build_query() {
             }
         }*/
         html += '</p><p style="line-height: 3em">';
-        for (var index in msg['stores']) {
-            _id = msg['stores'][index]['_id'];
-            full_name = msg['stores'][index]['full_name'];
-            html += "<a class='btn btn-default btn-sm' role='button' href='/?store="+_id+"'>"+full_name+"</a> ";
-        }
-        html += '</p><p style="line-height: 3em">';
         for (var index in msg['activities']) {
             _id = msg['activities'][index]['_id'];
             name = msg['activities'][index]['name'];
             html += "<a class='btn btn-warning btn-sm' role='button' href='#' onclick='return add_query_activity(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
         }
+        if (!all) {
+            html += '</p><p style="line-height: 3em">';
+            for (var index in msg['stores']) {
+                _id = msg['stores'][index]['_id'];
+                full_name = msg['stores'][index]['full_name'];
+                html += "<a class='btn btn-default btn-sm' role='button' href='/?store="+_id+"'>"+full_name+"</a> ";
+            }
+        }
         html += "</p>";
         $("#query_items").html(html);
-        $("#common_query_items").css('display', 'none');
+        //$("#common_query_items").css('display', 'none');
       });
 }
+
+{% if activity_name != "" %}
+$('#q').val('{{ activity_name }}');
+build_query();
+{% elif product_name != "" %}
+$('#q').val('{{ product_name }}');
+build_query();
+{% else %}
+build_query(true);
+{% endif %}
 
 function clean_product() {
     $("#query_product").html('');
@@ -251,12 +271,13 @@ function add_query_product(_id, name) {
     $("#query_items").html("");
     $('#q').val("");
 
-    $("#common_query_items").css('display', 'inline');
+    //$("#common_query_items").css('display', 'inline');
     product_set = true;
+    $('#query_form').submit();
     return false;
 }
 
-function add_query_place(_id, full_name) {
+/*function add_query_place(_id, full_name) {
     $("#query_place").html(full_name);
     $('#q_place_id').val(_id);
     $('#q_place_full_name').val(full_name);
@@ -266,9 +287,9 @@ function add_query_place(_id, full_name) {
     $('#new_store_place').val("");
     this_place();
 
-    $("#common_query_items").css('display', 'inline');
+    //$("#common_query_items").css('display', 'inline');
     return false;
-}
+}*/
 
 function add_query_activity(_id, name) {
     $("#query_activity").html(name);
@@ -278,8 +299,9 @@ function add_query_activity(_id, name) {
     $('#q').val("");
     clean_product();
 
-    $("#common_query_items").css('display', 'inline');
+    //$("#common_query_items").css('display', 'inline');
     product_set = true;
+    $('#query_form').submit();
     return false;
 }
 
@@ -322,11 +344,17 @@ $('#world_map').click(function (e) {
         var lat = (y/(height/180)-90)/-1;
         var lng = x/(width/360)-180;
 
-        console.log(x + ' , ' + y + ', ' + lat + ', ' + lng);
+        //console.log(x + ' , ' + y + ', ' + lat + ', ' + lng);
+        console.log(e);
+        console.log(e.layerY + ' , ' + e.layerX );
         latitude = lat;
         longitude = lng;
 
+        $('#location-point').css('top', (e.offsetY+5-1-2)+'px');
+        $('#location-point').css('left', (e.offsetX+20-1-2)+'px');
+
         print_here();
+        window.scrollTo(0, 0);
 
     });
 
@@ -335,6 +363,14 @@ function print_here() {
     $('#q_longitude').val(longitude);
     $('#q_location_name').val("aquí");
     $('#q_place_id').val("");
+
+    width = $('#world_map').width()
+    height = $('#world_map').height()
+    var y = Math.round(((-1 * latitude) + 90) * (height / 180));
+    var x = Math.round((longitude + 180) * (width / 360));
+
+    $('#location-point').css('top', (y+5-1-2)+'px');
+    $('#location-point').css('left', (x+20-1-2)+'px');
 
     $('#place_label').css('display', 'inline');
     $('#place_label_here').css('display', 'inline');
@@ -390,8 +426,10 @@ function all_products() {
     $("#query_product").html("todo");
     $('#q_product').val("");
     $('#q_product_name').val("");
-    $("#query_items").html("");
+    //$("#query_items").html("");
     $('#q').val("");
+
+    $('#query_form').submit();
     return false;
 }
 </script>

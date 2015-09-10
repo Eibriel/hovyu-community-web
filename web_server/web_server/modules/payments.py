@@ -23,7 +23,7 @@ def get_payment_form():
 def payments():
     items = get('payments')
     stats = get('payment_stats')[0]
-    return render_template('payments.html', items=items, stats=stats)
+    return render_template('payments.html', items=items, stats=stats, noindex = True)
 
 
 @app.route('/payment_add_edit')

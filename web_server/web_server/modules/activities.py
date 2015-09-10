@@ -29,7 +29,7 @@ def get_activity_form():
 def activities():
     items = get('activities')
     #print (items)
-    return render_template('activities.html', items=items)
+    return render_template('activities.html', items=items, noindex = True)
 
 
 @app.route('/new_activity', methods=['POST'])

@@ -7,6 +7,21 @@ from flask import render_template
 
 from web_server.modules.server_requests import get
 
+# ROBOTS
+@app.route("/robots.txt")
+def robots():
+    robots_text = """
+User-agent: *
+Disallow: /store_add_edit
+Disallow: /products
+Disallow: /product_add_edit
+Disallow: /products_properties
+Disallow: /product_property_add_edit
+Disallow: /tipstricks
+Disallow: /tiptrick_add_edit
+"""
+    return robots_text
+
 # HOME
 @app.route("/")
 def home():
@@ -48,7 +63,7 @@ def home():
             query = request.args['product']
         else:
             product_name = "todo"
-    elif 'activity' in request.args and request.args['activity']!='':
+    if 'activity' in request.args and request.args['activity']!='':
         activity = request.args['activity']
         activity_db = get('activities/{0}'.format(activity))
         #print (activity_db)
@@ -73,9 +88,10 @@ def home():
     if latitude!='' and longitude!='':
         here = True
     if 'product' in request.args or 'activity' in request.args:
-        items = get('stores?product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
+        items = get('stores?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
     
-    subtitle = " - {0}".format(product_name)
+    if product_name != "":
+        subtitle = " - {0}".format(product_name)
     #if place_id != '':
     #    subtitle = "{0} en {1}".format(subtitle, place_full_name)
 
