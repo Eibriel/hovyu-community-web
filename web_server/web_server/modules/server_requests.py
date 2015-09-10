@@ -15,6 +15,8 @@ def getserverip():
     try:
         ip = os.environ['WIDUDEV_DEVMAIN_1_PORT_80_TCP_ADDR']
     except KeyError:
+        pass
+    if ip == None:
         ip = '127.0.0.1:5000'
     #print ("IP: {0}".format(ip))
     return ip
