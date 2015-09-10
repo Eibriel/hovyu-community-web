@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+  <url>
+  {% for store in stores %}
+    <loc>{{ canonical_domain}}/?store={{ store['_id'] }}</loc> 
+  {% endfor %}
+
+  {% for product in products %}
+    <loc>{{ canonical_domain}}/?latitude=&amp;longitude=&amp;product={{ product['_id'] }}&amp;activity=</loc> 
+  {% endfor %}
+
+  {% for activity in activities %}
+    <loc>{{ canonical_domain}}/?latitude=&amp;longitude=&amp;product=&amp;activity={{ activity['_id'] }}</loc> 
+  {% endfor %}
+  </url>
+</urlset>

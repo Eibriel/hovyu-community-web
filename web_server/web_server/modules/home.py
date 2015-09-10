@@ -4,23 +4,32 @@ from web_server import app
 
 from flask import request
 from flask import render_template
+from flask import make_response
 
 from web_server.modules.server_requests import get
 
 # ROBOTS
 @app.route("/robots.txt")
 def robots():
-    robots_text = """
-User-agent: *
-Disallow: /store_add_edit
-Disallow: /products
-Disallow: /product_add_edit
-Disallow: /products_properties
-Disallow: /product_property_add_edit
-Disallow: /tipstricks
-Disallow: /tiptrick_add_edit
-"""
-    return robots_text
+    response = make_response(render_template('robots.txt'))
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return response
+
+# SITEMAP
+@app.route("/sitemap.xml")
+def sitemap():
+    canonical_domain = app.config['CANONICAL_DOMAIN']
+    stores = get('stores')
+    products = get('products')
+    activities = get('activities')
+
+    response = make_response(render_template('sitemap.xml',
+                             stores = stores,
+                             products = products,
+                             activities = activities,
+                             canonical_domain = canonical_domain))
+    response.headers['Content-Type'] = 'text/xml; charset=utf-8'
+    return response
 
 # HOME
 @app.route("/")
@@ -91,7 +100,11 @@ def home():
         items = get('stores?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
     
     if product_name != "":
-        subtitle = " - {0}".format(product_name)
+        #subtitle = " - {0}".format(product_name)
+        subtitle = product_name
+    if activity_name != "":
+        subtitle = activity_name
+
     #if place_id != '':
     #    subtitle = "{0} en {1}".format(subtitle, place_full_name)
 

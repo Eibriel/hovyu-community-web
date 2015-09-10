@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /store_add_edit
+Disallow: /products
+Disallow: /product_add_edit
+Disallow: /products_properties
+Disallow: /product_property_add_edit
+Disallow: /tipstricks
+Disallow: /tiptrick_add_edit
