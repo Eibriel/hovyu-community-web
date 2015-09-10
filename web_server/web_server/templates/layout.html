@@ -19,7 +19,7 @@
     <meta property="og:image" content="/static/favicon.png"/>
     {% endif %}
 
-    <title>{% if subtitle == "" %}Hovyũ{% else %}{{ subtitle|title }}, con estilo sustentable y consciente{% endif %}</title>
+    <title>{% if subtitle != "" %}{{ subtitle|title }} - {% endif %}Hovyũ, la guía de lo sustentable</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap-3.3.4-dist/css/flatly.bootstrap.min.css" rel="stylesheet">
