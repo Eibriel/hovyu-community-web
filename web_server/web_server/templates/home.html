@@ -136,13 +136,18 @@
     #}
     {% else %}
 
+    {% if subtitle != "" %}
+    <div class="page-header">
+        <h1>{{ subtitle|title }}</h1>
+    </div>
+    {% endif %}
+
     {{ list_stores(items) }}
-    <div class="row">
+    {#<div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div style="text-align: center; margin-top: 2em;">Página {{ page }}</div>
         </div>
-    </div>
-
+    </div>#}
     {% endif %}
 <!--</div>-->
 

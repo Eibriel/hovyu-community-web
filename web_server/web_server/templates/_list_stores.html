@@ -21,7 +21,7 @@
                             <div>
                                 <ul>
                                     {% for product in item['products_documents'] %}
-                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name">{{product['full_name']}} {{product['brand']}}</span> <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
+                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name">{{product['full_name']|title}} {{product['brand']}}</span> <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
                                     {% endfor %}
                                 </ul>
                             </div>
