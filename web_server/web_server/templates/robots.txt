@@ -6,3 +6,5 @@ Disallow: /products_properties
 Disallow: /product_property_add_edit
 Disallow: /tipstricks
 Disallow: /tiptrick_add_edit
+Disallow: /send_payment_instructions
+Disallow: /build_query
