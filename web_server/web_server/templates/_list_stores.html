@@ -1,13 +1,13 @@
 {% macro list_stores(items) %}
 {% for item in items %}
-    <div class="row">
+    <div class="row" itemscope itemtype="http://schema.org/LocalBusiness">
         <div class="col-lg-12">
             {% if item.highlight %}
             <div class="panel panel-primary" id="panel_store_{{ item._id }}">
             {% else %}
             <div class="panel panel-default" id="panel_store_{{ item._id }}">
             {% endif %}
-                <div class="panel-heading"><strong><a href="/?store={{item._id}}">{{ item.name }}</a></strong>{% if item.wid and False %} - {{ item.wid|char2emoji('16') }}{% endif %}</div>
+                <div class="panel-heading"><strong><a href="/?store={{item._id}}"><span itemprop="name">{{ item.name }}</span></a></strong>{% if item.wid and False %} - {{ item.wid|char2emoji('16') }}{% endif %}</div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
@@ -16,34 +16,34 @@
                             <div>
                                 <!--<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
                                 <span class="sr-only">Información:</span>
-                                {{ item.description|char2emoji|nl2br }}
+                                <span itemprop="description">{{ item.description|char2emoji|nl2br }}</span>
                             </div>
                             <div>
                                 <ul>
                                     {% for product in item['products_documents'] %}
-                                    <li>{{product['full_name']}} {{product['brand']}} {{product['price']}}</li>
+                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name">{{product['full_name']}} {{product['brand']}}</span> <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
                                     {% endfor %}
                                 </ul>
                             </div>
                             <address><small>
                                 <!--<strong>{{ item.name }}</strong><br>-->
                                 {% if item.address %}
-                                {{ item.address }}<br>
+                                <span itemprop="address">{{ item.address }}</span><br>
                                 {% endif %}
                                 {% if item.place %}
                                 <!--{{ item.place.full_name }}<br>-->
                                 {% endif %}
 
                                 {% for website in item.website %}
-                                <a href="{{ website.url }}">{{ website.text }}</a><br>
+                                <a href="{{ website.url }}" itemprop="sameAs">{{ website.text }}</a><br>
                                 {% endfor %}
                                 {% if item.email %}
-                                <strong>{{ item.email }}</strong><br>
+                                <strong><span itemprop="email">{{ item.email }}</span></strong><br>
                                 {% endif %}
 
                                 {% if item.tel %}
                                 {% for tel in item.tel %}
-                                {{ tel.number }} <a class="btn btn-default btn-xs" role="button" href="tel:{{ tel.number }}"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> Llamar</a><br>
+                                <span itemprop="telephone">{{ tel.number }}</span> <a class="btn btn-default btn-xs" role="button" href="tel:{{ tel.number }}"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> Llamar</a><br>
                                 {% endfor %}
                                 {% endif %}
                                 {% if item.distance_klm %}
@@ -80,6 +80,12 @@
                                         <p><small>Ediciones: {{ item._version - 1 }}</small></p>
                                     </div>
                                 </div>
+                                {% if item.exact_location %}
+                                <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                                    <meta itemprop="latitude" content="{{item.location.coordinates[1]}}" />
+                                    <meta itemprop="longitude" content="{{item.location.coordinates[0]}}" />
+                                </span>
+                                {% endif %}
                                 <div class="col-lg-6">
                                     {% if item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
                                     <a class="thumbnail" href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">
