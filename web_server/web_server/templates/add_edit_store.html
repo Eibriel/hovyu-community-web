@@ -19,12 +19,12 @@
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p class="text-center">¿Conocés un negocio que se basa en el <strong>Diseño Sustentable</strong>, el <strong>Comercio Justo</strong> y la <strong>Alimentación Consciente</strong>?</p>
-                    <p class="text-center lead">¡Sumalo ahora!</p>
+                    <p class="text-center">Suma un comercio o institución relacionado con lo <strong>Sustentable</strong></p>
+                    <!--<p class="text-center lead">¡Sumalo ahora!</p>-->
                     <p class="text-center">
                         <small>
-                            Si necesitás ayuda consultanos al correo eibriel@eibriel.com o
-                            el <a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank">chat de Telegram</a>.
+                            Si necesitas ayuda consultanos al correo <strong>eibriel@eibriel.com</strong> o
+                            al <a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank">chat de Telegram</a>.
                         </small>
                     </p>
                 </div>
@@ -41,15 +41,15 @@
         <div class="form-group">
             <label for="new_store_name" class="col-sm-2 control-label">Nombre</label>
             <div class="col-sm-10">
-                <input type="text" name="name" id="new_store_name" class="form-control" placeholder="Comercio Sustentable" value="{{ edit_item.name }}" autocomplete="off"></input>
-                <span id="new_store_name_help" class="help-block">Nombre del comercio que quiere sumar</span>
+                <input type="text" name="name" id="new_store_name" class="form-control" placeholder="Entidad Sustentable" value="{{ edit_item.name }}" autocomplete="off"></input>
+                <span id="new_store_name_help" class="help-block">Nombre de la entidad que quieres sumar</span>
             </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div id="similar_stores"></div>
-                    <span id="similar_stores_help" class="help-block">Verifique que el comercio ya no esté en Hovyũ</span>
+                    <span id="similar_stores_help" class="help-block">Verifica que el comercio no aparezca en esta lista</span>
                 </div>
             </div>
         </div>
@@ -58,22 +58,22 @@
             <label for="new_store_description" class="col-sm-2 control-label">Descripción</label>
             <div class="col-sm-10">
                 <textarea name="description" id="new_store_description" class="form-control" rows="3" >{{ edit_item.description }}</textarea>
-                <span id="new_store_name_help" class="help-block">¿A qué se dedica el comercio? ¿Por qué es especial?</span>
+                <span id="new_store_name_help" class="help-block">¿A qué se dedica la entidad? ¿Por qué es especial?</span>
             </div>
         </div>
         <!-- Address -->
         <div class="form-group">
-            <label for="new_store_email" class="col-sm-2 control-label">Dirección</label>
+            <label for="new_store_email" class="col-sm-2 control-label">Domicilio</label>
             <div class="col-sm-10">
-                <input type="text" name="address" id="new_store_address" class="form-control" placeholder="Calle 1234" value="{{ edit_item.address }}"></input>
-                <span id="new_store_address_help" class="help-block">Dirección del comercio</span>
+                <input type="text" name="address" id="new_store_address" class="form-control" placeholder="Calle 1234, Ciudad, País" value="{{ edit_item.address }}"></input>
+                <span id="new_store_address_help" class="help-block">Domicilio de la entidad</span>
             </div>
         </div>
         <!-- EMail -->
         <div class="form-group">
             <label for="new_store_email" class="col-sm-2 control-label">Correo electrónico</label>
             <div class="col-sm-10">
-                <input type="email" name="email" id="new_store_email" class="form-control" placeholder="info@comercio.com" value="{{ edit_item.email }}"></input>
+                <input type="email" name="email" id="new_store_email" class="form-control" placeholder="info@entidadsustentable.com" value="{{ edit_item.email }}"></input>
                 <span id="new_store_name_help" class="help-block">Correo electrónico de contacto</span>
             </div>
         </div>
@@ -83,14 +83,17 @@
             <div class="col-sm-10">
 
                 <div class="col-sm-4">
-                    <input type="text" name="website" id="new_store_website" class="form-control" placeholder="http://comercio.com" value=""></input>
+                    <input type="text" name="website" id="new_store_website" class="form-control" placeholder="http://entidadsustentable.com" value=""></input>
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" name="website_title" id="new_store_website_title" class="form-control" placeholder="Sitio Web Oficial" value=""></input>
+                    <input type="text" name="website_title" id="new_store_website_title" class="form-control" placeholder="EntidadSustentable.com" value=""></input>
                 </div>
                 <div class="col-sm-2">
                     <a class="btn btn-primary" href="#" role="button" onclick="return add_website();">Agregar Sitio Web</a>
                 </div>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10">
+                <span id="new_store_website_help" class="help-block">Ingresar URL (debe comenzar con "http://" o "https://"), ingresar Nombre y luego hacer click en Agregar Sitio Web</span>
             </div>
         </div>
         <div class="row">
@@ -122,6 +125,9 @@
                 <div class="col-sm-2">
                     <a class="btn btn-primary" href="#" role="button" onclick="return add_tel();">Agregar Teléfono</a>
                 </div>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10">
+                <span id="new_store_website_help" class="help-block">Seleccionar tipo de teléfono, ingresar número y hacer click en Agregar Teléfono</span>
             </div>
         </div>
         <div class="row">
