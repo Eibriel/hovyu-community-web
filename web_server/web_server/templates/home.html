@@ -37,13 +37,13 @@
                     <div>Busco <span class="label label-warning" id="query_activity">{{activity_name}}</span><span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
                 </button>
             </form>
-            <div class="input-group">
+            <div class="form-group">
                 <form id="q_form" onsubmit="return add_q();">
                     <input type="text" class="form-control" placeholder="¿Qué busco?" name="q" id="q" autocomplete="off">
                 </form>
-              <span class="input-group-btn">
+              <!--<span class="input-group-btn">
                 <button class="btn btn-success" type="button" onclick="build_query()">Ver items</button>
-              </span>
+              </span>-->
             </div><!-- /input-group -->
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -175,7 +175,7 @@
 {% endif %}
 {{ upgrade_modal_js() }}
 <script>
-$("#q").keyup(build_query);
+//$("#q").keyup(build_query);
 
 var first_product_id = null;
 var first_product_name = null;
@@ -272,6 +272,17 @@ function build_query(all) {
         //$("#common_query_items").css('display', 'none');
       });
 }
+
+old_q_value = "";
+function interval_build_query() {
+    new_q_value = $('#q').val();
+    if (old_q_value != new_q_value){
+        build_query();
+    }
+    old_q_value = new_q_value;
+}
+
+setInterval(interval_build_query, 100);
 
 {% if activity_name != "" %}
 $('#q').val('{{ activity_name }}');

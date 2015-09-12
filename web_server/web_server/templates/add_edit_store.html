@@ -217,12 +217,12 @@
             <label for="new_store_product" class="col-sm-2 control-label">Productos</label>
             <div class="col-sm-10">
 
-                <div class="col-sm-8">
+                <!--<div class="col-sm-8">-->
                     <input type="text" id="new_store_product" class="form-control" placeholder="Milanesa / de soja" value="" autocomplete="off"></input>
-                </div>
-                <div class="col-sm-2">
+                <!--</div>-->
+                <!--<div class="col-sm-2">
                     <a class="btn btn-primary" href="#" role="button" onclick="return search_product();">Buscar Producto</a>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="row advanced_form hide">
@@ -385,7 +385,7 @@ var tels = JSON.parse($('#new_store_tels_json').val());
 print_tels();
 
 /* PRODUCTS */
-$("#new_store_product").keyup(search_product);
+//$("#new_store_product").keyup(search_product);
 
 function search_product() {
     if ($("#new_store_product").val()=="") {
@@ -418,6 +418,17 @@ function search_product() {
         });
      return false;
 }
+
+old_q_value = "";
+function interval_search_product() {
+    new_q_value = $('#new_store_product').val();
+    if (old_q_value != new_q_value){
+        search_product();
+    }
+    old_q_value = new_q_value;
+}
+
+setInterval(interval_search_product, 100);
 
 if ($('#new_store_products_json').val()=='') {
     $('#new_store_products_json').val('[]');
