@@ -56,7 +56,7 @@ def home():
     location_name = "cualquier lado"
     subtitle = ""
     page_description = "Alimentación Consciente, Vida Sustentable y Comercio Justo"
-    items = []
+    items = None
 
     if 'store' in request.args:
         items = get('stores/{0}'.format(request.args['store']))

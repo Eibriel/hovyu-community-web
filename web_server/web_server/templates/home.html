@@ -4,7 +4,7 @@
 {% from '_list_stores.html' import list_stores, list_stores_js %}
 {% block body %}
 
-    <div class="row">
+    <div class="row hide">
         <div class="col-sm-offset-3 col-sm-6">
             <!--<div class="panel panel-default">
                 <div class="panel-heading">
@@ -48,9 +48,10 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div id="common_query_items">
-                        <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">todo</a>
-                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">aquí</a>
-                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">cualquiér lado</a>
+                        <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">Buscar cualquiér producto</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">Buscar cerca de aquí</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">Buscar en cualquiér lado</a>
+                        <span class="btn btn-default btn-sm" id="feedback_span">...</span>
                     </div>
                     <div id="query_items">
                     </div>
@@ -94,7 +95,7 @@
             <p>
             </p>
             <img src="/static/twemoji/36x36/1f30d.png" />
-            <img src="/static/twemoji/36x36/1f31d.png" />
+            <im10g src="/static/twemoji/36x36/1f31d.png" />
             <img src="/static/twemoji/36x36/1f40d.png" />
             <img src="/static/twemoji/36x36/1f52d.png" />
             <img src="/static/twemoji/36x36/1f308.png" />
@@ -103,9 +104,20 @@
     </div>-->
     #}
 
-
-    {% if items|length < 1 %}
+    {% if items != None and items|length < 1 %}
     <div class="row">
+        <div class="col-sm-offset-2 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p class="text-center lead"><strong>No se encontraron resultados</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not items %}
+    <div class="row hide">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -158,7 +170,9 @@
 {% endblock %}
 
 {% block scripts %}
+{% if items %}
 {{ list_stores_js(items) }}
+{% endif %}
 {{ upgrade_modal_js() }}
 <script>
 $("#q").keyup(build_query);
@@ -182,6 +196,10 @@ function add_q() {
     return false;
 }
 
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 function build_query(all) {
     if (all != true) {
         all = false;
@@ -201,13 +219,20 @@ function build_query(all) {
       data: { q: qstring }
     })
       .done(function( msg ) {
-        var html = '<p style="line-height: 3em">';
+        var html = '<p style="line-height: 3em; margin-top: 1em;">';
         var name = "";
         var _id = "";
+        for (var index in msg['activities']) {
+            _id = msg['activities'][index]['_id'];
+            name = msg['activities'][index]['name'];
+            name = name.capitalizeFirstLetter();
+            html += "<a class='btn btn-warning btn-sm' role='button' href='#' onclick='return add_query_activity(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
+        }
         first_product_id = null;
         first_product_name = null;
         //first_place_id = null;
         //first_place_full_name = null;
+        html += '</p><p style="line-height: 3em">';
         for (var index in msg['products']) {
             name = msg['products'][index]['name'];
             _id = msg['products'][index]['_id'];
@@ -215,6 +240,7 @@ function build_query(all) {
                 first_product_id = _id;
                 first_product_name = name;
             }
+            name = name.capitalizeFirstLetter();
             html += "<a class='btn btn-primary btn-sm' role='button' href='#' onclick='return add_query_product(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
         }
         /*html += '</p><p style="line-height: 3em">';
@@ -233,12 +259,6 @@ function build_query(all) {
                 break;
             }
         }*/
-        html += '</p><p style="line-height: 3em">';
-        for (var index in msg['activities']) {
-            _id = msg['activities'][index]['_id'];
-            name = msg['activities'][index]['name'];
-            html += "<a class='btn btn-warning btn-sm' role='button' href='#' onclick='return add_query_activity(\""+_id+"\", \""+name+"\")'>"+name+"</a> ";
-        }
         if (!all) {
             html += '</p><p style="line-height: 3em">';
             for (var index in msg['stores']) {
@@ -269,18 +289,39 @@ function clean_product() {
     $('#q_product_name').val('');
 }
 
+function clean_activity() {
+    $("#query_activity").html('');
+    $('#q_activity').val('');
+    $('#q_activity_name').val('');
+}
+
 function add_query_product(_id, name) {
     $("#query_product").html(name);
     $('#q_product').val(_id);
     $('#q_product_name').val(name);
     $("#query_items").html("");
     $('#q').val("");
+    clean_activity();
 
     //$("#common_query_items").css('display', 'inline');
     product_set = true;
     $('#query_form').submit();
     return false;
 }
+function add_query_activity(_id, name) {
+    $("#query_activity").html(name);
+    $('#q_activity').val(_id);
+    $('#q_activity_name').val(name);
+    $("#query_items").html("");
+    $('#q').val("");
+    clean_product();
+
+    //$("#common_query_items").css('display', 'inline');
+    product_set = true;
+    $('#query_form').submit();
+    return false;
+}
+
 
 /*function add_query_place(_id, full_name) {
     $("#query_place").html(full_name);
@@ -296,20 +337,6 @@ function add_query_product(_id, name) {
     return false;
 }*/
 
-function add_query_activity(_id, name) {
-    $("#query_activity").html(name);
-    $('#q_activity').val(_id);
-    $('#q_activity_name').val(name);
-    $("#query_items").html("");
-    $('#q').val("");
-    clean_product();
-
-    //$("#common_query_items").css('display', 'inline');
-    product_set = true;
-    $('#query_form').submit();
-    return false;
-}
-
 /* Geolocation */
 {% if latitude and longitude %}
 var latitude = {{latitude}};
@@ -321,19 +348,34 @@ var longitude = null;
 
 function here() {
     if ("geolocation" in navigator) {
+        $('#feedback_span').html('Obteniendo hubicación...');
         navigator.geolocation.getCurrentPosition(function(position) {
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
 
           print_here();
+          $('#feedback_span').html('Hubicación conocida');
 
         }, function(err) {
           $('#query_place').html( $('#q_location_name').val() );
+          $('#feedback_span').html('Hubicación desconocida');
         });
     }
 
     return false;
 }
+
+if (latitude && longitude) {
+    $('#feedback_span').html('Hubicación conocida');
+} else {
+    $('#feedback_span').html('Hubicación desconocida');
+}
+
+{% if activity == "" and product == "" %}
+if (!latitude && !longitude) {
+    here();
+}
+{% endif %}
 
 /* COORDINATES */
 $('#world_map').click(function (e) {
@@ -395,6 +437,8 @@ function any_place() {
     $('#place_label_here').css('display', 'none');
     $('#place_label_near_to').css('display', 'none');
     $('#place_label_in').css('display', 'none');
+
+    $('#feedback_span').html('Hubicación desconocida');
 
     return false;
 }
