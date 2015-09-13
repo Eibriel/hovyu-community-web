@@ -359,17 +359,17 @@ var longitude = null;
 
 function here() {
     if ("geolocation" in navigator) {
-        $('#feedback_span').html('Obteniendo hubicación...');
+        $('#feedback_span').html('Obteniendo ubicación...');
         navigator.geolocation.getCurrentPosition(function(position) {
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
 
           print_here();
-          $('#feedback_span').html('Hubicación conocida');
+          $('#feedback_span').html('Ubicación conocida');
 
         }, function(err) {
           $('#query_place').html( $('#q_location_name').val() );
-          $('#feedback_span').html('Hubicación desconocida');
+          $('#feedback_span').html('Ubicación desconocida');
         });
     }
 
@@ -377,9 +377,9 @@ function here() {
 }
 
 if (latitude && longitude) {
-    $('#feedback_span').html('Hubicación conocida');
+    $('#feedback_span').html('Ubicación conocida');
 } else {
-    $('#feedback_span').html('Hubicación desconocida');
+    $('#feedback_span').html('Ubicación desconocida');
 }
 
 {% if activity == "" and product == "" %}
@@ -449,7 +449,7 @@ function any_place() {
     $('#place_label_near_to').css('display', 'none');
     $('#place_label_in').css('display', 'none');
 
-    $('#feedback_span').html('Hubicación desconocida');
+    $('#feedback_span').html('Ubicación desconocida');
 
     return false;
 }
