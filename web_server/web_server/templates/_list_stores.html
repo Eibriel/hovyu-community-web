@@ -43,7 +43,7 @@
 
                                 {% if item.tel %}
                                 {% for tel in item.tel %}
-                                <span itemprop="telephone">{{ tel.number }}</span> <a class="btn btn-default btn-xs" role="button" href="tel:{{ tel.number }}"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> Llamar</a><br>
+                                <a href="tel:{{ tel.number}}"><span itemprop="telephone">{{ tel.number }}</span></a><br>
                                 {% endfor %}
                                 {% endif %}
                                 {% if item.distance_klm %}
