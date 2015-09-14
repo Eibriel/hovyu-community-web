@@ -4,7 +4,7 @@
 {% from '_list_stores.html' import list_stores, list_stores_js %}
 {% block body %}
 
-    <div class="row hide">
+    <div class="row hide" id="map_div">
         <div class="col-sm-offset-3 col-sm-6">
             <!--<div class="panel panel-default">
                 <div class="panel-heading">
@@ -51,6 +51,7 @@
                         <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">Buscar cualquiér producto</a>
                         <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">Buscar cerca de aquí</a>
                         <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">Buscar en cualquiér lado</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return toggle_map()">Seleccionar ubicación en el mapa</a>
                         <span class="btn btn-default btn-sm" id="feedback_span">...</span>
                     </div>
                     <div id="query_items">
@@ -193,6 +194,11 @@ function add_q() {
     //} else if (first_place_id && first_place_full_name && product_set) {
     //    add_query_place(first_place_id, first_place_full_name);
     //}
+    return false;
+}
+
+function toggle_map() {
+    $('#map_div').toggleClass('hide');
     return false;
 }
 

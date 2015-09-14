@@ -112,6 +112,10 @@ def home():
     if len(tiptrick) > 0:
         tiptrick = random.choice(tiptrick)
 
+    store_stats = get('store_stats')
+    if store_stats:
+        store_stats = store_stats[0]
+
     return render_template('home.html',
                            msg = msg,
                            items = items,
@@ -128,4 +132,5 @@ def home():
                            activity_name = activity_name,
                            #place_full_name = place_full_name,
                            #place_id = place_id,
+                           store_stats = store_stats,
                            tiptrick = tiptrick)

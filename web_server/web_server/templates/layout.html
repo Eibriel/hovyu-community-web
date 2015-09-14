@@ -78,6 +78,9 @@
     <small><a href="http://eibriel.com" target="_blank">Eibriel</a> - 2015</small><br>
     <a href="https://www.facebook.com/HovyuPage" target="_blank"><img src="/static/img/facebook-icon.png" alt="Facebook" style="height: 1em;"></a>
     <a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank"><img src="/static/img/telegram_icon.png" alt="Telegram" style="height: 1em;"></a><br>
+    {% if store_stats %}
+    <small>{{ store_stats['total'] }} comercios</small>
+    {% endif %}
 </p>
 </div><!-- /.container -->
 
