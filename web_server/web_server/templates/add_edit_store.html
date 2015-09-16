@@ -33,9 +33,9 @@
     </div>
     {% endif %}
     {% if editing %}
-    <form action="edit_store" method="POST" class="form-horizontal">
+    <form action="edit_store" method="POST" enctype="multipart/form-data" class="form-horizontal">
     {% else %}
-    <form action="new_store" method="POST" class="form-horizontal">
+    <form action="new_store" method="POST" enctype="multipart/form-data" class="form-horizontal">
     {% endif %}
         <!-- Name -->
         <div class="form-group">
@@ -77,6 +77,16 @@
                 <span id="new_store_name_help" class="help-block">Correo electrónico de contacto</span>
             </div>
         </div>
+        {#<!-- MAIN PICTURE -->
+        <div class="form-group">
+            <label for="new_store_main_picture" class="col-sm-2 control-label">Imagen Principal</label>
+            <div class="col-sm-10">
+                <input type="file" name="main_picture" id="new_store_main_picture"></input>
+                <span id="new_store_main_picture_help" class="help-block">Imagen de productos o servicios, ancho mínimo 2000px, alto máximo 500px</span>
+            </div>
+        </div>
+        #}
+
         <!-- Websites -->
         <div class="form-group">
             <label for="new_store_website" class="col-sm-2 control-label">Sitios Web</label>

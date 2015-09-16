@@ -43,17 +43,28 @@ def get(resource):
     return items
 
 
-def post(resource, data, password = None):
+def post(resource, data, password = None, files = None):
     serverip = getserverip()
     headers = {'Content-Type': 'application/json'}
     if password != None:
         auth = ('a', password)
     else:
         auth = None
+    if files:
+        data = data
+        json = None
+        headers = {} 
+    else:
+        json = data
+        data = None
+    #if data:
+    #    data = json.dumps(data)
 
     try:
         r = requests.post('http://{0}/{1}/'.format(serverip, resource),
-                          data=json.dumps(data),
+                          data=data,
+                          json=json,
+                          files=files,
                           headers=headers,
                           auth = auth)
     except MissingSchema:
@@ -74,7 +85,7 @@ def patch(resource, data, eTag, password = None):
 
     try:
         r = requests.patch('http://{0}/{1}'.format(serverip, resource),
-                          data=json.dumps(data),
+                          json=data,
                           headers=headers,
                           auth = auth)
     except MissingSchema:

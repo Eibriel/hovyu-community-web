@@ -59,7 +59,7 @@ def home():
     items = None
 
     if 'store' in request.args:
-        items = get('stores/{0}'.format(request.args['store']))
+        items = get('stores/{0}?inc_views=1'.format(request.args['store']))
         product_name = items[0]['name']
         page_description = items[0]['description']
 

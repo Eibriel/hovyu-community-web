@@ -45,5 +45,7 @@ from web_server.modules.human_check import human_check_add
 from web_server.modules.human_check import human_check_image
 # ABOUT
 from web_server.modules.about import about
-# ABOUT
+# BUILD QUERY
 from web_server.modules.build_query import build_query
+# PICTURES
+from web_server.modules.pictures import add_client_picture

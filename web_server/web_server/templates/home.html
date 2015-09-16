@@ -37,7 +37,7 @@
                     <div>Busco <span class="label label-warning" id="query_activity">{{activity_name}}</span><span class="label label-primary" id="query_product">{{product_name}}</span><span id="place_label_near_to"> cerca de</span><span id="place_label_in"> en</span> <span class="label label-success" id="place_label"><span id="place_label_here">aquí</span><span id="query_place">{{- place_full_name -}}</span></span> <!--<span class="label label-info" id="query_point">{{location_name}}</span>--></div>
                 </button>
             </form>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom:0px;">
                 <form id="q_form" onsubmit="return add_q();">
                     <input type="text" class="form-control" placeholder="¿Qué busco?" name="q" id="q" autocomplete="off">
                 </form>
@@ -49,9 +49,9 @@
                 <div class="panel-body">
                     <div id="common_query_items" style="line-height: 3em">
                         <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">Buscar cualquiér producto</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return toggle_map()">Seleccionar ubicación en el mapa</a>
                         <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">Buscar cerca de aquí</a>
                         <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">Buscar en cualquiér lado</a>
-                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return toggle_map()">Seleccionar ubicación en el mapa</a>
                         <span class="btn btn-default btn-sm" id="feedback_span">...</span>
                     </div>
                     <div id="query_items">
@@ -150,7 +150,7 @@
     {% else %}
 
     {% if subtitle != "" %}
-    <div class="page-header">
+    <div class="page-header" style="margin-top:0px; margin-bottom:0px;">
         <h1>{{ subtitle|title }}</h1>
     </div>
     {% endif %}
