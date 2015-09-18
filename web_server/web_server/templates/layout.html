@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ page_description|truncate(150) }}">
     <meta name="author" content="Eibriel">
     <meta name="google-site-verification" content="KbuPSTwJ8zamldaRIAtJwmsuqOLOlyElz6FOBpYgMa0" />
     <meta name="google-site-verification" content="1rQpdKE5k3qba4P2FQ7JIocDU3q7gqWFQxZr-_hYEeY" />
@@ -13,16 +12,37 @@
     <meta name="robots" content="noindex">
     {% endif %}
     <link rel="icon" href="/static/favicon.png">
-    {% if items and items|length == 1 and items[0].location and items[0].location.coordinates[0]!=0 and items[0].location.coordinates[1]!=0 %}
-    <meta property="og:image" content="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{% if items[0].exact_location %}pin-l-shop+482({{ items[0].location.coordinates[0] }},{{ items[0].location.coordinates[1] }})/{% endif %}{{ items[0].location.coordinates[0] }},{{ items[0].location.coordinates[1] }},{% if items[0].exact_location %}15{% else %}5{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A"/>
-    {% else %}
-    <meta property="og:image" content="/static/favicon.png"/>
+
+    {% if items and items|length == 1 %}
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# business: http://ogp.me/ns/business#">
+    <!--<meta property="fb:app_id"                            content="302184056577324" />--> 
+    <meta property="og:type"                              content="business.business" /> 
+    <meta property="business:contact_data:street_address" content="{{ items[0]['address'] }}" /> 
+    <meta property="business:contact_data:locality"       content="{{ items[0]['address'] }}" /> 
+    <meta property="business:contact_data:postal_code"    content="{{ items[0]['address'] }}" /> 
+    <meta property="business:contact_data:country_name"   content="{{ items[0]['address'] }}" /> 
+        {% if items[0].location.coordinates[0]!=0 and items[0].location.coordinates[1]!=0 %}
+    <meta property="place:location:latitude"              content="{{ items[0].location.coordinates[1] }}" /> 
+    <meta property="place:location:longitude"             content="{{ items[0].location.coordinates[0] }}" /> 
+        {% endif %}
     {% endif %}
 
+    {% if items and items|length == 1 and items[0]['pictures_info']|length > 0 %}
+    <meta property="og:image" content="{{ canonical_domain }}/client_picture/{{ items[0]['pictures_info'][0]['id'] }}"/>
+    {% elif items and items|length == 1 and items[0].location and items[0].location.coordinates[0]!=0 and items[0].location.coordinates[1]!=0 %}
+    <meta property="og:image" content="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{% if items[0].exact_location %}pin-l-shop+482({{ items[0].location.coordinates[0] }},{{ items[0].location.coordinates[1] }})/{% endif %}{{ items[0].location.coordinates[0] }},{{ items[0].location.coordinates[1] }},{% if items[0].exact_location %}15{% else %}5{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A"/>
+    {% else %}
+    <meta property="og:image" content="{{ canonical_domain }}/static/img/hovyu-logo.png"/>
+    {% endif %}
+
+    <meta property="og:title" content="{% if subtitle != "" %}{{ subtitle|title }}{% else %}Hovyũ, vida sustentable{% endif %}"/>
     <title>{% if subtitle != "" %}{{ subtitle|title }} - {% endif %}Hovyũ, vida sustentable</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/bootstrap-3.3.4-dist/css/flatly.bootstrap.min.css" rel="stylesheet">
+
+    <meta name="description" content="{{ page_description|truncate(150) }}">
+    <meta property="og:description" content="{{ page_description }}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

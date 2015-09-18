@@ -8,3 +8,4 @@ Disallow: /tipstricks
 Disallow: /tiptrick_add_edit
 Disallow: /send_payment_instructions
 Disallow: /build_query
+Disallow: /client_pictures

@@ -124,6 +124,8 @@ def home():
             for picture_id in item['client_pictures']:
                 picture = get('client_pictures/{0}?projection=%7B%22picture_binary%22%3A0%7D'.format(picture_id))
                 # TODO move to server
+                if not picture['approved']:
+                    continue
                 if not 'name' in picture:
                     picture['name'] = ''
                 picture_info = {
@@ -150,6 +152,7 @@ def home():
                            product_name = product_name,
                            activity = activity,
                            activity_name = activity_name,
+                           canonical_domain = app.config['CANONICAL_DOMAIN'],
                            #place_full_name = place_full_name,
                            #place_id = place_id,
                            store_stats = store_stats,
