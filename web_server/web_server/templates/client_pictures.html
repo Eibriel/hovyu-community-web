@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="row">
+        <h2 style="text-align: center;">Fotografías de los clientes</h2>
+    </div>
+    <!--<div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <a role="button" class="btn btn-primary btn-sm" href="/product_add_edit">
+          Agregar producto
+        </a>
+    </div>-->
+{% for item in items %}
+<div class="panel panel-default" id="panel_client_picture_{{ item._id }}">
+    <div class="panel-heading"><strong>{{ item.name }}</strong></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-3">
+                <a class="thumbnail">
+                    <img src="/client_picture/{{ item._id }}">
+                </a>
+            </div>
+            <div class="col-lg-9">
+                {% if item['approved'] %}
+                <p><span class="label label-success">Aprobada</span></p>
+                {% else %}
+                <p><span class="label label-danger">Desaprobada</span></p>
+                {% endif %}
+
+                <form action="/client_picture_approving" method="POST">
+                    <div class="form-group">
+                        <label for="admin_password_{{ item._id }}">Password de administrador</label>
+                        <input type="password" class="form-control" name="admin_password" id="admin_password_{{ item._id }}" value="">
+                    </div>
+                    <input type="hidden" name="picture_id" value="{{ item._id }}">
+                    <input type="hidden" name="picture_etag" value="{{ item._etag }}">
+                    {% if item['approved'] %}
+                    <input type="hidden"  name="picture_approved" value="False">
+                    <button type="submit" class="btn btn-default">Desaprobar</button>
+                    {% else %}
+                    <input type="hidden" name="picture_approved" value="True">
+                    <button type="submit" class="btn btn-default">Aprobar</button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

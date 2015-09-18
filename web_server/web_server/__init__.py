@@ -49,3 +49,5 @@ from web_server.modules.about import about
 from web_server.modules.build_query import build_query
 # PICTURES
 from web_server.modules.pictures import add_client_picture
+from web_server.modules.pictures import client_picture
+from web_server.modules.pictures import client_pictures

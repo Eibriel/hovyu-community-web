@@ -1,4 +1,5 @@
 import random
+import logging
 
 from web_server import app
 
@@ -115,6 +116,25 @@ def home():
     store_stats = get('store_stats')
     if store_stats:
         store_stats = store_stats[0]
+
+    # PICTURES
+    if items:
+        for item in items:
+            pictures_info = []
+            for picture_id in item['client_pictures']:
+                picture = get('client_pictures/{0}?projection=%7B%22picture_binary%22%3A0%7D'.format(picture_id))
+                # TODO move to server
+                if not 'name' in picture:
+                    picture['name'] = ''
+                picture_info = {
+                    'name': picture['name'],
+                    'approved': picture['approved'],
+                    'admin_comments': picture['admin_comments'],
+                    'score': picture['score'],
+                    'id': picture_id
+                }
+                pictures_info.append( picture_info )
+            item['pictures_info'] = pictures_info
 
     return render_template('home.html',
                            msg = msg,

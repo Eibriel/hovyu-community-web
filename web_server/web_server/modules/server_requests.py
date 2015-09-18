@@ -57,8 +57,6 @@ def post(resource, data, password = None, files = None):
     else:
         json = data
         data = None
-    #if data:
-    #    data = json.dumps(data)
 
     try:
         r = requests.post('http://{0}/{1}/'.format(serverip, resource),

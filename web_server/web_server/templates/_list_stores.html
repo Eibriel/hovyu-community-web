@@ -105,15 +105,21 @@
                         <!--</div>-->
                     </div><!--ROW-->
 
-                    <div class="row">
+                    <div class="row hide" id="add_picture_div_{{ item._id }}">
                         <div class="col-lg-12" style="margin-top: 1em">
                             <form action="/add_client_picture" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="client_picture" class="col-sm-2 control-label">Agregar Fotografía</label>
                                     <div class="col-sm-10">
-                                    <input type="file" name="client_picture" ></input>
-                                    <input type="hidden" name="store_id" value="{{ item._id }}"/>
-                                    <span id="client_picture_help" class="help-block">Si sos cliente o usuario envíanos una fotografía de un producto o del lugar. Se publicará luego del proceso de moderación :)<br><small>La fotografía se publicará con una licencia de dominio público <a href="https://creativecommons.org/about/cc0" target="_blank">CC-0</a></small></span>
+                                        <input type="file" name="client_picture" ></input>
+                                        <input type="hidden" name="store_id" value="{{ item._id }}"/>
+                                        <span id="client_picture_help" class="help-block">Si sos cliente o usuario envíanos una fotografía de un producto o del lugar. Se publicará luego del proceso de moderación :)<br><small>La fotografía se publicará con una licencia de dominio público <a href="https://creativecommons.org/about/cc0" target="_blank">CC-0</a></small></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="client_picture_name_{{ item._id }}" class="col-sm-2 control-label">Título de la fotografía</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="name" id="client_picture_name_{{ item._id }}" value="">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Enviar</button>
@@ -122,11 +128,18 @@
                     </div> <!-- ROW -->
 
                     <div class="row">
-                        <div class="col-lg-12" style="margin-top: 1em">
-                            {% for picture in item['client_pictures'] %}
-                            <img href="/client_pictures/{{ picture }}">
-                            {% endfor %}
+                        {% for picture in item['pictures_info'] %}
+                        {% if picture['approved'] %}
+                        <div class="col-lg-3" style="margin-top: 1em">
+                            <a class="thumbnail" href="/client_picture/{{ picture['id'] }}" target="_blank">
+                                <img src="/client_picture/{{ picture['id'] }}" itemprop="image" alt="{{ picture['name'] }}">
+                                <div class="caption">
+                                    <small>{{ picture['name'] }}</small>
+                                </div>
+                            </a>
                         </div>
+                        {% endif %}
+                        {% endfor %}
                     </div> <!-- ROW -->
 
                     <!--<div class="row">
@@ -161,5 +174,11 @@
 {% for item in items %}
 $('#upgrade_{{ item._id }}').click( function(){ add_high('{{ item._id }}', '{{ item.iid }}', '{{ item.name }}'); } );
 {% endfor %}
+
+function toggle_picture_uploader(id) {
+    $('#add_picture_div_'+id).toggleClass('hide');
+    return false;
+}
+
 </script>
 {% endmacro %}
