@@ -55,10 +55,18 @@
         </div>
         <!-- Description -->
         <div class="form-group">
-            <label for="new_store_description" class="col-sm-2 control-label">Descripción</label>
+            <label for="new_store_description" class="col-sm-2 control-label">Descripción de la entidad</label>
             <div class="col-sm-10">
                 <textarea name="description" id="new_store_description" class="form-control" rows="3" >{{ edit_item.description }}</textarea>
-                <span id="new_store_name_help" class="help-block">¿A qué se dedica la entidad? ¿Por qué es especial?</span>
+                <span id="new_store_description_help" class="help-block">¿A qué se dedica la entidad? ¿Por qué es especial?</span>
+            </div>
+        </div>
+        <!-- Process Description -->
+        <div class="form-group">
+            <label for="new_store_process_description" class="col-sm-2 control-label">¿Qué es lo que la hace amigable con el ambiente?</label>
+            <div class="col-sm-10">
+                <textarea name="process_description" id="new_store_process_description" class="form-control" rows="3" >{{ edit_item.process_description }}</textarea>
+                <span id="new_store_process_description_help" class="help-block">¿Qué hace que la entidad aporte a la sustentabilidad? ¿Cuales son los procesos de producción? ¿Tiene alguna certificación?</span>
             </div>
         </div>
         <!-- Address -->

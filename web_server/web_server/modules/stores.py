@@ -29,6 +29,7 @@ def get_form(edit = False):
     store = {
         'name': request.form['name'],
         'description': request.form['description'],
+        'process_description': request.form['process_description'],
         'address': request.form['address'],
         #'place': None,
         'score': {
