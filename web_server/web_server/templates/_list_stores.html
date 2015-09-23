@@ -17,7 +17,10 @@
                                 <!--<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
                                 <span class="sr-only">Información:</span>
                                 <span itemprop="description">{{ item.description|char2emoji|nl2br }}
+                                {% if item.process_description != "" %}
+                                <h4>Compromiso con la sustentabilidad</h4>
                                 {{ item.process_description|char2emoji|nl2br }}</span>
+                                {% endif %}
                             </div>
                             <div>
                                 <ul>
