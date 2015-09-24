@@ -16,7 +16,7 @@
     {% for store in stores %}
     <entry>
         <title>{{ store['name'] }}</title>
-        <link href="http://example.org/2003/12/13/atom03"/>
+        <link href="http://hovyu.com/?store={{ store['_id'] }}"/>
         <id>http://hovyu.com/?store={{ store['_id'] }}</id>
         <updated>{{ store['_formated_updated'] }}</updated>
         <summary>{{ store['description'] }}</summary>
