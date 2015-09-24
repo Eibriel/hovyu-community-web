@@ -37,6 +37,24 @@ def robots():
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
+# ATOM
+@app.route("/atom.xml")
+def atom():
+    canonical_domain = app.config['CANONICAL_DOMAIN']
+    stores = get('stores')
+
+    for store in stores:
+        date = datetime.strptime(store['_updated'], '%a, %d %b %Y %H:%M:%S %Z')
+        store['_formated_updated'] = date.strftime("%Y-%m-%dT%H:%M:%SZ")
+        # 2002-10-02T15:00:00Z
+        store['pictures_info'] = get_pictures_info( store )
+
+    response = make_response(render_template('atom.xml',
+                             stores = stores,
+                             canonical_domain = canonical_domain))
+    response.headers['Content-Type'] = 'text/xml; charset=utf-8'
+    return response
+
 # SITEMAP
 @app.route("/sitemap.xml")
 def sitemap():

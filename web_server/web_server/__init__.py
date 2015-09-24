@@ -15,7 +15,9 @@ from web_server.modules.jinja_filters import char2emoji
 from web_server.modules.jinja_filters import money_scale_inverse
 
 from web_server.modules.home import home
-from web_server.modules.home import home
+from web_server.modules.home import robots
+from web_server.modules.home import sitemap
+from web_server.modules.home import atom
 # STORES
 from web_server.modules.stores import store_add
 from web_server.modules.stores import new_store

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:hcc='http://hovyu.com/customcontent/'>
+
+    <title>Hovyũ</title>
+    <link rel="self" href="http://hovyu.com/atom.xml"/>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <author>
+        <name>Hovyũ</name>
+    </author>
+    <rights>CC-BY 4.0 http://creativecommons.org/licenses/by/4.0/</rights>
+    <id>http://hovyu.com/</id>
+    <subtitle>You are free yo share and adapt for any purpose, even commercially.
+    Under the condition you give appropiate credit to Hovyũ, provide a link to the license,
+    and indicate if changes were made.</subtitle>
+
+    {% for store in stores %}
+    <entry>
+        <title>{{ store['name'] }}</title>
+        <link href="http://example.org/2003/12/13/atom03"/>
+        <id>http://hovyu.com/?store={{ store['_id'] }}</id>
+        <updated>{{ store['_formated_updated'] }}</updated>
+        <summary>{{ store['description'] }}</summary>
+        <hcc:id>{{ store['_id'] }}</hcc:id>
+        <hcc:name>{{ store['name'] }}</hcc:name>
+        <hcc:iid>{{ store['iid'] }}</hcc:iid>
+        <hcc:exact_location>{{ store['exact_location'] }}</hcc:exact_location>
+        <hcc:location>
+            <hcc:longitude>{{ store['location'][0] }}</hcc:longitude>
+            <hcc:latitude>{{ store['location'][1] }}</hcc:latitude>
+        </hcc:location>
+        <hcc:client_pictures></hcc:client_pictures>
+        <hcc:description>{{ store['description'] }}</hcc:description>
+        <hcc:process_description>{{ store['process_description'] }}</hcc:process_description>
+        <hcc:address>{{ store['address'] }}</hcc:address>
+        <hcc:email>{{ store['email'] }}</hcc:email>
+        <hcc:websites>
+        {% for website in store['website'] %}
+            <hcc:website>
+                <hcc:url>{{ website['url'] }}</hcc:url>
+                <hcc:text>{{ website['text'] }}</hcc:text>
+            </hcc:website>
+        {% endfor %}
+        </hcc:websites>
+        <hcc:tels>
+        {% for tel in store['tel'] %}
+            <hcc:tel>
+                <hcc:type>{{ tel['type'] }}</hcc:type>
+                <hcc:number>{{ tel['number'] }}</hcc:number>
+            </hcc:tel>
+        {% endfor %}
+        </hcc:tels>
+        <hcc:products>
+        {% for product in store['products'] %}
+            <hcc:product></hcc:product>
+        {% endfor %}
+        </hcc:products>
+    </entry>
+    {% endfor %}
+
+</feed>
