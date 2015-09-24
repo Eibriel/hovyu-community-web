@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"> 
   <url>
     <loc>{{ canonical_domain}}/about</loc> 
   </url>
+  
   {% for store in stores %}
   <url>
     <loc>{{ canonical_domain}}/?store={{ store['_id'] }}</loc> 
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>{{ store['_formated_updated'] }}</lastmod>
+    {% for picture in store['pictures_info'] %}
+    <image:image>
+        <image:loc>{{ canonical_domain }}/client_picture/{{ picture['id'] }}</image:loc>
+        <image:caption>{{ picture['name'] }}</image:caption>
+    </image:image>
+    {% endfor %}
   </url>
   {% endfor %}
 
   {% for product in products %}
   <url>
     <loc>{{ canonical_domain}}/?latitude=&amp;longitude=&amp;product={{ product['_id'] }}&amp;activity=</loc> 
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
   </url>
   {% endfor %}
 
   {% for activity in activities %}
   <url>
     <loc>{{ canonical_domain}}/?latitude=&amp;longitude=&amp;product=&amp;activity={{ activity['_id'] }}</loc> 
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
   </url>
   {% endfor %}
 </urlset>

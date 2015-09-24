@@ -7,7 +7,28 @@ from flask import request
 from flask import render_template
 from flask import make_response
 
+from datetime import datetime
+
 from web_server.modules.server_requests import get
+
+def get_pictures_info(item):
+    pictures_info = []
+    for picture_id in item['client_pictures']:
+        picture = get('client_pictures/{0}?projection=%7B%22picture_binary%22%3A0%7D'.format(picture_id))
+        # TODO move to server
+        if not picture['approved']:
+            continue
+        if not 'name' in picture:
+            picture['name'] = ''
+        picture_info = {
+            'name': picture['name'],
+            'approved': picture['approved'],
+            'admin_comments': picture['admin_comments'],
+            'score': picture['score'],
+            'id': picture_id
+        }
+        pictures_info.append( picture_info )
+    return pictures_info
 
 # ROBOTS
 @app.route("/robots.txt")
@@ -23,6 +44,11 @@ def sitemap():
     stores = get('stores')
     products = get('products')
     activities = get('activities')
+
+    for store in stores:
+        date = datetime.strptime(store['_updated'], '%a, %d %b %Y %H:%M:%S %Z')
+        store['_formated_updated'] = date.strftime("%Y-%m-%d")
+        store['pictures_info'] = get_pictures_info( store )
 
     response = make_response(render_template('sitemap.xml',
                              stores = stores,
@@ -120,22 +146,7 @@ def home():
     # PICTURES
     if items:
         for item in items:
-            pictures_info = []
-            for picture_id in item['client_pictures']:
-                picture = get('client_pictures/{0}?projection=%7B%22picture_binary%22%3A0%7D'.format(picture_id))
-                # TODO move to server
-                if not picture['approved']:
-                    continue
-                if not 'name' in picture:
-                    picture['name'] = ''
-                picture_info = {
-                    'name': picture['name'],
-                    'approved': picture['approved'],
-                    'admin_comments': picture['admin_comments'],
-                    'score': picture['score'],
-                    'id': picture_id
-                }
-                pictures_info.append( picture_info )
+            pictures_info = get_pictures_info( item )
             item['pictures_info'] = pictures_info
 
     return render_template('home.html',
