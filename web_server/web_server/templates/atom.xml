@@ -25,8 +25,8 @@
         <hcc:iid>{{ store['iid'] }}</hcc:iid>
         <hcc:exact_location>{{ store['exact_location'] }}</hcc:exact_location>
         <hcc:location>
-            <hcc:longitude>{{ store['location'][0] }}</hcc:longitude>
-            <hcc:latitude>{{ store['location'][1] }}</hcc:latitude>
+            <hcc:longitude>{{ store['location']['coordinates'][0] }}</hcc:longitude>
+            <hcc:latitude>{{ store['location']['coordinates'][1] }}</hcc:latitude>
         </hcc:location>
         <hcc:client_pictures></hcc:client_pictures>
         <hcc:description>{{ store['description'] }}</hcc:description>

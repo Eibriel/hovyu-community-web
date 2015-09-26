@@ -53,6 +53,28 @@
                 </div>
             </div>
         </div>
+
+        <!-- Logo Picture -->
+        <div class="form-group">
+            <label for="logo_picture" class="col-sm-2 control-label">Agregar Logo</label>
+            <div class="col-sm-10">
+                {% if edit_item.logo_picture %}
+                <span class="thumbnail"><img alt="" src="/logo_picture/{{ edit_item.logo_picture }}"></span>
+                {% endif %}
+                <input type="file" name="logo_picture" ></input>
+                <span id="logo_picture_help" class="help-block">Si sos parte del staff envíanos el logo.<br><small>La imagen será publica.</small></span>
+            </div>
+        </div>
+        <div class="form-group ">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="logo_picture_delete" > Eliminar Logo
+                    </label>
+                </div>
+            </div>
+        </div>
+
         <!-- Description -->
         <div class="form-group">
             <label for="new_store_description" class="col-sm-2 control-label">Descripción de la entidad</label>

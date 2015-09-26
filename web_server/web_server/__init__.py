@@ -53,3 +53,6 @@ from web_server.modules.build_query import build_query
 from web_server.modules.pictures import add_client_picture
 from web_server.modules.pictures import client_picture
 from web_server.modules.pictures import client_pictures
+from web_server.modules.pictures import client_picture_approve
+from web_server.modules.pictures import add_client_picture
+from web_server.modules.pictures import logo_picture

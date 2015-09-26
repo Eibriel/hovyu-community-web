@@ -30,16 +30,13 @@ def get_client_picture_form():
 def client_picture(picture_id):
     if 'if-modified-since' in request.headers:
         return '',304 
-
     picture = get('client_pictures/{0}'.format(picture_id))
-
     import base64
     picture_binary = base64.b64decode(picture['picture_binary']['file'])
     content_type = picture['picture_binary']['content_type']
     response = make_response(picture_binary)
     response.headers['content-type'] = content_type
     response.headers['last-modified'] = picture['_updated']
-
     return response
 
 
@@ -91,3 +88,17 @@ def add_client_picture():
     store_patch['client_pictures'].append(picture_id)
     r = patch('stores/{0}'.format(store_id), store_patch, store_etag)
     return redirect('/?store={0}'.format(store_id))
+
+
+@app.route('/logo_picture/<picture_id>')
+def logo_picture(picture_id):
+    if 'if-modified-since' in request.headers:
+        return '',304 
+    picture = get('logo_pictures/{0}'.format(picture_id))
+    import base64
+    picture_binary = base64.b64decode(picture['picture_binary']['file'])
+    content_type = picture['picture_binary']['content_type']
+    response = make_response(picture_binary)
+    response.headers['content-type'] = content_type
+    response.headers['last-modified'] = picture['_updated']
+    return response

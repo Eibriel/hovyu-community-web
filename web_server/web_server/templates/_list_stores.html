@@ -1,5 +1,5 @@
-{% macro list_stores(items) %}
-{% for item in items %}
+{% macro list_stores(items, canonical_domain) %}
+{% for item in items|reverse %}
     <div class="row" itemscope itemtype="http://schema.org/LocalBusiness">
         <div class="col-lg-12">
             {% if item.highlight %}
@@ -32,15 +32,25 @@
                             <address><small>
                                 <!--<strong>{{ item.name }}</strong><br>-->
                                 {% if item.address %}
-                                <span itemprop="address">{{ item.address }}</span><br>
+                                <span itemprop="address">{{ item.address }}</span>
                                 {% endif %}
+
+                                {% if item.exact_location and item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
+                                 - <a href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">Mapa</a>
+                                {% endif %}
+                                <br>
+                                
+                                {#
                                 {% if item.place %}
                                 <!--{{ item.place.full_name }}<br>-->
                                 {% endif %}
+                                #}
 
                                 {% for website in item.website %}
                                 <a href="{{ website.url }}" itemprop="sameAs">{{ website.text }}</a><br>
                                 {% endfor %}
+                                <meta itemprop="url" content="{{ canonical_domain }}/?store={{ item._id }}" />
+
                                 {% if item.email %}
                                 <strong><span itemprop="email">{{ item.email }}</span></strong><br>
                                 {% endif %}
@@ -50,13 +60,17 @@
                                 <a href="tel:{{ tel.number}}"><span itemprop="telephone">{{ tel.number }}</span></a><br>
                                 {% endfor %}
                                 {% endif %}
-                                {% if item.distance_klm %}
+                                {% if item.exact_location and item.distance_klm %}
                                     {% if item.distance_klm < 1 %}
                                         {{ (item.distance_klm * 9)|round|int }} minutos a pie<br>
                                     {% elif item.distance_klm < 30 %}
                                         {{ ((item.distance_klm / 18)*60)|round|int }} minutos en bicicleta<br>
-                                    {% else %}
+                                    {% elif item.distance_klm < 150 %}
                                         {{ ((item.distance_klm / 40)*60)|round|int }} minutos en transporte público<br>
+                                    {% elif item.distance_klm < 400 %}
+                                        {{ ((item.distance_klm / 100)*60)|round|int }} minutos en tren<br>
+                                    {% else %}
+                                        {{ ((item.distance_klm / 1100)*60)|round|int }} minutos en Hyperloop<br>
                                     {% endif %}
                                 {% endif %}
                             </small></address>
@@ -94,14 +108,10 @@
                                 </span>
                                 {% endif %}
                                 <div class="col-lg-6">
-                                    {% if item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
-                                    <a class="thumbnail" href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">
-                                        <img alt="Mapa de {{ item.name }}" src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{% if item.exact_location %}pin-l-shop+482({{ item.location.coordinates[0] }},{{ item.location.coordinates[1] }})/{% endif %}{{ item.location.coordinates[0] }},{{ item.location.coordinates[1] }},{% if item.exact_location %}15{% else %}5{% endif %}/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
-                                    </a>
-                                    {% elif item.place %}
-                                    <a class="thumbnail" href="http://www.openstreetmap.org/#map=13/{{ item.place.location.coordinates[1] }}/{{ item.place.location.coordinates[0] }}" target="_blank">
-                                        <img alt="Mapa de {{ item.name }}" src="http://api.tiles.mapbox.com/v4/eibriel.ece87d31/{{ item.place.location.coordinates[0] }},{{ item.place.location.coordinates[1] }},11/250x200.png?access_token=pk.eyJ1IjoiZWlicmllbCIsImEiOiJhMzhkNWYxY2NlMGFlZjNjMzQ2MDNjMjY3NGE5ZDhjMCJ9.a0QVatssobEUqLGZUm2u3A" />
-                                    </a>
+                                    {% if item.logo_picture %}
+                                    <span class="thumbnail"><img alt="Logo" itemprop="logo" src="/logo_picture/{{ item.logo_picture }}"></span>
+                                    {% else %}
+                                    <span class="thumbnail"><img alt="No Logo" src="/static/img/no-logo.png"></span>
                                     {% endif %}
                                 </div>
                             </div>

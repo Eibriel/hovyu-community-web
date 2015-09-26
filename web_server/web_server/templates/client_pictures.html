@@ -8,7 +8,7 @@
           Agregar producto
         </a>
     </div>-->
-{% for item in items %}
+{% for item in items|reverse %}
 <div class="panel panel-default" id="panel_client_picture_{{ item._id }}">
     <div class="panel-heading"><strong>{{ item.name }}</strong></div>
     <div class="panel-body">

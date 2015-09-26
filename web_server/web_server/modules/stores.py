@@ -1,5 +1,6 @@
 import json
 import random
+import logging
 
 from bson import ObjectId
 
@@ -114,6 +115,24 @@ def get_form(edit = False):
         store['wid']=""
         store['views'] = 0
 
+    # LOGO PICTURE
+    logo_picture_delete = False
+    if 'logo_picture_delete' in request.form:
+        logo_picture_delete = True
+    if not logo_picture_delete and 'logo_picture' in request.files:
+        storage = request.files['logo_picture']
+        filename = storage.name
+        filefile = storage
+        filecontenttype = storage.content_type
+        if filecontenttype in ['image/png', 'image/jpeg']:
+            files = {'picture_binary': (filename, filefile, filecontenttype)}
+            form = {}
+            r = post('logo_pictures', form, files=files)
+            logging.error( r.text )
+            picture_id = r.json()['_id']
+            store['logo_picture'] = picture_id
+    if logo_picture_delete:
+        store['logo_picture'] = None
 
     return store
 
