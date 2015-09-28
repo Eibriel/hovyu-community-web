@@ -37,6 +37,17 @@ def robots():
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
+# CONTACT LIST 
+@app.route("/contacts.txt")
+def contacts():
+    canonical_domain = app.config['CANONICAL_DOMAIN']
+    stores = get('stores')
+    response = make_response(render_template('contacts.txt',
+                             stores = stores,
+                             canonical_domain = canonical_domain))
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return response
+
 # ATOM
 @app.route("/atom.xml")
 def atom():

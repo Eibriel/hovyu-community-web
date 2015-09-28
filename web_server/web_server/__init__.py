@@ -18,6 +18,7 @@ from web_server.modules.home import home
 from web_server.modules.home import robots
 from web_server.modules.home import sitemap
 from web_server.modules.home import atom
+from web_server.modules.home import contacts
 # STORES
 from web_server.modules.stores import store_add
 from web_server.modules.stores import new_store

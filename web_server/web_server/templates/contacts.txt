@@ -1,0 +1,5 @@
+{% for store in stores -%}
+{% if store['email'] != '' -%}
+{{ store['email']}};{{ store['name'] }};{{ canonical_domain}}/?store={{ store['_id'] }};{% if store['logo_picture'] %}{{ canonical_domain }}/logo_picture/{{ store['logo_picture'] }}{% else %}{{ canonical_domain }}/static/img/no-logo.png{% endif %}
+{% endif %}
+{%- endfor %}
