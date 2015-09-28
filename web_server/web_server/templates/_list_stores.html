@@ -1,5 +1,5 @@
-{% macro list_stores(items, canonical_domain) %}
-{% for item in items|reverse %}
+{% macro list_stores(items, canonical_domain, latitude, longitude, activity) %}
+{% for item in items %}
     <div class="row" itemscope itemtype="http://schema.org/LocalBusiness">
         <div class="col-lg-12">
             {% if item.highlight %}
@@ -25,7 +25,7 @@
                             <div>
                                 <ul>
                                     {% for product in item['products_documents'] %}
-                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name">{{product['full_name']|title}} {{product['brand']}}</span> <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
+                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name"><a href="/?product={{ product['product'] }}&latitude={{ latitude }}&longitude={{ longitude }}&activity=">{{product['name']|title}}</a> {{product['properties_name']|title}} {{product['brand']}} <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
                                     {% endfor %}
                                 </ul>
                             </div>

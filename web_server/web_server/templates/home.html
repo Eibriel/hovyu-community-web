@@ -118,6 +118,7 @@
     {% endif %}
 
     {% if not items %}
+    {#
     <div class="row hide">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
@@ -136,7 +137,7 @@
             </div>
         </div>
     </div>
-
+    #}
     {#<div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
@@ -155,7 +156,7 @@
     </div>
     {% endif %}
 
-    {{ list_stores(items, canonical_domain) }}
+    {{ list_stores(items, canonical_domain, latitude, longitude) }}
     {#<div class="row">
         <div class="col-sm-offset-2 col-sm-8">
             <div style="text-align: center; margin-top: 2em;">Página {{ page }}</div>
@@ -297,7 +298,7 @@ build_query();
 $('#q').val('{{ product_name }}');
 build_query();
 {% else %}
-build_query(true);
+//build_query(true);
 {% endif %}
 
 function clean_product() {
