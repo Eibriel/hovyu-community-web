@@ -143,7 +143,7 @@ def home():
         here = True
     if 'product' in request.args or 'activity' in request.args:
         items = get('stores?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
-    else:
+    elif not 'store' in request.args:
         items = get('stores?max_results=5&sort=-_updated')
 
     if product_name != "":
