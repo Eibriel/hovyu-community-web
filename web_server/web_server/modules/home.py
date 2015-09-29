@@ -10,6 +10,7 @@ from flask import make_response
 from datetime import datetime
 
 from web_server.modules.server_requests import get
+from web_server.modules.server_requests import patch
 
 def get_pictures_info(item):
     pictures_info = []
@@ -122,10 +123,18 @@ def home():
     elif 'product' in request.args:
         if request.args['product']!='':
             product = request.args['product']
-            product_db = get('products/{0}'.format(product))
+            product_db = get('products/{0}?inc_count=1'.format(product))
             if product_db:
                 product_name = product_db['name']
             query = request.args['product']
+            #current_use_count = 0
+            #if 'use_count' in product_db:
+            #    current_use_count = product_db['use_count']
+            #use_count = {
+            #    'use_count': current_use_count + 1
+            #}
+            #r = patch('products/{0}'.format(product), use_count, product_db['_etag'])
+            #logging.error( r.text )
         else:
             product_name = "todo"
     if 'activity' in request.args and request.args['activity']!='':
