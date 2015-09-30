@@ -28,15 +28,21 @@ def get_client_picture_form():
 
 @app.route('/client_picture/<picture_id>')
 def client_picture(picture_id):
-    if 'if-modified-since' in request.headers:
-        return '',304 
     picture = get('client_pictures/{0}'.format(picture_id))
+    if 'if-modified-since' in request.headers:
+        content_type = picture['picture_binary']['content_type']
+        response = make_response('', 304)
+        response.headers['content-type'] = content_type
+        response.headers['last-modified'] = picture['_updated']
+        response.headers['cache-control'] = 'max-age=2628000, public'
+        return response 
     import base64
     picture_binary = base64.b64decode(picture['picture_binary']['file'])
     content_type = picture['picture_binary']['content_type']
     response = make_response(picture_binary)
     response.headers['content-type'] = content_type
     response.headers['last-modified'] = picture['_updated']
+    response.headers['cache-control'] = 'max-age=2628000, public'
     return response
 
 
@@ -92,13 +98,19 @@ def add_client_picture():
 
 @app.route('/logo_picture/<picture_id>')
 def logo_picture(picture_id):
-    if 'if-modified-since' in request.headers:
-        return '',304 
     picture = get('logo_pictures/{0}'.format(picture_id))
+    if 'if-modified-since' in request.headers:
+        content_type = picture['picture_binary']['content_type']
+        response = make_response('', 304)
+        response.headers['content-type'] = content_type
+        response.headers['last-modified'] = picture['_updated']
+        response.headers['cache-control'] = 'max-age=2628000, public'
+        return response 
     import base64
     picture_binary = base64.b64decode(picture['picture_binary']['file'])
     content_type = picture['picture_binary']['content_type']
     response = make_response(picture_binary)
     response.headers['content-type'] = content_type
     response.headers['last-modified'] = picture['_updated']
+    response.headers['cache-control'] = 'max-age=2628000, public'
     return response

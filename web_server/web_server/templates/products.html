@@ -10,7 +10,7 @@
     </div>
 {% for item in items %}
 <div class="panel panel-default" id="panel_store_{{ item._id }}">
-    <div class="panel-heading"><strong>{{ item.name }}</strong></div>
+    <div class="panel-heading"><strong>{{ item.name }} - {{ item.use_count }}</strong></div>
     <div class="panel-body">
     {{ item.description|nl2br }}
     <a class="btn-sm btn-default" href="/product_add_edit?e={{ item._id }}" role="button">

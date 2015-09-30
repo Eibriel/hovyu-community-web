@@ -24,7 +24,7 @@ def get_product_form():
 
 @app.route('/products')
 def products():
-    items = get('products')
+    items = get('products?sort=-use_count')
     #logging.error(items)
     return render_template('products.html', items=items, noindex = True)
 

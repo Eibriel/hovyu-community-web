@@ -1,5 +1,5 @@
-{% macro list_stores(items, canonical_domain) %}
-{% for item in items|reverse %}
+{% macro list_stores(items, canonical_domain, latitude, longitude, activity) %}
+{% for item in items %}
     <div class="row" itemscope itemtype="http://schema.org/LocalBusiness">
         <div class="col-lg-12">
             {% if item.highlight %}
@@ -25,7 +25,7 @@
                             <div>
                                 <ul>
                                     {% for product in item['products_documents'] %}
-                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name">{{product['full_name']|title}} {{product['brand']}}</span> <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
+                                    <li itemprop="owns" itemscope itemtype="http://schema.org/Product"><span itemprop="name"><a href="/?product={{ product['product'] }}&latitude={{ latitude }}&longitude={{ longitude }}&activity=">{{product['name']|title}}</a> {{product['properties_name']|title}} {{product['brand']}} <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">{{product['price']}}</span></span></li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -83,6 +83,33 @@
                             {% if False %}<button class="btn btn-default btn-xs" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
                                 <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Destacar
                             </button>{% endif %}
+
+                            <div class="row hide" id="add_picture_div_{{ item._id }}">
+                                <div class="col-lg-12" style="margin-top: 1em">
+                                    <form action="/add_client_picture" method="POST" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="client_picture" class="col-sm-2 control-label">Agregar Fotografía</label>
+                                            <div class="col-sm-10">
+                                                <input type="file" name="client_picture" ></input>
+                                                <input type="hidden" name="store_id" value="{{ item._id }}"/>
+                                                <span id="client_picture_help" class="help-block">Si sos cliente o usuario envíanos una fotografía de un producto o del lugar. Se publicará luego del proceso de moderación :)<br><small>La fotografía se publicará con una licencia de dominio público <a href="https://creativecommons.org/about/cc0" target="_blank">CC-0</a></small></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="client_picture_name_{{ item._id }}" class="col-sm-2 control-label">Título de la fotografía</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="name" id="client_picture_name_{{ item._id }}" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> <!-- ROW -->
+
                         </div>
 
                         <div class="col-lg-6">
@@ -119,27 +146,6 @@
                         <!--</div>-->
                     </div><!--ROW-->
 
-                    <div class="row hide" id="add_picture_div_{{ item._id }}">
-                        <div class="col-lg-12" style="margin-top: 1em">
-                            <form action="/add_client_picture" method="POST" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="client_picture" class="col-sm-2 control-label">Agregar Fotografía</label>
-                                    <div class="col-sm-10">
-                                        <input type="file" name="client_picture" ></input>
-                                        <input type="hidden" name="store_id" value="{{ item._id }}"/>
-                                        <span id="client_picture_help" class="help-block">Si sos cliente o usuario envíanos una fotografía de un producto o del lugar. Se publicará luego del proceso de moderación :)<br><small>La fotografía se publicará con una licencia de dominio público <a href="https://creativecommons.org/about/cc0" target="_blank">CC-0</a></small></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="client_picture_name_{{ item._id }}" class="col-sm-2 control-label">Título de la fotografía</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" name="name" id="client_picture_name_{{ item._id }}" value="">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </form>
-                        </div>
-                    </div> <!-- ROW -->
 
                     {% for picture in item['pictures_info']|batch(4) %}
                     <div class="row">

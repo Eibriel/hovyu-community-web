@@ -10,6 +10,7 @@ from flask import make_response
 from datetime import datetime
 
 from web_server.modules.server_requests import get
+from web_server.modules.server_requests import patch
 
 def get_pictures_info(item):
     pictures_info = []
@@ -34,6 +35,17 @@ def get_pictures_info(item):
 @app.route("/robots.txt")
 def robots():
     response = make_response(render_template('robots.txt'))
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return response
+
+# CONTACT LIST 
+@app.route("/contacts.txt")
+def contacts():
+    canonical_domain = app.config['CANONICAL_DOMAIN']
+    stores = get('stores')
+    response = make_response(render_template('contacts.txt',
+                             stores = stores,
+                             canonical_domain = canonical_domain))
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
@@ -111,10 +123,18 @@ def home():
     elif 'product' in request.args:
         if request.args['product']!='':
             product = request.args['product']
-            product_db = get('products/{0}'.format(product))
+            product_db = get('products/{0}?inc_count=1'.format(product))
             if product_db:
                 product_name = product_db['name']
             query = request.args['product']
+            #current_use_count = 0
+            #if 'use_count' in product_db:
+            #    current_use_count = product_db['use_count']
+            #use_count = {
+            #    'use_count': current_use_count + 1
+            #}
+            #r = patch('products/{0}'.format(product), use_count, product_db['_etag'])
+            #logging.error( r.text )
         else:
             product_name = "todo"
     if 'activity' in request.args and request.args['activity']!='':
@@ -143,7 +163,9 @@ def home():
         here = True
     if 'product' in request.args or 'activity' in request.args:
         items = get('stores?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
-    
+    elif not 'store' in request.args:
+        items = get('stores?max_results=5&sort=-_updated')
+
     if product_name != "":
         #subtitle = " - {0}".format(product_name)
         subtitle = product_name

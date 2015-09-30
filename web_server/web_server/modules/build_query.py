@@ -20,7 +20,7 @@ def build_query():
         full_name = "{0}({1})".format(item['name'], item.get('address', ''))
         stores_items.append({'_id': item['_id'], 'full_name': full_name})
 
-    items = get('products?find_products={0}'.format(request.form['q']))
+    items = get('products?find_products={0}&sort=-use_count'.format(request.form['q']))
     products_items = []
     for item in items:
         products_items.append({'_id': item['_id'], 'name': item['name']})
