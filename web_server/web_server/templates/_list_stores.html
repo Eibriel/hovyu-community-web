@@ -13,6 +13,22 @@
                         <div class="col-lg-6">
                             <!--<h3>{{item.name}}</h3>-->
                             <!--<div class="alert" role="alert">-->
+
+                                    {% for picture in item['process_pictures']|batch(2) %}
+                                    <div class="row">
+                                        {% for column in picture %}
+                                        <div class="col-lg-6" style="margin-top: 1em">
+                                            <a class="thumbnail" href="/client_picture/{{ column['id'] }}" target="_blank">
+                                                <img src="/client_picture/{{ column['id'] }}" itemprop="image" alt="{{ column['name'] }}">
+                                                <div class="caption">
+                                                    <small>{{ column['name'] }}</small>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% endfor %}
+                                    </div> <!-- ROW -->
+                                    {% endfor %}
+
                             <div>
                                 <!--<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
                                 <span class="sr-only">Información:</span>
@@ -147,7 +163,7 @@
                     </div><!--ROW-->
 
 
-                    {% for picture in item['pictures_info']|batch(4) %}
+                    {% for picture in item['client_pictures']|batch(4) %}
                     <div class="row">
                         {% for column in picture %}
                         <div class="col-lg-3" style="margin-top: 1em">

@@ -12,6 +12,7 @@ from flask import render_template
 from web_server.modules.server_requests import get
 from web_server.modules.server_requests import post
 from web_server.modules.server_requests import patch
+from web_server.modules.server_requests import get_pictures_info
 
 
 # PRODUCTS
@@ -48,8 +49,8 @@ def client_picture(picture_id):
 
 @app.route('/client_pictures/')
 def client_pictures():
-    items = get('client_pictures?projection=%7B%22picture_binary%22%3A0%7D')
-    return render_template('client_pictures.html', items=items, noindex = True, subtitle='Fotografías de los clientes')
+    pictures = get('client_pictures?projection=%7B%22picture_binary%22%3A0%7D')
+    return render_template('client_pictures.html', items=pictures, noindex = True, subtitle='Fotografías de los clientes')
 
 
 @app.route('/client_picture_approving', methods=['POST'])
@@ -114,3 +115,36 @@ def logo_picture(picture_id):
     response.headers['last-modified'] = picture['_updated']
     response.headers['cache-control'] = 'max-age=2628000, public'
     return response
+
+
+@app.route('/edit_process_album/<store_id>')
+def edit_process_album(store_id):
+    store = get('stores/{0}'.format(store_id))
+    store = store[0]
+    #logging.error( store )
+
+    if store:
+        pictures_info = get_pictures_info( store )
+
+    return render_template('edit_process_album.html',
+                            pictures = pictures_info,
+                            store_id = store_id,
+                            noindex = True,
+                            subtitle = 'Editar album de proceso')
+
+@app.route('/set_album', methods=['POST'])
+def set_album():
+    picture_id = request.form['picture_id']
+    picture_etag = request.form['picture_etag']
+    album_form = request.form['album']
+    store_id = request.form['store_id']
+
+    if album_form == 'process':
+        album = 'process'
+    else:
+        album = 'client'
+
+    password = request.form['admin_password']
+    r = patch('client_pictures/{0}'.format(picture_id), {'album': album}, picture_etag, password)
+    #logging.error( r.text )
+    return redirect('/?store={0}'.format(store_id))

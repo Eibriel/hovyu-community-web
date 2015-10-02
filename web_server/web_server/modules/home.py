@@ -11,25 +11,7 @@ from datetime import datetime
 
 from web_server.modules.server_requests import get
 from web_server.modules.server_requests import patch
-
-def get_pictures_info(item):
-    pictures_info = []
-    for picture_id in item['client_pictures']:
-        picture = get('client_pictures/{0}?projection=%7B%22picture_binary%22%3A0%7D'.format(picture_id))
-        # TODO move to server
-        if not picture['approved']:
-            continue
-        if not 'name' in picture:
-            picture['name'] = ''
-        picture_info = {
-            'name': picture['name'],
-            'approved': picture['approved'],
-            'admin_comments': picture['admin_comments'],
-            'score': picture['score'],
-            'id': picture_id
-        }
-        pictures_info.append( picture_info )
-    return pictures_info
+from web_server.modules.server_requests import get_pictures_info
 
 # ROBOTS
 @app.route("/robots.txt")
@@ -187,7 +169,14 @@ def home():
     if items:
         for item in items:
             pictures_info = get_pictures_info( item )
-            item['pictures_info'] = pictures_info
+            item['client_pictures'] = []
+            item['process_pictures'] = []
+            #item['pictures_info'] = pictures_info
+            for picture in pictures_info:
+                if picture['album'] == 'client':
+                    item['client_pictures'].append( picture )
+                elif picture['album'] == 'process':
+                    item['process_pictures'].append( picture )
 
     return render_template('home.html',
                            msg = msg,

@@ -62,7 +62,7 @@
                 <span class="thumbnail"><img alt="" src="/logo_picture/{{ edit_item.logo_picture }}"></span>
                 {% endif %}
                 <input type="file" name="logo_picture" ></input>
-                <span id="logo_picture_help" class="help-block">Si sos parte del staff envíanos el logo.<br><small>La imagen será publica.</small></span>
+                <span id="logo_picture_help" class="help-block">Si eres parte del staff envíanos el logo.<br><small>La imagen será publica.</small></span>
             </div>
         </div>
         <div class="form-group ">
@@ -83,6 +83,7 @@
                 <span id="new_store_description_help" class="help-block">¿A qué se dedica la entidad? ¿Por qué es especial?</span>
             </div>
         </div>
+
         <!-- Process Description -->
         <div class="form-group">
             <label for="new_store_process_description" class="col-sm-2 control-label">¿Cuál es el compromiso con la Sustentabilidad?</label>
@@ -91,6 +92,18 @@
                 <span id="new_store_process_description_help" class="help-block">¿Qué hace que la entidad aporte a la sustentabilidad? ¿Cuales son los procesos de producción? ¿Tiene alguna certificación?</span>
             </div>
         </div>
+
+        <!-- Edit Process Album -->
+        {#
+        <div class="form-group">
+            <label for="logo_picture" class="col-sm-2 control-label">Album de Proceso de producción</label>
+            <div class="col-sm-10">
+                <a class="btn btn-primary" href="/edit_process_album/{{ edit_item._id }}" role="button" target="_blank">Editar Album</a>
+                <span id="logo_picture_help" class="help-block">Si eres parte del staff envíanos imágenes mostrando el proceso de creación de producto o servicio.<br><small>Las imágenes se publicarán bajo licencia CC-0.</small></span>
+            </div>
+        </div>
+        #}
+
         <!-- Address -->
         <div class="form-group">
             <label for="new_store_email" class="col-sm-2 control-label">Domicilio</label>

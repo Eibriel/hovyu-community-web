@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="row">
+        <h2 style="text-align: center;">Editar album de proceso</h2>
+    </div>
+    {#
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <a role="button" class="btn btn-primary btn-sm" href="/product_add_edit">
+          Agregar producto
+        </a>
+    </div>
+    #}
+    <div class="row" id="add_picture_div">
+        <div class="col-lg-12" style="margin-top: 1em">
+            <form action="/add_client_picture" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="client_picture" class="col-sm-2 control-label">Agregar Fotografía</label>
+                    <div class="col-sm-10">
+                        <input type="file" name="client_picture" ></input>
+                        <input type="hidden" name="store_id" value=""/>
+                        <span id="client_picture_help" class="help-block">Si sos cliente o usuario envíanos una fotografía de un producto o del lugar. Se publicará luego del proceso de moderación :)<br><small>La fotografía se publicará con una licencia de dominio público <a href="https://creativecommons.org/about/cc0" target="_blank">CC-0</a></small></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="client_picture_name" class="col-sm-2 control-label">Título de la fotografía</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" id="client_picture_name" value="">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="client_picture_name" class="col-sm-2 control-label">Album</label>
+                    <div class="col-sm-10">
+                        <select class="form-control"  name="tel_type" id="new_store_tel_type">
+                            <option value="client">Cliente</option>
+                            <option value="process">Proceso</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div> <!-- ROW -->
+
+{% for item in pictures %}
+    <div class="row">
+        <div class="panel panel-default" id="panel_client_picture_{{ item.id }}">
+            <div class="panel-heading"><strong>{{ item.name }}</strong></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <a class="thumbnail">
+                            <img src="/client_picture/{{ item.id }}">
+                        </a>
+                    </div>
+                    <div class="col-lg-9">
+                        {% if item['approved'] %}
+                        <p><span class="label label-success">Imagen aprobada</span></p>
+                        {% else %}
+                        <p><span class="label label-danger">Imagen desaprobada o esperando aprobación</span></p>
+                        {% endif %}
+
+                        {% if item['album'] == 'client' %}
+                        <p><span class="label label-default">Fotografías de cliente</span></p>
+                        {% elif item['album'] == 'process' %}
+                        <p><span class="label label-default">Fotografías de proceso</span></p>
+                        {% endif %}
+
+                        <form action="/set_album" method="POST">
+                            <input type="hidden" name="picture_id" value="{{ item['id'] }}" />
+                            <input type="hidden" name="picture_etag" value="{{ item['etag'] }}" />
+                            <input type="hidden" name="store_id" value="{{ store_id }}" />
+                            <div class="form-group">
+                                <label for="client_picture_album_{{ item['id'] }}" class="col-sm-2 control-label">Album</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control"  name="album" id="client_picture_album_{{ item['id'] }}">
+                                        <option value="client">Cliente</option>
+                                        <option value="process">Proceso</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="admin_password_{{ item.id }}">Password de administrador</label>
+                                <input type="password" class="form-control" name="admin_password" id="admin_password_{{ item.id }}" value="">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        {#
+    'album': {
+        'type': 'string',
+        'allowed': ['client',
+                    'process']
+    }
+                        <form action="/client_picture_approving" method="POST">
+                            <div class="form-group">
+                                <label for="admin_password_{{ item._id }}">Password de administrador</label>
+                                <input type="password" class="form-control" name="admin_password" id="admin_password_{{ item._id }}" value="">
+                            </div>
+                            <input type="hidden" name="picture_id" value="{{ item._id }}">
+                            <input type="hidden" name="picture_etag" value="{{ item._etag }}">
+                            {% if item['approved'] %}
+                            <input type="hidden"  name="picture_approved" value="False">
+                            <button type="submit" class="btn btn-default">Desaprobar</button>
+                            {% else %}
+                            <input type="hidden" name="picture_approved" value="True">
+                            <button type="submit" class="btn btn-default">Aprobar</button>
+                            {% endif %}
+                        </form>
+                        #}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{#
+{% for picture in pictures %}
+    <div class="panel panel-default" id="panel_store_{{ item._id }}">
+        <div class="panel-heading"><strong>{{ item.name }} - {{ item.use_count }}</strong></div>
+        <div class="panel-body">
+        {{ item.description|nl2br }}
+        <a class="btn-sm btn-default" href="/product_add_edit?e={{ item._id }}" role="button">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar
+        </a>
+        </div>
+    </div>
+{% endfor %}
+#}
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

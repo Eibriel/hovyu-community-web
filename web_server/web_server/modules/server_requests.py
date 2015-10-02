@@ -6,6 +6,30 @@ from requests.exceptions import MissingSchema
 from requests.exceptions import ConnectionError
 from requests.auth import HTTPBasicAuth
 
+def get_pictures_info(item):
+    pictures_info = []
+    for picture_id in item['client_pictures']:
+        picture = get('client_pictures/{0}?projection=%7B%22picture_binary%22%3A0%7D'.format(picture_id))
+        # TODO move to server
+        if not picture['approved']:
+            continue
+        if not 'name' in picture:
+            picture['name'] = ''
+        if not 'album' in picture:
+            picture['album'] = 'client'
+        picture_info = {
+            'name': picture['name'],
+            'album': picture['album'],
+            'approved': picture['approved'],
+            'admin_comments': picture['admin_comments'],
+            'score': picture['score'],
+            'id': picture_id,
+            'etag': picture['_etag']
+        }
+        pictures_info.append( picture_info )
+    return pictures_info
+
+
 def getserverip():
     ip = None
     try:
@@ -26,10 +50,10 @@ def getserverip():
 #   return b64encode(b"{0}:{1}".format(username, password)).decode("ascii")
 
 
-def get(resource):
+def get(resource, params = None):
     items = []
     try:
-        r = requests.get('http://{0}/{1}'.format(getserverip(), resource))
+        r = requests.get('http://{0}/{1}'.format(getserverip(), resource), params = params)
         json = r.json()
         if '_items' in json:
             items = json['_items']
