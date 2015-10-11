@@ -10,6 +10,7 @@ from flask import make_response
 from datetime import datetime
 
 from web_server.modules.server_requests import get
+from web_server.modules.server_requests import post
 from web_server.modules.server_requests import patch
 from web_server.modules.server_requests import get_pictures_info
 
@@ -70,9 +71,40 @@ def sitemap():
     response.headers['Content-Type'] = 'text/xml; charset=utf-8'
     return response
 
+# CONTACT LIST 
+@app.route("/access_log.txt")
+def access_log():
+    canonical_domain = app.config['CANONICAL_DOMAIN']
+    logs = get('access_log?sort=-_updated')
+    response = make_response(render_template('access_log.txt',
+                             logs = logs,
+                             canonical_domain = canonical_domain))
+    response.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    return response
+
 # HOME
 @app.route("/")
 def home():
+    import hashlib
+    ip = 'Hovyu {0}'.format(request.environ['REMOTE_ADDR'])
+    ip = ip.encode('utf-8')
+    ip_md5 = hashlib.sha224( ip ).hexdigest()
+    access_log = {
+        'page': request.url,
+        'ip_md5': ip_md5,
+        'useragent': request.user_agent.string,
+        'useragent_platform': request.user_agent.platform,
+        'useragent_browser': request.user_agent.browser,
+        'useragent_version': request.user_agent.version,
+        'useragent_language': request.user_agent.language,
+        'acceptlanguage': request.accept_languages.to_header(),
+        'referrer': request.referrer
+    }
+
+    logging.error( access_log )
+    r = post('access_log', access_log)
+    logging.error( r.text )
+
     #if 'interpolate_places' in request.args:
     #    get('places?interpolate_places')
     #    return ("Interpolation OK")

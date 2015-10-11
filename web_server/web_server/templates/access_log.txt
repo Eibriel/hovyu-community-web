@@ -1,0 +1,8 @@
+{{ logs|length }}
+{% for log in logs %}
+{{ log['page']}}
+{{ log['ip_md5'] }}
+{{ log['useragent'] }}
+{{ log['acceptlanguage'] }}
+{{ log['referrer'] }}
+{% endfor %}
