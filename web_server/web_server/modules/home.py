@@ -101,9 +101,9 @@ def home():
         'referrer': request.referrer
     }
 
-    logging.error( access_log )
+    #logging.error( access_log )
     r = post('access_log', access_log)
-    logging.error( r.text )
+    #logging.error( r.text )
 
     #if 'interpolate_places' in request.args:
     #    get('places?interpolate_places')
