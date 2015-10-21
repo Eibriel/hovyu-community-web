@@ -1,6 +1,8 @@
 import random
 import logging
 
+from flask.ext.babel import gettext
+
 from web_server import app
 from web_server import babel
 
@@ -16,12 +18,19 @@ from web_server.modules.server_requests import post
 from web_server.modules.server_requests import patch
 from web_server.modules.server_requests import get_pictures_info
 
+
+@babel.localeselector
+def get_locale():
+    return 'es'
+
+
 # ROBOTS
 @app.route("/robots.txt")
 def robots():
     response = make_response(render_template('robots.txt'))
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
+
 
 # CONTACT LIST
 @app.route("/contacts.txt")
@@ -33,6 +42,7 @@ def contacts():
                              canonical_domain = canonical_domain))
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
+
 
 # ATOM
 @app.route("/atom.xml")
@@ -51,6 +61,7 @@ def atom():
                              canonical_domain = canonical_domain))
     response.headers['Content-Type'] = 'text/xml; charset=utf-8'
     return response
+
 
 # SITEMAP
 @app.route("/sitemap.xml")
@@ -73,6 +84,7 @@ def sitemap():
     response.headers['Content-Type'] = 'text/xml; charset=utf-8'
     return response
 
+
 # CONTACT LIST
 @app.route("/access_log.txt")
 def access_log():
@@ -85,12 +97,6 @@ def access_log():
     return response
 
 
-@babel.localeselector
-def get_locale():
-    #return g.get('current_lang', 'en')
-    return 'en'
-
-
 # HOME
 @app.route("/")
 def home():
@@ -99,7 +105,7 @@ def home():
     if request.host != app.config['ALLOWED_HOST']:
         return redirect('{0}://{1}{2}'.format(request.scheme, app.config['ALLOWED_HOST'], request.full_path))
 
-    return render_template('about.html', page_description = '', subtitle = '')
+    #return render_template('about.html', page_description = '', subtitle = '')
 
     import hashlib
     ip = '{1}{0}'.format(app.config['IP_LOG_SALT'], request.environ['REMOTE_ADDR'])
@@ -146,7 +152,7 @@ def home():
     items = None
 
     if 'store' in request.args:
-        items = get('organizations/{0}?inc_views=1'.format(request.args['store']))
+        items = get('stores/{0}?inc_views=1'.format(request.args['store']))
         product_name = items[0]['name']
         page_description = items[0]['description']
 
@@ -192,9 +198,9 @@ def home():
     if latitude!='' and longitude!='':
         here = True
     if 'product' in request.args or 'activity' in request.args:
-        items = get('organizations?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
+        items = get('stores?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
     elif not 'store' in request.args:
-        items = get('organizations?max_results=5&sort=-_updated')
+        items = get('stores?max_results=5&sort=-_updated')
 
     if product_name != "":
         #subtitle = " - {0}".format(product_name)
@@ -205,12 +211,12 @@ def home():
     #if place_id != '':
     #    subtitle = "{0} en {1}".format(subtitle, place_full_name)
 
-    #tiptrick = get('tipstricks')
-    #if len(tiptrick) > 0:
-    #    tiptrick = random.choice(tiptrick)
-    tiptrick = []
+    tiptrick = get('tipstricks')
+    if len(tiptrick) > 0:
+        tiptrick = random.choice(tiptrick)
+    #tiptrick = []
 
-    organizations_stats = get('organizations_stats')
+    organizations_stats = get('store_stats')
     if organizations_stats:
         organizations_stats = organizations_stats[0]
 

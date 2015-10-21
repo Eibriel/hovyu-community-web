@@ -39,7 +39,7 @@
             </form>
             <div class="form-group" style="margin-bottom:0px;">
                 <form id="q_form" onsubmit="return add_q();">
-                    <input type="text" class="form-control" placeholder="¿Qué busco? Ejemplo: Restaurant" name="q" id="q" autocomplete="off">
+                    <input type="text" class="form-control" placeholder="{{ _('What I\'m looking for? Ex.: Restaurant') }}" name="q" id="q" autocomplete="off">
                 </form>
               <!--<span class="input-group-btn">
                 <button class="btn btn-success" type="button" onclick="build_query()">Ver items</button>
@@ -48,10 +48,10 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div id="common_query_items" style="line-height: 3em">
-                        <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">Buscar cualquiér producto</a>
-                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return toggle_map()">Seleccionar ubicación en el mapa</a>
-                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">Buscar cerca de aquí</a>
-                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">Buscar en cualquiér lado</a>
+                        <a class="btn btn-primary btn-sm" role="button" href="#" onclick="return all_products()">{{ _('Search for any product') }}</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return toggle_map()">{{ _('Select location on map') }}</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">{{ _('Search near here') }}</a>
+                        <a class="btn btn-success btn-sm" role="button" href="#" onclick="return any_place()">{{ _('Search everywhere') }}</a>
                         <span class="btn btn-default btn-sm" id="feedback_span">...</span>
                     </div>
                     <div id="query_items">
@@ -110,7 +110,7 @@
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p class="text-center lead"><strong>No se encontraron resultados</strong></p>
+                    <p class="text-center lead"><strong>{{ _('No results found') }}</strong></p>
                 </div>
             </div>
         </div>
@@ -159,7 +159,7 @@
     {{ list_stores(items, canonical_domain, latitude, longitude) }}
     {#<div class="row">
         <div class="col-sm-offset-2 col-sm-8">
-            <div style="text-align: center; margin-top: 2em;">Página {{ page }}</div>
+            <div style="text-align: center; margin-top: 2em;">{{ _('Página %(page)d', page = page) }}</div>
         </div>
     </div>#}
     {% endif %}
@@ -366,17 +366,17 @@ var longitude = null;
 
 function here() {
     if ("geolocation" in navigator) {
-        $('#feedback_span').html('Obteniendo ubicación...');
+        $('#feedback_span').html( '{{ _("Getting location...") }}');
         navigator.geolocation.getCurrentPosition(function(position) {
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
 
           print_here();
-          $('#feedback_span').html('Ubicación conocida');
+          $('#feedback_span').html('{{ _("Known location") }}');
 
         }, function(err) {
           $('#query_place').html( $('#q_location_name').val() );
-          $('#feedback_span').html('Ubicación desconocida');
+          $('#feedback_span').html('{{ _("Unknown location") }}');
         });
     }
 
@@ -384,9 +384,9 @@ function here() {
 }
 
 if (latitude && longitude) {
-    $('#feedback_span').html('Ubicación conocida');
+    $('#feedback_span').html('{{ _("Known location") }}');
 } else {
-    $('#feedback_span').html('Ubicación desconocida');
+    $('#feedback_span').html('{{ _("Unknown location") }}');
 }
 
 {% if activity == "" and product == "" %}
@@ -456,7 +456,7 @@ function any_place() {
     $('#place_label_near_to').css('display', 'none');
     $('#place_label_in').css('display', 'none');
 
-    $('#feedback_span').html('Ubicación desconocida');
+    $('#feedback_span').html('{{ _("Unknown location") }}');
 
     return false;
 }

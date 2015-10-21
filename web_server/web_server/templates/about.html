@@ -5,72 +5,71 @@
     <div class="col-sm-offset-1 col-sm-10">
         <!--<div class="panel panel-default">
             <div class="panel-body">-->
-                <h1>Acerca de Hovyũ</h1>
+                <h1>{{ _('About Hovyũ') }}</h1>
                 <p>
-                    Hovyũ tiene como misión acelerar la transición hacia métodos de producción sostenibles.
+                    {{ _('Hovyũ\'s mission is to accelerate the transition to sustainable production methods.') }}
                 </p>
                 <p>
-                    Es una comunidad de comercios e instituciones relacionados con el <strong>Diseño Sustentable</strong>,
-                    el <strong>Comercio Justo</strong> y la <strong>Alimentación Consciente</strong> y tiene como meta ser la
-                    base de datos universal mas completa alimentada y mantenida por la comunidad.
+                    {{ _('Is a Community of business and organization related to <strong>Sustainable Design</strong>,
+                    <strong>Fair Trade</strong> and <strong>Conscious Eating</strong> and its goal is to be the
+                    most complete database feed and maintain by the community.') }}
                 </p>
                 <p>
-                    Está desarrollada por Widú como un proyecto de software libre, donde la información es libre, bajo licencia <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY 4.0</a>,
-                    y es accesible a través de APIs premitiendo la creación de aplicaciones por parte de terceros.<br>
-                    Hovyũ significa verde en Guaraní y suena similar a <em>hovujú</em>, pero le decimos <em>hoviú</em>. 
+                    {{ _('It\'s developed by Widú as a free software project, where the data is free under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC-BY 4.0</a> licence
+                    and can be accesed throwgth APIs allowing the creation of third party applications.') }}<br>
+                    {{ _('Hovyũ means green in Guaraní and sounds similar to <em>hovuhu</em>, but we pronounce it <em>hovu</em>.') }}
                 </p>
-                <p>Material de prensa:
-                    <a href="/static/press/GacetillaHovyu.pdf" target="_blank">Gacetilla de Prensa</a>,
-                    <a href="/static/press/HOVYU_01.png" target="_blank">Screenshot 01</a>,
-                    <a href="/static/press/HOVYU_02.png" target="_blank">Screenshot 02</a>,
-                    <a href="/static/press/hovyu-logo.png" target="_blank">Logo</a> e
-                    <a href="/static/press/hovyu-icon.png" target="_blank">Icono</a>.
-                </p>
-
-                <h3>Acerca de Widú</h3>
-                <p>
-                    <img alt="Widú" style="width: 6em;" src="http://widutransmedia.com/LogoWIDU.png" /><br>
-                    <a href="http://widutransmedia.com" target="_blank">Widú</a> es comunicación transmedia para empresas Sustentables.
+                <p>{{ _('Press material') }}:
+                    <a href="/static/press/GacetillaHovyu.pdf" target="_blank">{{ _('Press Kit') }}</a>,
+                    <a href="/static/press/HOVYU_01.png" target="_blank">{{ _('Screenshot') }} 01</a>,
+                    <a href="/static/press/HOVYU_02.png" target="_blank">{{ _('Screenshot') }} 02</a>,
+                    <a href="/static/press/hovyu-logo.png" target="_blank">{{ _('Logo') }}</a> {{ _('and') }}
+                    <a href="/static/press/hovyu-icon.png" target="_blank">{{ _('Icon') }}</a>.
                 </p>
 
-                <h3>El compromiso</h3>
+                <h3>{{ _('About Widú') }}</h3>
                 <p>
-                    Los servidores están ubicados en Santa Fe y Buenos Aires (Argentina) apostando a la infraestructura local,
-                    utilizamos medios electrónicos para reducir la utilización de papel.<br>
-                    Hovyũ alienta la utilización de soluciones de pago alternativas y descentralizadas, el software libre y
-                    las base de datos libres.
+                    <img alt="Widú" style="width: 6em;" src="/static/img/widu-logo.png" /><br>
+                    {{ _('<a href="%(url)s" target="_blank">Widú</a> is transmedia communication for Sustainable business.', url = 'http://widutransmedia.com') }}
                 </p>
 
-                <h3>Contacto y ayuda</h3>
+                <h3>{{ _('Commitment') }}</h3>
                 <p>
-                    Si tienes dudas o comentarios puedes ponerte en contacto conmigo a través de mi dirección de correo electrónico, Telegram o Facebook.
+                    {{ _('The servers are locates at Santa Fe and Buenos Aires (Argentina) betting on local infrastructure,
+                    we use digital media to reduce paper consumption.') }}<br>
+                    {{ _('Hovyũ encourages alternative and desentralized payment solutions, free software and free data.') }}
+                </p>
+
+                <h3>{{ _('Contact and help') }}</h3>
+                <p>
+                    {{ _('If you have questions or comments contact us through email, Telegram or Facebook.') }}
                 </p>
                 <ul>
                     <li>info@hovyu.com</li>
-                    <li><a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank">Chatea con nosotros en Telegram</a></li>
-                    <li><a href="https://www.facebook.com/HovyuPage" target="_blank">Síguenos en Facebook</a></li>
+                    <li><a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank">{{ _('Chat with us on Telegram') }}</a></li>
+                    <li><a href="https://www.facebook.com/HovyuPage" target="_blank">{{ _('Follow us on Facebook') }}</a></li>
                 </ul>
 
-                <h3>Desarrolladores</h3>
+                <h3>{{ _('Developers') }}</h3>
                 <p>
-                    Hovyũ es software libre, el código fuente está publicado en GitHub:
+                    {{ _('Hovyũ is free software, the source code is published on GitHub') }}:
                 </p>
                     <ul>
-                        <li><a href="https://github.com/Eibriel/hovyu-community-web" target="_blank">Interfaz Web</a></li>
-                        <li><a href="https://github.com/Eibriel/hovyu-community-server" target="_blank">Servidor Web</a></li>
+                        <li><a href="https://github.com/Eibriel/hovyu-community-web" target="_blank">{{ _('Web Interface') }}</a></li>
+                        <li><a href="https://github.com/Eibriel/hovyu-community-server" target="_blank">{{ _('Web Server') }}</a></li>
                     </ul>
                 <p>
-                    Si deseas mantener una copia actualizada de nuestra base de datos puedes utilizar nuestro feed <a href="/atom.xml" target="_blank">Atom 1.0</a>.
+                    {{ _('If you want an updated copy of our database you can use our feed <a href="/atom.xml" target="_blank">Atom 1.0</a>.') }}
                 </p>
 
-                <h3>Contenido</h3>
+                <h3>{{ _('Content') }}</h3>
                 <p>
-                <strong>Varios comercios fueron tomados de:</strong> <a href="https://www.facebook.com/mapa.vegano" target="_blank">Mapa Vegano</a><br>
-                <strong>Información geográfica:</strong> <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a><br>
-                <strong>Emojis:</strong> <a href="https://github.com/twitter" target="_blank">Twitter</a>
+                {{ _('Some business where taken from') }}: <a href="https://www.facebook.com/mapa.vegano" target="_blank">Mapa Vegano</a><br>
+                {{ _('Geographic information') }}: <a href="http://openstreetmap.org/" target="_blank">OpenStreetMap</a><br>
+                {{ _('Emojis') }}: <a href="https://github.com/twitter" target="_blank">Twitter</a>
                 </p>
 
-                <h1>Estadísticas</h1>
+                <h1>{{ _('Statistics') }}</h1>
                 <!-- Inicio codigo Mi PageRank -->
                 <script  src="http://www.mipagerank.com/mipagerank.php?url=hovyu.com&amp;d=1"></script>
                 <noscript>
@@ -177,7 +176,7 @@
                 #}
             <!--</div>
         </div>-->
-        {#     
+        {#
         <div class="panel panel-default col-sm-offset-2 col-sm-8 hide">
             <div class="panel-body" >
                 <div class="embed-responsive embed-responsive-16by9">

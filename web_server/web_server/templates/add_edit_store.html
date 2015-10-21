@@ -4,14 +4,14 @@
 {% block body %}
     <div class="row">
         {% if editing %}
-        <h1 style="text-align: center;">Editar comercio u organización</h1>
+        <h1 style="text-align: center;">{{ _('Edit business or organization') }}</h1>
         {% else %}
-        <h1 style="text-align: center;">Sumar un comercio u organización</h1>
+        <h1 style="text-align: center;">{{ _('Add business or organization') }}</h1>
         {% endif %}
     </div>
     <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
         <a role="button" class="btn btn-primary btn-sm" href="/">
-          Cancelar
+          {{ _('Cancel') }}
         </a>
     </div>
     {% if not editing %}
@@ -19,12 +19,12 @@
         <div class="col-sm-offset-2 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <p class="text-center">Suma un comercio u organización relacionado con lo <strong>Sustentable</strong></p>
+                    <p class="text-center">{{ _('Add a business or organization related to <strong>Sustainability</strong>') }}</p>
                     <!--<p class="text-center lead">¡Sumalo ahora!</p>-->
                     <p class="text-center">
                         <small>
-                            Si necesitas ayuda consultanos al correo <strong>info@hovyu.com</strong> o
-                            al <a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank">chat de Telegram</a>.
+                            {{ _('If you need help contact us to <strong>info@hovyu.com</strong> or
+                            <a href="https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae" target="_blank">Telegram chat') }}</a>.
                         </small>
                     </p>
                 </div>
@@ -39,37 +39,37 @@
     {% endif %}
         <!-- Name -->
         <div class="form-group">
-            <label for="new_store_name" class="col-sm-2 control-label">Nombre</label>
+            <label for="new_store_name" class="col-sm-2 control-label">{{ _('Name') }}</label>
             <div class="col-sm-10">
-                <input type="text" name="name" id="new_store_name" class="form-control" placeholder="Entidad Sustentable" value="{{ edit_item.name }}" autocomplete="off"></input>
-                <span id="new_store_name_help" class="help-block">Nombre de la entidad que quieres sumar</span>
+                <input type="text" name="name" id="new_store_name" class="form-control" placeholder="{{ _('Sustainable entity') }}" value="{{ edit_item.name }}" autocomplete="off"></input>
+                <span id="new_store_name_help" class="help-block">{{ _('Name of the entity yout want to add') }}</span>
             </div>
         </div>
         <div class="col-sm-offset-2 col-sm-10">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div id="similar_stores"></div>
-                    <span id="similar_stores_help" class="help-block">Verifica que el comercio no aparezca en esta lista</span>
+                    <span id="similar_stores_help" class="help-block">{{ _('Check that the entity is not listed adove') }}</span>
                 </div>
             </div>
         </div>
 
         <!-- Logo Picture -->
         <div class="form-group">
-            <label for="logo_picture" class="col-sm-2 control-label">Agregar Logo</label>
+            <label for="logo_picture" class="col-sm-2 control-label">{{ _('Add Logo') }}</label>
             <div class="col-sm-10">
                 {% if edit_item.logo_picture %}
                 <span class="thumbnail"><img alt="" src="/logo_picture/{{ edit_item.logo_picture }}"></span>
                 {% endif %}
                 <input type="file" name="logo_picture" ></input>
-                <span id="logo_picture_help" class="help-block">Si eres parte del staff envíanos el logo.<br><small>La imagen será publica.</small></span>
+                <span id="logo_picture_help" class="help-block">{{ _('If you are part of the staff send us a logo.') }}<br><small>{{ _('The picture will be public') }}.</small></span>
             </div>
         </div>
         <div class="form-group ">
             <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="logo_picture_delete" > Eliminar Logo
+                        <input type="checkbox" name="logo_picture_delete" > {{ _('Delete Logo') }}
                     </label>
                 </div>
             </div>
@@ -77,19 +77,19 @@
 
         <!-- Description -->
         <div class="form-group">
-            <label for="new_store_description" class="col-sm-2 control-label">Descripción de la entidad</label>
+            <label for="new_store_description" class="col-sm-2 control-label">{{ _('Description of the entity') }}</label>
             <div class="col-sm-10">
                 <textarea name="description" id="new_store_description" class="form-control" rows="3" >{{ edit_item.description }}</textarea>
-                <span id="new_store_description_help" class="help-block">¿A qué se dedica la entidad? ¿Por qué es especial?</span>
+                <span id="new_store_description_help" class="help-block">{{ _('What does the entity? Why it is special?')}}</span>
             </div>
         </div>
 
         <!-- Process Description -->
         <div class="form-group">
-            <label for="new_store_process_description" class="col-sm-2 control-label">¿Cuál es el compromiso con la Sustentabilidad?</label>
+            <label for="new_store_process_description" class="col-sm-2 control-label">{{ _('What is the commitment with Sustainability?') }}</label>
             <div class="col-sm-10">
                 <textarea name="process_description" id="new_store_process_description" class="form-control" rows="3" >{{ edit_item.process_description }}</textarea>
-                <span id="new_store_process_description_help" class="help-block">¿Qué hace que la entidad aporte a la sustentabilidad? ¿Cuales son los procesos de producción? ¿Tiene alguna certificación?</span>
+                <span id="new_store_process_description_help" class="help-block">{{ _('What makes the entity to contribute to sustainability? Which are the production pipelines? Does it have any certification?') }}</span>
             </div>
         </div>
 
@@ -106,18 +106,18 @@
 
         <!-- Address -->
         <div class="form-group">
-            <label for="new_store_email" class="col-sm-2 control-label">Domicilio</label>
+            <label for="new_store_email" class="col-sm-2 control-label">{{ _('Address') }}</label>
             <div class="col-sm-10">
-                <input type="text" name="address" id="new_store_address" class="form-control" placeholder="Calle 1234, Ciudad, País" value="{{ edit_item.address }}"></input>
-                <span id="new_store_address_help" class="help-block">Domicilio de la entidad</span>
+                <input type="text" name="address" id="new_store_address" class="form-control" placeholder="{{ _('Street 1234, City, Country') }}" value="{{ edit_item.address }}"></input>
+                <span id="new_store_address_help" class="help-block">{{ _('Entity address') }}</span>
             </div>
         </div>
         <!-- EMail -->
         <div class="form-group">
-            <label for="new_store_email" class="col-sm-2 control-label">Correo electrónico</label>
+            <label for="new_store_email" class="col-sm-2 control-label">{{ _('E-Mail') }}</label>
             <div class="col-sm-10">
-                <input type="email" name="email" id="new_store_email" class="form-control" placeholder="info@entidadsustentable.com" value="{{ edit_item.email }}"></input>
-                <span id="new_store_name_help" class="help-block">Correo electrónico de contacto</span>
+                <input type="email" name="email" id="new_store_email" class="form-control" placeholder="{{ _('info@sustainableentity.com') }}" value="{{ edit_item.email }}"></input>
+                <span id="new_store_name_help" class="help-block">{{ _('Contact E-Mail') }}</span>
             </div>
         </div>
         {#<!-- MAIN PICTURE -->
@@ -132,21 +132,21 @@
 
         <!-- Websites -->
         <div class="form-group">
-            <label for="new_store_website" class="col-sm-2 control-label">Sitios Web</label>
+            <label for="new_store_website" class="col-sm-2 control-label">{{ _('Websites') }}</label>
             <div class="col-sm-10">
 
                 <div class="col-sm-4">
-                    <input type="text" name="website" id="new_store_website" class="form-control" placeholder="http://entidadsustentable.com" value=""></input>
+                    <input type="text" name="website" id="new_store_website" class="form-control" placeholder="{{ _('http://sustainableentity.com') }}" value=""></input>
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" name="website_title" id="new_store_website_title" class="form-control" placeholder="EntidadSustentable.com" value=""></input>
+                    <input type="text" name="website_title" id="new_store_website_title" class="form-control" placeholder="{{ _('SustainableEntity.com') }}" value=""></input>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-primary" href="#" role="button" onclick="return add_website();">Agregar Sitio Web</a>
+                    <a class="btn btn-primary" href="#" role="button" onclick="return add_website();">{{ _('Add website') }}</a>
                 </div>
             </div>
             <div class="col-sm-offset-2 col-sm-10">
-                <span id="new_store_website_help" class="help-block">Ingresar URL (debe comenzar con "http://" o "https://"), ingresar Nombre y luego hacer click en Agregar Sitio Web</span>
+                <span id="new_store_website_help" class="help-block">{{ _('Enter URL (it must begin with "http://" or "https://"), enter the Name and then click on Add website') }}</span>
             </div>
         </div>
         <div class="row">
@@ -162,25 +162,25 @@
         </div>
         <!-- Phone Numbers -->
         <div class="form-group">
-            <label for="new_store_website" class="col-sm-2 control-label">Teléfonos</label>
+            <label for="new_store_website" class="col-sm-2 control-label">{{ _('Phone Numbers') }}</label>
             <div class="col-sm-10">
 
                 <div class="col-sm-4">
                     <select class="form-control"  name="tel_type" id="new_store_tel_type">
-                        <option value="line">Línea</option>
-                        <option value="mobile">Celular</option>
-                        <option value="radio">Nextel</option>
+                        <option value="line">{{ _('Ground') }}</option>
+                        <option value="mobile">{{ _('Mobile') }}</option>
+                        <option value="radio">{{ _('Radio') }}</option>
                     </select>
                 </div>
                 <div class="col-sm-4">
                     <input type="text" name="tel" id="new_store_tel" class="form-control" placeholder="+12 345 12345678" value=""></input>
                 </div>
                 <div class="col-sm-2">
-                    <a class="btn btn-primary" href="#" role="button" onclick="return add_tel();">Agregar Teléfono</a>
+                    <a class="btn btn-primary" href="#" role="button" onclick="return add_tel();">{{ _('Add Phone Number') }}</a>
                 </div>
             </div>
             <div class="col-sm-offset-2 col-sm-10">
-                <span id="new_store_website_help" class="help-block">Seleccionar tipo de teléfono, ingresar número y hacer click en Agregar Teléfono</span>
+                <span id="new_store_website_help" class="help-block">{{ _('Select phone type, enter the number and click on Add Phone Number') }}</span>
             </div>
         </div>
         <div class="row">
@@ -230,7 +230,7 @@
                 <div class="panel-body">-->
                     <span class="thumbnail">
                         <div id="location-point" style="position: absolute; top: 5px; left: 20px;  background-color: red; width: 4px; height: 4px; border-radius: 2px;"></div>
-<img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="Imágen satelital de la tierra"></span>
+<img id="world_map" src="/static/img/world.topo.200412.3x5400x2700_half.jpg" alt="{{ _('Satellite imagery of Earth') }}"></span>
                     <!--<small>Imagen libre de límites artificiales. <a href="http://visibleearth.nasa.gov/view_cat.php?categoryID=1484" target="_blank">December, Blue Marble Next Generation w/ Topography, NASA</a></small>
                 </div>
             </div>-->
@@ -240,21 +240,21 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="exact_location" {% if edit_item.exact_location %}checked="checked"{% endif %}> Posición exacta
+                        <input type="checkbox" name="exact_location" {% if edit_item.exact_location %}checked="checked"{% endif %}> {{ _('Exact location') }}
                     </label>
                 </div>
-                <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">Detectar Posición</a>
+                <a class="btn btn-success btn-sm" role="button" href="#" onclick="return here()">{{ _('Get current location') }}</a>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="new_store_name" class="col-sm-2 control-label">Latitud</label>
+            <label for="new_store_name" class="col-sm-2 control-label">{{ _('Latitude') }}</label>
             <div class="col-sm-10">
                 <input type="text" name="latitude" id="new_store_latitude" class="form-control" placeholder="-0.00000" value="{% if edit_item.location %}{{edit_item.location.coordinates[1]}}{% endif %}"></input>
             </div>
         </div>
         <div class="form-group">
-            <label for="new_store_longitude" class="col-sm-2 control-label">Longitud</label>
+            <label for="new_store_longitude" class="col-sm-2 control-label">{{ _('Longitude') }}</label>
             <div class="col-sm-10">
                 <input type="text" name="longitude" id="new_store_longitude" class="form-control" placeholder="0.00000" value="{% if edit_item.location %}{{edit_item.location.coordinates[0]}}{% endif %}"></input>
             </div>
@@ -262,12 +262,12 @@
 
         <!-- Advanced-->
         <div class="col-sm-offset-2 col-sm-10" style="margin-bottom: 2em;">
-            <a class="btn btn-default" href="#" role="button" onclick="return toggle_advanced_form();">Opciones Avanzadas</a>
+            <a class="btn btn-default" href="#" role="button" onclick="return toggle_advanced_form();">{{ _('Advenced Options') }}</a>
         </div>
 
         <!-- Products -->
         <div class="form-group advanced_form hide">
-            <label for="new_store_product" class="col-sm-2 control-label">Productos</label>
+            <label for="new_store_product" class="col-sm-2 control-label">{{ _('Products') }}</label>
             <div class="col-sm-10">
 
                 <!--<div class="col-sm-8">-->
@@ -287,11 +287,11 @@
                         <div>
                             <p><span class="label label-primary" id="new_store_edit_product_name"></span></p>
                             <div id="products_properties_list" ></div>
-                            <input type="text" id="new_product_brand" class="form-control" placeholder="Marca Acme / 100% natural" value="" /><br>
-                            <input type="text" id="new_product_price" class="form-control" placeholder="$5 el Kg" value="" /><br>
-                            <span id="product_add_button"><a class="btn btn-default" role="button" href="#" onclick="return add_product();">Agregar</a>&nbsp;</span>
-                            <span id="product_save_edit_button" class="hide"><a class="btn btn-default" role="button" href="#" onclick="return save_edit_product();">Editar</a>&nbsp;</span>
-                            <a class="btn btn-default btn-xs" role="button" href="#" onclick="return cancel_add_edit_product();">Cancelar</a>
+                            <input type="text" id="new_product_brand" class="form-control" placeholder="{{ _('Acme / natural 100%%') }}" value="" /><br>
+                            <input type="text" id="new_product_price" class="form-control" placeholder="{{ _('USD 5 oz') }}" value="" /><br>
+                            <span id="product_add_button"><a class="btn btn-default" role="button" href="#" onclick="return add_product();">{{ _('Add') }}</a>&nbsp;</span>
+                            <span id="product_save_edit_button" class="hide"><a class="btn btn-default" role="button" href="#" onclick="return save_edit_product();">{{ _('Edit') }}</a>&nbsp;</span>
+                            <a class="btn btn-default btn-xs" role="button" href="#" onclick="return cancel_add_edit_product();">{{ _('Cancel') }}</a>
                         </div>
                     </div>
                 </div>
@@ -313,10 +313,10 @@
         <input type="hidden" name="_etag" value="{{ edit_item._etag }}">
         <!-- Edit Reason -->
         <div class="form-group">
-            <label for="new_store_edit_reason" class="col-sm-2 control-label">Descripcion de la edición</label>
+            <label for="new_store_edit_reason" class="col-sm-2 control-label">{{ _('Edit description') }}</label>
             <div class="col-sm-10">
-                <input type="text" name="edit_reason" id="new_store_edit_reason" class="form-control" placeholder="Editado porque..." value=""></input>
-                <span id="new_store_edit_reason_help" class="help-block">Breve descripción de la edición</span>
+                <input type="text" name="edit_reason" id="new_store_edit_reason" class="form-control" placeholder="{{ _('Edited becouse...') }}" value=""></input>
+                <span id="new_store_edit_reason_help" class="help-block">{{ _('Short edit description') }}</span>
             </div>
         </div>
         {% else %}
@@ -325,11 +325,16 @@
 
         {{ human_check() }}
 
-        {% if editing %}
-        <button type="submit" class="btn btn-primary">Editar</button>
-        {% else %}
-        <button type="submit" class="btn btn-primary">Sumar</button>
-        {% endif %}
+        <div class="form-group">
+            <label for="new_store_edit_submit" class="col-sm-2 control-label">{{ _('Save') }}</label>
+            <div class="col-sm-10">
+                {% if editing %}
+                <button id="new_store_edit_submit" type="submit" class="btn btn-primary">{{ _('Edit') }}</button>
+                {% else %}
+                <button id="new_store_edit_submit" type="submit" class="btn btn-primary">{{ _('Add') }}</button>
+                {% endif %}
+            </div>
+        </div>
     </form>
 
 {% endblock %}

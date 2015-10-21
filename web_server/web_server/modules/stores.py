@@ -137,7 +137,7 @@ def get_form(edit = False):
     return store
 
 
-@app.route("/organization_add_edit")
+@app.route("/store_add_edit")
 def store_add():
     editing = False
     edit_item = {}

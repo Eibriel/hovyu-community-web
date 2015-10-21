@@ -21,10 +21,10 @@ from web_server.modules.home import robots
 from web_server.modules.home import sitemap
 from web_server.modules.home import atom
 from web_server.modules.home import contacts
-"""# ORGANIZATIONS
-from web_server.modules.organizations import organization_add
-from web_server.modules.organizations import new_organization
-from web_server.modules.organizations import edit_organization
+# STORES
+from web_server.modules.stores import store_add
+from web_server.modules.stores import new_store
+from web_server.modules.stores import edit_store
 # ACTIVITIES
 from web_server.modules.activities import activities
 from web_server.modules.activities import add_activity
@@ -58,4 +58,4 @@ from web_server.modules.pictures import client_picture
 from web_server.modules.pictures import client_pictures
 from web_server.modules.pictures import client_picture_approve
 from web_server.modules.pictures import add_client_picture
-from web_server.modules.pictures import logo_picture"""
+from web_server.modules.pictures import logo_picture
