@@ -52,7 +52,7 @@
                                 {% endif %}
 
                                 {% if item.exact_location and item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
-                                 - <a href="http://www.openstreetmap.org/#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">Mapa</a>
+                                 - <a href="http://www.openstreetmap.org/?mlat={{ item.location.coordinates[1] }}&amp;mlon={{ item.location.coordinates[0] }}#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">Mapa</a>
                                 {% endif %}
                                 <br>
                                 
