@@ -2,8 +2,10 @@ import random
 import logging
 
 from web_server import app
+from web_server import babel
 
 from flask import request
+from flask import redirect
 from flask import render_template
 from flask import make_response
 
@@ -21,7 +23,7 @@ def robots():
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
-# CONTACT LIST 
+# CONTACT LIST
 @app.route("/contacts.txt")
 def contacts():
     canonical_domain = app.config['CANONICAL_DOMAIN']
@@ -71,7 +73,7 @@ def sitemap():
     response.headers['Content-Type'] = 'text/xml; charset=utf-8'
     return response
 
-# CONTACT LIST 
+# CONTACT LIST
 @app.route("/access_log.txt")
 def access_log():
     canonical_domain = app.config['CANONICAL_DOMAIN']
@@ -82,11 +84,25 @@ def access_log():
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
+
+@babel.localeselector
+def get_locale():
+    #return g.get('current_lang', 'en')
+    return 'en'
+
+
 # HOME
 @app.route("/")
 def home():
+    #print (request.host)
+    #print (request.full_path)
+    if request.host != app.config['ALLOWED_HOST']:
+        return redirect('{0}://{1}{2}'.format(request.scheme, app.config['ALLOWED_HOST'], request.full_path))
+
+    return render_template('about.html', page_description = '', subtitle = '')
+
     import hashlib
-    ip = 'Hovyu {0}'.format(request.environ['REMOTE_ADDR'])
+    ip = '{1}{0}'.format(app.config['IP_LOG_SALT'], request.environ['REMOTE_ADDR'])
     ip = ip.encode('utf-8')
     ip_md5 = hashlib.sha224( ip ).hexdigest()
     access_log = {
@@ -101,9 +117,9 @@ def home():
         'referrer': request.referrer
     }
 
-    logging.error( access_log )
+    #logging.error( access_log )
     r = post('access_log', access_log)
-    logging.error( r.text )
+    #logging.error( r.text )
 
     #if 'interpolate_places' in request.args:
     #    get('places?interpolate_places')
@@ -130,7 +146,7 @@ def home():
     items = None
 
     if 'store' in request.args:
-        items = get('stores/{0}?inc_views=1'.format(request.args['store']))
+        items = get('organizations/{0}?inc_views=1'.format(request.args['store']))
         product_name = items[0]['name']
         page_description = items[0]['description']
 
@@ -176,9 +192,9 @@ def home():
     if latitude!='' and longitude!='':
         here = True
     if 'product' in request.args or 'activity' in request.args:
-        items = get('stores?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
+        items = get('organizations?inc_views=1&product={0}&activity={1}&latitude={2}&longitude={3}&page={4}'.format(product, activity, latitude, longitude, page))
     elif not 'store' in request.args:
-        items = get('stores?max_results=5&sort=-_updated')
+        items = get('organizations?max_results=5&sort=-_updated')
 
     if product_name != "":
         #subtitle = " - {0}".format(product_name)
@@ -189,13 +205,14 @@ def home():
     #if place_id != '':
     #    subtitle = "{0} en {1}".format(subtitle, place_full_name)
 
-    tiptrick = get('tipstricks')
-    if len(tiptrick) > 0:
-        tiptrick = random.choice(tiptrick)
+    #tiptrick = get('tipstricks')
+    #if len(tiptrick) > 0:
+    #    tiptrick = random.choice(tiptrick)
+    tiptrick = []
 
-    store_stats = get('store_stats')
-    if store_stats:
-        store_stats = store_stats[0]
+    organizations_stats = get('organizations_stats')
+    if organizations_stats:
+        organizations_stats = organizations_stats[0]
 
     # PICTURES
     if items:
@@ -227,5 +244,5 @@ def home():
                            canonical_domain = app.config['CANONICAL_DOMAIN'],
                            #place_full_name = place_full_name,
                            #place_id = place_id,
-                           store_stats = store_stats,
+                           organizations_stats = organizations_stats,
                            tiptrick = tiptrick)
