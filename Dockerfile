@@ -8,6 +8,8 @@ RUN pip install pymongo
 
 COPY . /app
 
+RUN pybabel compile -d web_server/web_server/translations
+
 RUN mod_wsgi-docker-build
 
 EXPOSE 80
