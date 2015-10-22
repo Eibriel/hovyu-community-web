@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 {% for loc in localizations %}
   <!-- LOCALE: {{ loc.locale }} -->
   <url>
     <loc>{{ loc.url }}</loc>
     {% for loc_ in localizations %}
-    <link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}" />
+    <xhtml:link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}" />
     {% endfor %}
     <changefreq>daily</changefreq>
     <priority>0.1</priority>
@@ -14,7 +14,7 @@
   <url>
     <loc>{{ loc.url }}/about</loc>
     {% for loc_ in localizations %}
-    <link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/about" />
+    <xhtml:link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/about" />
     {% endfor %}
     <changefreq>weekly</changefreq>
     <priority>0.1</priority>
@@ -24,7 +24,7 @@
   <url>
     <loc>{{ loc.url }}/?store={{ store['_id'] }}</loc>
     {% for loc_ in localizations %}
-    <link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/?store={{ store['_id'] }}" />
+    <xhtml:link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/?store={{ store['_id'] }}" />
     {% endfor %}
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -42,7 +42,7 @@
   <url>
     <loc>{{ loc.url }}/?latitude=&amp;longitude=&amp;product={{ product['_id'] }}&amp;activity=</loc>
     {% for loc_ in localizations %}
-    <link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/?latitude=&amp;longitude=&amp;product={{ product['_id'] }}&amp;activity=" />
+    <xhtml:link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/?latitude=&amp;longitude=&amp;product={{ product['_id'] }}&amp;activity=" />
     {% endfor %}
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -53,7 +53,7 @@
   <url>
     <loc>{{ loc.url }}/?latitude=&amp;longitude=&amp;product=&amp;activity={{ activity['_id'] }}</loc>
     {% for loc_ in localizations %}
-    <link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/?latitude=&amp;longitude=&amp;product=&amp;activity={{ activity['_id'] }}" />
+    <xhtml:link rel="alternate" hreflang="{{ loc_.locale }}" href="{{ loc_.url }}/?latitude=&amp;longitude=&amp;product=&amp;activity={{ activity['_id'] }}" />
     {% endfor %}
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
