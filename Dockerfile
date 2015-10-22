@@ -9,6 +9,8 @@ RUN pip install Flask-Babel
 
 COPY . /app
 
+RUN pybabel compile -d web_server/web_server/translations
+
 RUN mod_wsgi-docker-build
 
 EXPOSE 80
