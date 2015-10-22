@@ -26,7 +26,7 @@ def get_product_form():
 def products():
     items = get('products?sort=-use_count')
     #logging.error(items)
-    return render_template('products.html', items=items, noindex = True)
+    return render_template('products.html', items=items, noindex = True, subtitle='Products')
 
 
 @app.route('/product_add_edit')
@@ -39,7 +39,8 @@ def product_add_edit():
         edit_item = get('products/{0}'.format(request.args['e']))
     return render_template('add_edit_product.html',
                             editing = editing,
-                            edit_item = edit_item)
+                            edit_item = edit_item,
+                            subtitle='Add Product')
 
 
 @app.route('/new_product', methods=['POST'])

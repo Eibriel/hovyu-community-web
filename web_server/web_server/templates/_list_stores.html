@@ -1,4 +1,4 @@
-{% macro list_stores(items, canonical_domain, latitude, longitude, activity) %}
+{% macro list_stores(items, current_domain, latitude, longitude, activity) %}
 {% for item in items %}
     <div class="row" itemscope itemtype="http://schema.org/LocalBusiness">
         <div class="col-sm-12">
@@ -65,7 +65,7 @@
                                 {% for website in item.website %}
                                 <a href="{{ website.url }}" itemprop="sameAs">{{ website.text }}</a><br>
                                 {% endfor %}
-                                <meta itemprop="url" content="{{ canonical_domain }}/?store={{ item._id }}" />
+                                <meta itemprop="url" content="{{ current_domain }}/?store={{ item._id }}" />
 
                                 {% if item.email %}
                                 <strong><span itemprop="email">{{ item.email }}</span></strong><br>

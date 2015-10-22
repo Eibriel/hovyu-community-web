@@ -14,6 +14,8 @@ from web_server.modules.server_requests import get
 from web_server.modules.server_requests import post
 from web_server.modules.server_requests import patch
 from web_server.modules.server_requests import delete
+from web_server.modules.localization import domain_selector
+
 
 
 def check_human_data(check_id, option):
@@ -139,6 +141,10 @@ def get_form(edit = False):
 
 @app.route("/store_add_edit")
 def store_add():
+    located_urls, redirect_response = domain_selector()
+    if redirect_response:
+        return redirect_response
+
     editing = False
     edit_item = {}
     products = get('products')

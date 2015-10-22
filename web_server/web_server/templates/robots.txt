@@ -10,3 +10,4 @@ Disallow: /send_payment_instructions
 Disallow: /build_query
 Disallow: /client_pictures
 Disallow: /contacts.txt
+Disallow: /access_log.txt

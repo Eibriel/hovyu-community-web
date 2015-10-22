@@ -6,6 +6,7 @@ from flask.ext.babel import gettext
 from web_server import app
 from web_server import babel
 
+from flask import g
 from flask import request
 from flask import redirect
 from flask import render_template
@@ -17,11 +18,9 @@ from web_server.modules.server_requests import get
 from web_server.modules.server_requests import post
 from web_server.modules.server_requests import patch
 from web_server.modules.server_requests import get_pictures_info
-
-
-@babel.localeselector
-def get_locale():
-    return 'es'
+from web_server.modules.localization import domain_selector
+from web_server.modules.localization import get_current_domain
+from web_server.modules.localization import get_localized_domains
 
 
 # ROBOTS
@@ -35,11 +34,11 @@ def robots():
 # CONTACT LIST
 @app.route("/contacts.txt")
 def contacts():
-    canonical_domain = app.config['CANONICAL_DOMAIN']
+    current_domain = get_current_domain()
     stores = get('stores')
     response = make_response(render_template('contacts.txt',
                              stores = stores,
-                             canonical_domain = canonical_domain))
+                             current_domain = current_domain))
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
@@ -80,7 +79,8 @@ def sitemap():
                              stores = stores,
                              products = products,
                              activities = activities,
-                             canonical_domain = canonical_domain))
+                             canonical_domain = canonical_domain,
+                             localizations = get_localized_domains()))
     response.headers['Content-Type'] = 'text/xml; charset=utf-8'
     return response
 
@@ -88,11 +88,11 @@ def sitemap():
 # CONTACT LIST
 @app.route("/access_log.txt")
 def access_log():
-    canonical_domain = app.config['CANONICAL_DOMAIN']
+    current_domain = get_current_domain()
     logs = get('access_log?sort=-_updated')
     response = make_response(render_template('access_log.txt',
                              logs = logs,
-                             canonical_domain = canonical_domain))
+                             current_domain = current_domain))
     response.headers['Content-Type'] = 'text/plain; charset=utf-8'
     return response
 
@@ -100,12 +100,9 @@ def access_log():
 # HOME
 @app.route("/")
 def home():
-    #print (request.host)
-    #print (request.full_path)
-    if request.host != app.config['ALLOWED_HOST']:
-        return redirect('{0}://{1}{2}'.format(request.scheme, app.config['ALLOWED_HOST'], request.full_path))
-
-    #return render_template('about.html', page_description = '', subtitle = '')
+    located_urls, redirect_response = domain_selector()
+    if redirect_response:
+        return redirect_response
 
     import hashlib
     ip = '{1}{0}'.format(app.config['IP_LOG_SALT'], request.environ['REMOTE_ADDR'])
@@ -150,11 +147,14 @@ def home():
     subtitle = ""
     page_description = "Alimentación Consciente, Vida Sustentable y Comercio Justo"
     items = None
+    store_profile = False
 
     if 'store' in request.args:
         items = get('stores/{0}?inc_views=1'.format(request.args['store']))
-        product_name = items[0]['name']
-        page_description = items[0]['description']
+        if len(items) > 0:
+            product_name = items[0]['name']
+            page_description = items[0]['description']
+            store_profile = True
 
     elif 'product' in request.args:
         if request.args['product']!='':
@@ -233,6 +233,8 @@ def home():
                 elif picture['album'] == 'process':
                     item['process_pictures'].append( picture )
 
+    current_domain = get_current_domain()
+
     return render_template('home.html',
                            msg = msg,
                            items = items,
@@ -247,8 +249,11 @@ def home():
                            product_name = product_name,
                            activity = activity,
                            activity_name = activity_name,
-                           canonical_domain = app.config['CANONICAL_DOMAIN'],
+                           current_domain = current_domain,
+                           located_urls = located_urls,
+                           locale = g.get('locale'),
                            #place_full_name = place_full_name,
                            #place_id = place_id,
                            organizations_stats = organizations_stats,
-                           tiptrick = tiptrick)
+                           tiptrick = tiptrick,
+                           store_profile = store_profile)

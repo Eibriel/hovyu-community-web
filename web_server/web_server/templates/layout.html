@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ locale }}">
+  {% if store_profile %}
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# business: http://ogp.me/ns/business#">
+  {% else %}
   <head>
+  {% endif %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,8 +17,7 @@
     {% endif %}
     <link rel="icon" href="/static/favicon.png">
 
-    {% if items and items|length == 1 %}
-    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# business: http://ogp.me/ns/business#">
+    {% if store_profile %}
     <!--<meta property="fb:app_id"                            content="302184056577324" />-->
     <meta property="og:type"                              content="business.business" />
     <meta property="business:contact_data:street_address" content="{{ items[0]['address'] }}" />
@@ -27,12 +30,12 @@
         {% endif %}
     {% endif %}
 
-    {% if items and items|length == 1 and items[0]['pictures_info']|length > 0 %}
-    <meta property="og:image" content="{{ canonical_domain }}/client_picture/{{ items[0]['pictures_info'][0]['id'] }}"/>
-    {% elif items and items|length == 1 and items[0]['logo_picture'] %}
-    <meta property="og:image" content="{{ canonical_domain }}/logo_picture/{{ items[0]['logo_picture'] }}"/>
+    {% if store_profile and items[0]['pictures_info']|length > 0 %}
+    <meta property="og:image" content="{{ current_domain }}/client_picture/{{ items[0]['pictures_info'][0]['id'] }}"/>
+    {% elif store_profile and items[0]['logo_picture'] %}
+    <meta property="og:image" content="{{ current_domain }}/logo_picture/{{ items[0]['logo_picture'] }}"/>
     {% else %}
-    <meta property="og:image" content="{{ canonical_domain }}/static/img/hovyu-logo.png"/>
+    <meta property="og:image" content="{{ current_domain }}/static/img/hovyu-logo.png"/>
     {% endif %}
 
     <meta property="og:title" content="{% if subtitle != "" %}{{ subtitle|title }}{% else %}Hovyũ, vida sustentable{% endif %}"/>
@@ -48,7 +51,7 @@
         "@type" : "WebSite",
         "name" : "Hovyũ",
         "alternateName" : "Hovyu",
-        "url" : "{{ canonical_domain }}"
+        "url" : "{{ current_domain }}"
     }
     </script>
     {#
@@ -66,7 +69,7 @@
     }
     </script>
     #}
-    {% if items and items|length == 1 %}
+    {% if store_profile %}
     <script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -75,7 +78,7 @@
             "@type": "ListItem",
             "position": 1,
             "item": {
-                "@id": "{{ canonical_domain }}/?store={{ items[0]['_id'] }}",
+                "@id": "{{ current_domain }}/?store={{ items[0]['_id'] }}",
                 "name": "{{ items[0]['name'] }}"
             }
         }]
@@ -91,6 +94,11 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- Localization -->
+    {% for located_url in located_urls -%}
+    <link rel="alternate" href="{{ located_url['url'] }}" hreflang="{{ located_url['locale'] }}" />
+    {% endfor %}
 
   </head>
   <body>

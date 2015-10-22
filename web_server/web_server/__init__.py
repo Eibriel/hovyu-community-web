@@ -1,3 +1,4 @@
+from flask import g
 from flask import Flask
 from flask import url_for
 from flask import request
@@ -11,6 +12,11 @@ babel = Babel(app)
 #QRcode(app)
 
 app.config.from_object('web_server.config.Config')
+
+# Set locale
+@babel.localeselector
+def get_locale():
+    return g.get('locale')
 
 from web_server.modules.jinja_filters import nl2br
 from web_server.modules.jinja_filters import char2emoji

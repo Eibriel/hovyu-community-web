@@ -4,3 +4,4 @@ class Local(Config):
     DEBUG = False
     CANONICAL_DOMAIN = 'http://hovyu.com'
     ALLOWED_HOST = 'hovyu.com'
+    IP_LOG_SALT = ''
