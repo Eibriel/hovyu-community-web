@@ -5,10 +5,9 @@ WORKDIR /app
 RUN pip install Flask
 RUN pip install requests
 RUN pip install pymongo
+RUN pip install Flask-Babel
 
 COPY . /app
-
-RUN pybabel compile -d web_server/web_server/translations
 
 RUN mod_wsgi-docker-build
 
