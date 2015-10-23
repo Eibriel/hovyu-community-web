@@ -2,10 +2,7 @@ FROM grahamdumpleton/mod-wsgi-docker:python-3.4
 
 WORKDIR /app
 
-RUN pip install Flask
-RUN pip install requests
-RUN pip install pymongo
-RUN pip install Flask-Babel
+RUN pip install babel
 
 COPY . /app
 
