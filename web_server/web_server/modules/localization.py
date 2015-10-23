@@ -18,15 +18,24 @@ def get_current_domain():
     return current_domain
 
 
+def locale_to_babel(locale):
+    if locale == 'zh':
+        locale = 'zh_Hans'
+    return locale
+
+def locale_to_url(locale):
+    if locale == 'zh':
+        locale = 'zh-hans'
+    return locale
+
 def domain_selector():
     # lan_domain
     # lan_agent
     # If lan_domain, lan is lan_domain
     # Elif not lan_domain and not lan_agent, lan is en
     # Elif not  lan_domain, la is lan_agent
-    available_locales = ['en', 'es', 'pt', 'zh_hans']
+    available_locales = ['en', 'es', 'pt', 'zh']
     locale = request.accept_languages.best_match( available_locales, 'en' )
-    #print ( locale )
 
     # CLEANUP FULL_PATH
     full_path = request.full_path
@@ -38,10 +47,7 @@ def domain_selector():
     located_hosts = []
     located_urls = []
     for loc in available_locales:
-        located_host = '{0}.{1}'.format(loc.replace('_', '-'), app.config['ALLOWED_HOST'])
-        #print ('D')
-        #print ( located_host )
-        #print ( request.host )
+        located_host = '{0}.{1}'.format(locale_to_url(loc), app.config['ALLOWED_HOST'])
         located_hosts.append( located_host )
         if request.host == located_host:
             locale = loc
@@ -59,11 +65,11 @@ def domain_selector():
     located_urls.append(located_host)
 
     g.locale = locale
-    print ( locale )
+    g.locale_babel = locale_to_babel(locale)
 
     redirect_response = None
-    if request.host != '{0}.{1}'.format(g.get('locale').replace('_', '-'), app.config['ALLOWED_HOST']):
-        url = '{0}://{1}.{2}{3}'.format(request.scheme, g.get('locale').replace('_', '-'), app.config['ALLOWED_HOST'], full_path)
+    if request.host != '{0}.{1}'.format(locale_to_url(g.get('locale')), app.config['ALLOWED_HOST']):
+        url = '{0}://{1}.{2}{3}'.format(request.scheme, locale_to_url(g.get('locale')), app.config['ALLOWED_HOST'], full_path)
         redirect_response = redirect( url, 301 )
 
     return located_urls, redirect_response

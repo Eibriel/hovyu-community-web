@@ -7,6 +7,7 @@ from flask import make_response
 
 from flask.ext.babel import Babel
 
+
 app = Flask(__name__)
 babel = Babel(app)
 #QRcode(app)
@@ -16,7 +17,7 @@ app.config.from_object('web_server.config.Config')
 # Set locale
 @babel.localeselector
 def get_locale():
-    locale = g.get('locale')
+    locale = g.get('locale_babel')
     return locale
 
 from web_server.modules.jinja_filters import nl2br
