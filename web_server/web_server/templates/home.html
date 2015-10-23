@@ -150,11 +150,11 @@
     #}
     {% else %}
 
-    {% if subtitle != "" %}
+
     <div class="page-header" style="margin-top:0px; margin-bottom:0px;">
-        <h1 style="margin-top:0px">{{ subtitle|title }}</h1>
+        <h1 style="margin-top:0px">{% if subtitle != "" %}{{ subtitle|title }}{% else %}{{ _('Hovyũ, sustainable life') }}{% endif %}</h1>
     </div>
-    {% endif %}
+
 
     {{ list_stores(items, current_domain, latitude, longitude) }}
     {#<div class="row">

@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-22 18:43-0300\n"
-"PO-Revision-Date: 2015-10-22 18:47-0300\n"
+"POT-Creation-Date: 2015-10-23 14:32-0300\n"
+"PO-Revision-Date: 2015-10-23 14:35-0300\n"
 "Last-Translator: Eibriel <eibriel@yahoo.com.ar>\n"
 "Language: pt\n"
 "Language-Team: pt <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.1.1\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: templates/_human_check.html:15
 msgid "Are you human? Prove it, select this picture on the list below:"
@@ -65,8 +66,8 @@ msgstr "Adicionar foto"
 
 #: templates/_list_stores.html:111
 msgid ""
-"If you are client or user send a photo of a product or place to us. Will "
-"be published after a moderation process"
+"If you are client or user send a photo of a product or place to us. Will be "
+"published after a moderation process"
 msgstr ""
 "Se você é cliente ou usuário enviar uma foto de um produto ou lugar para "
 "nós. Será publicado depois de um processo de moderação"
@@ -91,22 +92,22 @@ msgstr "Visualizações"
 msgid "Edits"
 msgstr "Edições"
 
-#: templates/about.html:8 templates/layout.html:120
+#: templates/about.html:8 templates/layout.html:124
 msgid "About Hovyũ"
 msgstr "Sobre Hovyũ"
 
 #: templates/about.html:10
 msgid ""
-"Hovyũ's mission is to accelerate the transition to sustainable production"
-" methods."
+"Hovyũ's mission is to accelerate the transition to sustainable production "
+"methods."
 msgstr ""
 "A missão da Hovyũ é acelerar a transição para métodos de produção "
 "sustentáveis."
 
 #: templates/about.html:13
 msgid ""
-"Is a Community of business and organization related to "
-"<strong>Sustainable Design</strong>,\n"
+"Is a Community of business and organization related to <strong>Sustainable "
+"Design</strong>,\n"
 "                    <strong>Fair Trade</strong> and <strong>Conscious "
 "Eating</strong> and its goal is to be the\n"
 "                    most complete database feed and maintain by the "
@@ -114,33 +115,32 @@ msgid ""
 msgstr ""
 "É uma comunidade de negócios e organização relacionada à <strong> Design "
 "sustentável </strong>,\n"
-"                     <strong> Troca justa </strong> e <strong> Consciente"
-" Comer </strong> e seu objetivo é ser o \n"
-"                     mais completo banco de dados alimentação e manter "
-"pela comunidade."
+"                     <strong> Troca justa </strong> e <strong> Consciente "
+"Comer </strong> e seu objetivo é ser o \n"
+"                     mais completo banco de dados alimentação e manter pela "
+"comunidade."
 
 #: templates/about.html:18
 msgid ""
-"It's developed by Widú as a free software project, where the data is free"
-" under <a href=\"http://creativecommons.org/licenses/by/4.0/\" "
-"target=\"_blank\">CC-BY 4.0</a> licence\n"
-"                    and can be accessed through APIs allowing the "
-"creation of third party applications."
+"It's developed by Widú as a free software project, where the data is free "
+"under <a href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"_blank"
+"\">CC-BY 4.0</a> licence\n"
+"                    and can be accessed through APIs allowing the creation "
+"of third party applications."
 msgstr ""
 "É desenvolvido por Widu como um projeto de software livre, onde os dados "
-"está livre sob licença <a "
-"href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"_blank"
-"\">CC-BY</a>\n"
-"                     e pode ser accesed throwgth APIs que permitem a "
-"criação de aplicativos de terceiros."
+"está livre sob licença <a href=\"http://creativecommons.org/licenses/by/4.0/"
+"\" target=\"_blank\">CC-BY</a>\n"
+"                     e pode ser accesed throwgth APIs que permitem a criação "
+"de aplicativos de terceiros."
 
 #: templates/about.html:20
 msgid ""
-"Hovyũ means green in Guaraní and sounds similar to <em>hovuhu</em>, but "
-"we pronounce it <em>hovu</em>."
+"Hovyũ means green in Guaraní and sounds similar to <em>hovuhu</em>, but we "
+"pronounce it <em>hovu</em>."
 msgstr ""
-"Hovyũ significa verde em guarani e sons semelhantes a <em> hovuhu </em>, "
-"mas nós pronunciá-lo <em> hovu </em>."
+"Hovyũ significa verde em guarani e sons semelhantes a <em> hovuhu </em>, mas "
+"nós pronunciá-lo <em> hovu </em>."
 
 #: templates/about.html:22
 msgid "Press material"
@@ -173,11 +173,11 @@ msgstr "Sobre Widú"
 #: templates/about.html:33
 #, python-format
 msgid ""
-"<a href=\"%(url)s\" target=\"_blank\">Widú</a> is transmedia "
-"communication for Sustainable business."
+"<a href=\"%(url)s\" target=\"_blank\">Widú</a> is transmedia communication "
+"for Sustainable business."
 msgstr ""
-"<a href=\"%(url)s\" target=\"_blank\">Widu</a> é a comunicação transmedia"
-" para negócios sustentáveis."
+"<a href=\"%(url)s\" target=\"_blank\">Widu</a> é a comunicação transmedia "
+"para negócios sustentáveis."
 
 #: templates/about.html:36
 msgid "Commitment"
@@ -185,22 +185,21 @@ msgstr "Compromisso"
 
 #: templates/about.html:38
 msgid ""
-"The servers are locates at Santa Fe and Buenos Aires (Argentina) betting "
-"on local infrastructure,\n"
+"The servers are locates at Santa Fe and Buenos Aires (Argentina) betting on "
+"local infrastructure,\n"
 "                    we use digital media to reduce paper consumption."
 msgstr ""
 "Os servidores estão localizados em Santa Fe e Buenos Aires (Argentina) "
 "aposta na infra-estrutura local,\n"
-"                    usamos a mídia digital para reduzir o consumo de "
-"papel."
+"                    usamos a mídia digital para reduzir o consumo de papel."
 
 #: templates/about.html:40
 msgid ""
 "Hovyũ encourages alternative and decentralized payment solutions, free "
 "software and free data."
 msgstr ""
-"Hovyũ incentiva soluções de pagamento alternativos e desentralized, "
-"software livre e dados livres."
+"Hovyũ incentiva soluções de pagamento alternativos e desentralized, software "
+"livre e dados livres."
 
 #: templates/about.html:43
 msgid "Contact and help"
@@ -211,8 +210,8 @@ msgid ""
 "If you have questions or comments contact us through email, Telegram or "
 "Facebook."
 msgstr ""
-"Se você tiver dúvidas ou comentários entre em contato conosco por e-mail,"
-" telegrama ou Facebook."
+"Se você tiver dúvidas ou comentários entre em contato conosco por e-mail, "
+"telegrama ou Facebook."
 
 #: templates/about.html:49
 msgid "Chat with us on Telegram"
@@ -240,11 +239,11 @@ msgstr "Servidor Web"
 
 #: templates/about.html:62
 msgid ""
-"If you want an updated copy of our database you can use our feed <a "
-"href=\"/atom.xml\" target=\"_blank\">Atom 1.0</a>."
+"If you want an updated copy of our database you can use our feed <a href=\"/"
+"atom.xml\" target=\"_blank\">Atom 1.0</a>."
 msgstr ""
-"Se você quiser uma cópia atualizada do nosso banco de dados que você pode"
-" usar o nosso feed <a href=\"/atom.xml\" target=\"_blank\">Atom 1.0</a>."
+"Se você quiser uma cópia atualizada do nosso banco de dados que você pode "
+"usar o nosso feed <a href=\"/atom.xml\" target=\"_blank\">Atom 1.0</a>."
 
 #: templates/about.html:65
 msgid "Content"
@@ -270,7 +269,7 @@ msgstr "Estatísticas"
 msgid "Edit business or organization"
 msgstr "Editar empresa ou organização"
 
-#: templates/add_edit_store.html:9 templates/layout.html:119
+#: templates/add_edit_store.html:9 templates/layout.html:123
 msgid "Add business or organization"
 msgstr "Adicionar empresa ou organização"
 
@@ -279,21 +278,22 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #: templates/add_edit_store.html:22
-msgid "Add a business or organization related to <strong>Sustainability</strong>"
-msgstr "Adicionar uma empresa ou organização relacionado com a Sustentabilidade"
+msgid ""
+"Add a business or organization related to <strong>Sustainability</strong>"
+msgstr ""
+"Adicionar uma empresa ou organização relacionado com a Sustentabilidade"
 
 #: templates/add_edit_store.html:26
 msgid ""
 "If you need help contact us to <strong>info@hovyu.com</strong> or\n"
-"                            <a "
-"href=\"https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae\" "
-"target=\"_blank\">Telegram chat"
+"                            <a href=\"https://telegram.me/"
+"joinchat/0338811e01cabfbb50df16c3bea1faae\" target=\"_blank\">Telegram chat"
 msgstr ""
-"Se precisar de ajuda entre em contato conosco para "
-"<strong>info@hovyu.com</strong> ou\n"
-"                            <a "
-"href=\"https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae\" "
-"target=\"_blank\">Telegram bate-papo"
+"Se precisar de ajuda entre em contato conosco para <strong>info@hovyu.com</"
+"strong> ou\n"
+"                            <a href=\"https://telegram.me/"
+"joinchat/0338811e01cabfbb50df16c3bea1faae\" target=\"_blank\">Telegram bate-"
+"papo"
 
 #: templates/add_edit_store.html:42
 msgid "Name"
@@ -344,8 +344,8 @@ msgid ""
 "What makes the entity to contribute to sustainability? Which are the "
 "production pipelines? Does it have any certification?"
 msgstr ""
-"O que torna a entidade a contribuir para a sustentabilidade? Quais são as"
-" linhas de produção? Será que isso tem alguma certificação?"
+"O que torna a entidade a contribuir para a sustentabilidade? Quais são as "
+"linhas de produção? Será que isso tem alguma certificação?"
 
 #: templates/add_edit_store.html:109
 msgid "Address"
@@ -389,11 +389,11 @@ msgstr "Adicionar website"
 
 #: templates/add_edit_store.html:149
 msgid ""
-"Enter URL (it must begin with \"http://\" or \"https://\"), enter the "
-"Name and then click on Add website"
+"Enter URL (it must begin with \"http://\" or \"https://\"), enter the Name "
+"and then click on Add website"
 msgstr ""
-"Enter URL (deve começar com \"http://\" ou \"https://\"), digite o Nome e"
-" clique em Adicionar website"
+"Enter URL (deve começar com \"http://\" ou \"https://\"), digite o Nome e "
+"clique em Adicionar website"
 
 #: templates/add_edit_store.html:165
 msgid "Phone Numbers"
@@ -418,8 +418,8 @@ msgstr "Adicionar número de telefone"
 #: templates/add_edit_store.html:183
 msgid "Select phone type, enter the number and click on Add Phone Number"
 msgstr ""
-"Selecione o tipo de telefone, digite o número e clique em Adicionar "
-"número de telefone"
+"Selecione o tipo de telefone, digite o número e clique em Adicionar número "
+"de telefone"
 
 #: templates/add_edit_store.html:233
 msgid "Satellite imagery of Earth"
@@ -502,6 +502,10 @@ msgstr "Pesquisar em todos os lugares"
 msgid "No results found"
 msgstr "Nenhum resultado encontrado"
 
+#: templates/home.html:155 templates/layout.html:42
+msgid "Hovyũ, sustainable life"
+msgstr "Hovyũ, vida sustentável"
+
 #: templates/home.html:369
 msgid "Getting location..."
 msgstr "Obtendo localização ..."
@@ -514,15 +518,14 @@ msgstr "Localização conhecida"
 msgid "Unknown location"
 msgstr "Local desconhecido"
 
-#: templates/layout.html:42
-msgid "Hovyũ, sustainable life"
-msgstr "Hovyũ, vida sustentável"
+#: templates/layout.html:48 templates/layout.html:49
+msgid "Sustainable Design, Fair Trade and Conscious Eating"
+msgstr "Design Sustentável, comércio justo e Alimentação Consciente"
 
-#: templates/layout.html:110
+#: templates/layout.html:114
 msgid "Toggle navigation"
 msgstr "Alternar de navegação"
 
-#: templates/layout.html:139
+#: templates/layout.html:143
 msgid "businesses and organizations"
 msgstr "empresas e organizações"
-

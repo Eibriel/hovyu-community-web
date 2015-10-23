@@ -16,6 +16,6 @@ RUN mod_wsgi-docker-build
 EXPOSE 80
 ENTRYPOINT [ "mod_wsgi-docker-start" ]
 
-CMD [ "--working-directory", "web_server", \
+CMD [ "--compress-responses", "--working-directory", "web_server", \
       "--url-alias", "/web_server/static", "static", \
       "web_server.wsgi" ]

@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-10-22 18:43-0300\n"
-"PO-Revision-Date: 2015-10-22 23:59-0300\n"
+"POT-Creation-Date: 2015-10-23 14:32-0300\n"
+"PO-Revision-Date: 2015-10-23 14:36-0300\n"
 "Last-Translator: Eibriel <eibriel@yahoo.com.ar>\n"
 "Language: zh_Hans\n"
 "Language-Team: zh_Hans <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.1.1\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: templates/_human_check.html:15
 msgid "Are you human? Prove it, select this picture on the list below:"
@@ -89,7 +90,7 @@ msgstr "浏览"
 msgid "Edits"
 msgstr "编辑"
 
-#: templates/about.html:8 templates/layout.html:120
+#: templates/about.html:8 templates/layout.html:124
 msgid "About Hovyũ"
 msgstr "关于Hovyũ"
 
@@ -253,7 +254,7 @@ msgstr "统计"
 msgid "Edit business or organization"
 msgstr "编辑企业或组织"
 
-#: templates/add_edit_store.html:9 templates/layout.html:119
+#: templates/add_edit_store.html:9 templates/layout.html:123
 msgid "Add business or organization"
 msgstr "添加的企业或组织"
 
@@ -478,6 +479,10 @@ msgstr "搜索无处不在"
 msgid "No results found"
 msgstr "未找到结果"
 
+#: templates/home.html:155 templates/layout.html:42
+msgid "Hovyũ, sustainable life"
+msgstr "Hovyũ，可持续的生活"
+
 #: templates/home.html:369
 msgid "Getting location..."
 msgstr "获取位置..."
@@ -490,14 +495,14 @@ msgstr "已知位置"
 msgid "Unknown location"
 msgstr "未知的位置"
 
-#: templates/layout.html:42
-msgid "Hovyũ, sustainable life"
-msgstr "Hovyũ，可持续的生活"
+#: templates/layout.html:48 templates/layout.html:49
+msgid "Sustainable Design, Fair Trade and Conscious Eating"
+msgstr "可持续发展的设计，公平贸易和有意识的饮食"
 
-#: templates/layout.html:110
+#: templates/layout.html:114
 msgid "Toggle navigation"
 msgstr "切换导航"
 
-#: templates/layout.html:139
+#: templates/layout.html:143
 msgid "businesses and organizations"
 msgstr "企业和组织"

@@ -145,7 +145,7 @@ def home():
     #place_full_name = ""
     location_name = "cualquier lado"
     subtitle = ""
-    page_description = "Alimentación Consciente, Vida Sustentable y Comercio Justo"
+    page_description = ""
     items = None
     store_profile = False
 

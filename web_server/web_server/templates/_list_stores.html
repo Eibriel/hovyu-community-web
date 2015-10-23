@@ -7,7 +7,7 @@
             {% else %}
             <div class="panel panel-default" id="panel_store_{{ item._id }}">
             {% endif %}
-                <div class="panel-heading"><strong><a href="/?store={{item._id}}"><span itemprop="name">{{ item.name }}</span></a></strong>{% if item.wid and False %} - {{ item.wid|char2emoji('16') }}{% endif %}</div>
+                <div class="panel-heading"><h2><a href="/?store={{item._id}}"><span itemprop="name">{{ item.name }}</span></a></h2>{% if item.wid and False %} - {{ item.wid|char2emoji('16') }}{% endif %}</div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-6">
@@ -31,10 +31,10 @@
 
                             <div>
                                 <!--<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>-->
-                                <span class="sr-only">{{ _('Info:') }}</span>
+                                <h3>{{ _('Info:') }}</h3>
                                 <span itemprop="description">{{ item.description|char2emoji|nl2br }}
                                 {% if item.process_description != "" %}
-                                <h4>{{ _('Commitment with Sustainability') }}</h4>
+                                <h3>{{ _('Commitment with Sustainability') }}</h3>
                                 {{ item.process_description|char2emoji|nl2br }}</span>
                                 {% endif %}
                             </div>
@@ -170,7 +170,7 @@
                         {% for column in picture %}
                         <div class="col-sm-3" style="margin-top: 1em">
                             <a class="thumbnail" href="/client_picture/{{ column['id'] }}" target="_blank">
-                                <img src="/client_picture/{{ column['id'] }}" itemprop="image" alt="{{ column['name'] }}">
+                                <img src="/client_picture/{{ column['id'] }}" itemprop="image" alt="{{ item.name }}{% if column['name']!='' %} - {{ column['name'] }}{% endif %}">
                                 <div class="caption">
                                     <small>{{ column['name'] }}</small>
                                 </div>

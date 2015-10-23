@@ -41,9 +41,19 @@
     <meta property="og:title" content="{% if subtitle != "" %}{{ subtitle|title }}{% else %}Hovyũ, vida sustentable{% endif %}"/>
     <title>{% if subtitle != "" %}{{ subtitle|title }} - {% endif %}{{ _('Hovyũ, sustainable life') }}</title>
 
+    {% if page_description != '' %}
     <meta name="description" content="{{ page_description|truncate(150) }}">
     <meta property="og:description" content="{{ page_description }}">
+    {% else %}
+    <meta name="description" content="{{ _('Sustainable Design, Fair Trade and Conscious Eating')|truncate(150) }}">
+    <meta property="og:description" content="{{ _('Sustainable Design, Fair Trade and Conscious Eating') }}">
+    {% endif %}
 
+    {% if items and items|length > 0 %}
+    <meta name="keywords" content="{% for item in items %}{% for product in item['products_documents'] %}{{product['name']}} {% endfor %}{% endfor %}">
+    {% else %}
+    <meta name="keywords" content="{{ _('Sustainable Design, Fair Trade and Conscious Eating') }}">
+    {% endif %}
 
     <script type="application/ld+json">
     {
