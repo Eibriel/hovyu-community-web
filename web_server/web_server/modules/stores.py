@@ -6,6 +6,7 @@ from bson import ObjectId
 
 from web_server import app
 
+from flask import g
 from flask import request
 from flask import redirect
 from flask import render_template
@@ -215,7 +216,8 @@ def store_add():
                            subtitle = "",
                            edit_item = edit_item,
                            editing = editing,
-                           noindex = True)
+                           noindex = True,
+                           locale = g.get('locale'))
 
 @app.route('/new_store', methods=['POST'])
 def new_store():

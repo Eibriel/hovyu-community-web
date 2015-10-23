@@ -6,10 +6,10 @@ from flask import redirect
 
 
 def get_localized_domains():
-    available_locales = ['en', 'es']
+    available_locales = ['en', 'es', 'pt', 'zh_hans']
     localizations = []
     for loc in available_locales:
-        url = '{0}://{1}.{2}'.format(request.scheme, loc, app.config['ALLOWED_HOST'])
+        url = '{0}://{1}.{2}'.format(request.scheme, loc.replace('_', '-'), app.config['ALLOWED_HOST'])
         localizations.append( {'url': url, 'locale': loc} )
     return localizations
 
@@ -24,8 +24,9 @@ def domain_selector():
     # If lan_domain, lan is lan_domain
     # Elif not lan_domain and not lan_agent, lan is en
     # Elif not  lan_domain, la is lan_agent
-    available_locales = ['en', 'es']
+    available_locales = ['en', 'es', 'pt', 'zh_hans']
     locale = request.accept_languages.best_match( available_locales, 'en' )
+    #print ( locale )
 
     # CLEANUP FULL_PATH
     full_path = request.full_path
@@ -37,7 +38,10 @@ def domain_selector():
     located_hosts = []
     located_urls = []
     for loc in available_locales:
-        located_host = '{0}.{1}'.format(loc, app.config['ALLOWED_HOST'])
+        located_host = '{0}.{1}'.format(loc.replace('_', '-'), app.config['ALLOWED_HOST'])
+        #print ('D')
+        #print ( located_host )
+        #print ( request.host )
         located_hosts.append( located_host )
         if request.host == located_host:
             locale = loc
@@ -55,10 +59,11 @@ def domain_selector():
     located_urls.append(located_host)
 
     g.locale = locale
+    print ( locale )
 
     redirect_response = None
-    if request.host != '{0}.{1}'.format(g.get('locale'), app.config['ALLOWED_HOST']):
-        url = '{0}://{1}.{2}{3}'.format(request.scheme, g.get('locale'), app.config['ALLOWED_HOST'], full_path)
+    if request.host != '{0}.{1}'.format(g.get('locale').replace('_', '-'), app.config['ALLOWED_HOST']):
+        url = '{0}://{1}.{2}{3}'.format(request.scheme, g.get('locale').replace('_', '-'), app.config['ALLOWED_HOST'], full_path)
         redirect_response = redirect( url, 301 )
 
     return located_urls, redirect_response

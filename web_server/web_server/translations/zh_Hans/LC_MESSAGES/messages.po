@@ -1,4 +1,4 @@
-# Spanish translations for PROJECT.
+# Chinese (Simplified) translations for PROJECT.
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
@@ -8,10 +8,10 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2015-10-22 18:43-0300\n"
-"PO-Revision-Date: 2015-10-22 18:45-0300\n"
+"PO-Revision-Date: 2015-10-22 23:59-0300\n"
 "Last-Translator: Eibriel <eibriel@yahoo.com.ar>\n"
-"Language: es\n"
-"Language-Team: es <LL@li.org>\n"
+"Language: zh_Hans\n"
+"Language-Team: zh_Hans <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -20,244 +20,226 @@ msgstr ""
 
 #: templates/_human_check.html:15
 msgid "Are you human? Prove it, select this picture on the list below:"
-msgstr "¿Eres humano? Pruébalo, selecciona ésta imagen en la lista de abajo:"
+msgstr "你是人类？证明这一点，选择下面这张图片就行了："
 
 #: templates/_list_stores.html:34
 msgid "Info:"
-msgstr "Información:"
+msgstr "信息："
 
 #: templates/_list_stores.html:37
 msgid "Commitment with Sustainability"
-msgstr "Compromiso con la Sustentabilidad"
+msgstr "与可持续发展的承诺"
 
 #: templates/_list_stores.html:55
 msgid "Map"
-msgstr "Mapa"
+msgstr "图"
 
 #: templates/_list_stores.html:81
 msgid "minutes on foot"
-msgstr "minutos a pié"
+msgstr "步行 %{time}d 分钟"
 
 #: templates/_list_stores.html:83
 msgid "minutes on bike"
-msgstr "minutos en bicicleta"
+msgstr "分钟自行车"
 
 #: templates/_list_stores.html:85
 msgid "minutes on public transport"
-msgstr "minutos en transporte público"
+msgstr "分钟公共交通"
 
 #: templates/_list_stores.html:87
 msgid "minutes on train"
-msgstr "minutos en tren"
+msgstr "分钟车"
 
 #: templates/_list_stores.html:89
 msgid "minutes on Hyperloop"
-msgstr "minutos en Hyperloop"
+msgstr "分钟超回路列车"
 
 #: templates/_list_stores.html:94 templates/add_edit_store.html:293
 #: templates/add_edit_store.html:332
 msgid "Edit"
-msgstr "Editar"
+msgstr "编辑"
 
 #: templates/_list_stores.html:97 templates/_list_stores.html:107
 msgid "Add photo"
-msgstr "Añadir fotografía"
+msgstr "添加照片"
 
 #: templates/_list_stores.html:111
 msgid ""
-"If you are client or user send a photo of a product or place to us. Will "
-"be published after a moderation process"
-msgstr ""
-"Si eres cliente o usuario envíanos una fotografía de un producto o del "
-"lugar. Se publicará luego del proceso de moderación"
+"If you are client or user send a photo of a product or place to us. Will be "
+"published after a moderation process"
+msgstr "如果你是客户或用户发送产品或地方给我们的照片。一个仲裁过程后，将公布"
 
 #: templates/_list_stores.html:112
 msgid "The picture will be published with a public domain license"
-msgstr "La fotografía se publicará con una licencia de dominio público"
+msgstr "图片将与公共领域的许可证发布"
 
 #: templates/_list_stores.html:117
 msgid "Photo caption"
-msgstr "Título de la fotografía"
+msgstr "图片说明"
 
 #: templates/_list_stores.html:124
 msgid "Send"
-msgstr "Enviar"
+msgstr "派"
 
 #: templates/_list_stores.html:145
 msgid "Views"
-msgstr "Vistas"
+msgstr "浏览"
 
 #: templates/_list_stores.html:146
 msgid "Edits"
-msgstr "Ediciones"
+msgstr "编辑"
 
 #: templates/about.html:8 templates/layout.html:120
 msgid "About Hovyũ"
-msgstr "Acerca de Hovyũ"
+msgstr "关于Hovyũ"
 
 #: templates/about.html:10
 msgid ""
-"Hovyũ's mission is to accelerate the transition to sustainable production"
-" methods."
-msgstr ""
-"Hovyũ tiene como misión acelerar la transición hacia métodos de "
-"producción sostenibles."
+"Hovyũ's mission is to accelerate the transition to sustainable production "
+"methods."
+msgstr "Hovyũ的使命是加速过渡到可持续的生产方式。"
 
 #: templates/about.html:13
 msgid ""
-"Is a Community of business and organization related to "
-"<strong>Sustainable Design</strong>,\n"
+"Is a Community of business and organization related to <strong>Sustainable "
+"Design</strong>,\n"
 "                    <strong>Fair Trade</strong> and <strong>Conscious "
 "Eating</strong> and its goal is to be the\n"
 "                    most complete database feed and maintain by the "
 "community."
 msgstr ""
-"Es una comunidad de comercios e instituciones relacionados con el "
-"<strong>Diseño Sustentable</strong>,\n"
-"                    el <strong>Comercio Justo</strong> y la "
-"<strong>Alimentación Consciente</strong> y tiene como meta ser la\n"
-"                    base de datos universal mas completa alimentada y "
-"mantenida por la comunidad."
+"是企业和组织与<strong>可持续设计</strong>的一个社区，<strong>公平贸易</"
+"strong>和<strong>有意识的饮食</strong>，其目标是成为最完整的数据库饲料和由社"
+"区维护。"
 
 #: templates/about.html:18
 msgid ""
-"It's developed by Widú as a free software project, where the data is free"
-" under <a href=\"http://creativecommons.org/licenses/by/4.0/\" "
-"target=\"_blank\">CC-BY 4.0</a> licence\n"
-"                    and can be accessed through APIs allowing the "
-"creation of third party applications."
+"It's developed by Widú as a free software project, where the data is free "
+"under <a href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"_blank"
+"\">CC-BY 4.0</a> licence\n"
+"                    and can be accessed through APIs allowing the creation "
+"of third party applications."
 msgstr ""
-"Está desarrollada por Widú como un proyecto de software libre, donde la "
-"información es libre, bajo licencia <a "
-"href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"_blank"
-"\">CC-BY 4.0</a>\n"
-"                    y es accesible a través de APIs premitiendo la "
-"creación de aplicaciones por parte de terceros."
+"它是由Widú开发的自由软件项目，其中数据是在<a href=\"http://creativecommons."
+"org/licenses/by/4.0/\" target=\"_blank\">CC-BY4.0</a>许可免费的，可以通过API"
+"允许创建第三方应用程序进行访问。"
 
 #: templates/about.html:20
 msgid ""
-"Hovyũ means green in Guaraní and sounds similar to <em>hovuhu</em>, but "
-"we pronounce it <em>hovu</em>."
+"Hovyũ means green in Guaraní and sounds similar to <em>hovuhu</em>, but we "
+"pronounce it <em>hovu</em>."
 msgstr ""
-"Hovyũ significa verde en Guaraní y suena similar a <em>hovujú</em>, pero "
-"le decimos <em>hoviú</em>."
+"Hovyũ意味着绿色瓜拉尼和声音相似的<em>hovuhu</em>的，但我们念它的<em>hovu</em>"
+"的。"
 
 #: templates/about.html:22
 msgid "Press material"
-msgstr "Material de prensa"
+msgstr "新闻资料"
 
 #: templates/about.html:23
 msgid "Press Kit"
-msgstr "Gacetilla de Prensa"
+msgstr "新闻资料"
 
 #: templates/about.html:24 templates/about.html:25
 msgid "Screenshot"
-msgstr "Captura de pantalla"
+msgstr "截图"
 
 #: templates/about.html:26
 msgid "Logo"
-msgstr "Logo"
+msgstr "徽标"
 
 #: templates/about.html:26
 msgid "and"
-msgstr "e"
+msgstr "和"
 
 #: templates/about.html:27
 msgid "Icon"
-msgstr "Icono"
+msgstr "图标"
 
 #: templates/about.html:30
 msgid "About Widú"
-msgstr "Acerca de Widú"
+msgstr "关于Widú"
 
 #: templates/about.html:33
 #, python-format
 msgid ""
-"<a href=\"%(url)s\" target=\"_blank\">Widú</a> is transmedia "
-"communication for Sustainable business."
+"<a href=\"%(url)s\" target=\"_blank\">Widú</a> is transmedia communication "
+"for Sustainable business."
 msgstr ""
-" <a href=\"%(url)s\" target=\"_blank\">Widú</a> es comunicación "
-"transmedia para empresas Sustentables."
+"<a href=\"%(url)s\" target=\"_blank\">Widú</a>是可持续的商业跨媒体沟通。"
 
 #: templates/about.html:36
 msgid "Commitment"
-msgstr "Nuestro compromiso"
+msgstr "Commitment"
 
 #: templates/about.html:38
 msgid ""
-"The servers are locates at Santa Fe and Buenos Aires (Argentina) betting "
-"on local infrastructure,\n"
+"The servers are locates at Santa Fe and Buenos Aires (Argentina) betting on "
+"local infrastructure,\n"
 "                    we use digital media to reduce paper consumption."
 msgstr ""
-"Los servidores están ubicados en Santa Fe y Buenos Aires (Argentina) "
-"apostando a la infraestructura local,                    utilizamos "
-"medios electrónicos para reducir la utilización de papel."
+"该服务器位于圣达菲和布宜诺斯艾利斯当地的基础设施（阿根廷）博彩，我们使用数字"
+"媒体，以减少纸张的消耗。"
 
 #: templates/about.html:40
 msgid ""
 "Hovyũ encourages alternative and decentralized payment solutions, free "
 "software and free data."
-msgstr ""
-"Hovyũ alienta la utilización de soluciones de pago alternativas y "
-"descentralizadas, el software libre y                    las bases de "
-"datos libres."
+msgstr "Hovyũ鼓励替代性和分散化的支付解决方案，免费软件和免费数据。"
 
 #: templates/about.html:43
 msgid "Contact and help"
-msgstr "Contacto y ayuda"
+msgstr "联系和帮助"
 
 #: templates/about.html:45
 msgid ""
 "If you have questions or comments contact us through email, Telegram or "
 "Facebook."
-msgstr ""
-"Si tienes dudas o comentarios puedes ponerte en contacto con nosotros a "
-"través de mi dirección de correo electrónico, Telegram o Facebook"
+msgstr "如果您有任何问题或意见，请联系我们通过电子邮件，Telegram或Facebook。"
 
 #: templates/about.html:49
 msgid "Chat with us on Telegram"
-msgstr "Chatea con nosotros en Telegram"
+msgstr "与我们Telegram聊天"
 
 #: templates/about.html:50
 msgid "Follow us on Facebook"
-msgstr "Síguenos en Facebook"
+msgstr "按照我们在Facebook"
 
 #: templates/about.html:53
 msgid "Developers"
-msgstr "Desarrolladores"
+msgstr "开发商"
 
 #: templates/about.html:55
 msgid "Hovyũ is free software, the source code is published on GitHub"
-msgstr "Hovyũ es software libre, el código fuente está publicado en GitHub"
+msgstr "Hovyũ是免费软件，源代码被公布在GitHub"
 
 #: templates/about.html:58
 msgid "Web Interface"
-msgstr "Interfaz Web"
+msgstr "Web界面"
 
 #: templates/about.html:59
 msgid "Web Server"
-msgstr "Servidor Web"
+msgstr "Web服务器"
 
 #: templates/about.html:62
 msgid ""
-"If you want an updated copy of our database you can use our feed <a "
-"href=\"/atom.xml\" target=\"_blank\">Atom 1.0</a>."
+"If you want an updated copy of our database you can use our feed <a href=\"/"
+"atom.xml\" target=\"_blank\">Atom 1.0</a>."
 msgstr ""
-"Si deseas mantener una copia actualizada de nuestra base de datos puedes "
-"utilizar nuestro feed <a href=\"/atom.xml\" target=\"_blank\">Atom "
-"1.0</a>."
+"如果你想我们的数据库的更新副本，您可以使用我们的饲料的<a href=\"/atom.xml\" "
+"target=\"_blank\">Atom1.0</a>。"
 
 #: templates/about.html:65
 msgid "Content"
-msgstr "Contenido"
+msgstr "内容"
 
 #: templates/about.html:67
 msgid "Some business were taken from"
-msgstr "Varios comercios fueron tomados de"
+msgstr "一些企业采取了从"
 
 #: templates/about.html:68
 msgid "Geographic information"
-msgstr "Información geográfica"
+msgstr "地理信息"
 
 #: templates/about.html:69
 msgid "Emojis"
@@ -265,269 +247,257 @@ msgstr "Emojis"
 
 #: templates/about.html:72
 msgid "Statistics"
-msgstr "Estadísticas"
+msgstr "统计"
 
 #: templates/add_edit_store.html:7
 msgid "Edit business or organization"
-msgstr "Editar comercio u organización"
+msgstr "编辑企业或组织"
 
 #: templates/add_edit_store.html:9 templates/layout.html:119
 msgid "Add business or organization"
-msgstr "Agregar comercio u organización"
+msgstr "添加的企业或组织"
 
 #: templates/add_edit_store.html:14 templates/add_edit_store.html:294
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "撤消"
 
 #: templates/add_edit_store.html:22
-msgid "Add a business or organization related to <strong>Sustainability</strong>"
-msgstr ""
-"Agregar comercio u organización relacionada con la "
-"<strong>Sustentabilidad</strong>"
+msgid ""
+"Add a business or organization related to <strong>Sustainability</strong>"
+msgstr "添加一个企业或组织与<strong>可持续发展</strong>"
 
 #: templates/add_edit_store.html:26
 msgid ""
 "If you need help contact us to <strong>info@hovyu.com</strong> or\n"
-"                            <a "
-"href=\"https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae\" "
-"target=\"_blank\">Telegram chat"
+"                            <a href=\"https://telegram.me/"
+"joinchat/0338811e01cabfbb50df16c3bea1faae\" target=\"_blank\">Telegram chat"
 msgstr ""
-"Si necesitas ayuda contáctanos a <strong>info@hovyu.com</strong> o\n"
-"                            el <a "
-"href=\"https://telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae\" "
-"target=\"_blank\">chat de Telegram"
+"如果您需要帮助请联系我们<strong>info@hovyu.com</strong>或<a href=\"https://"
+"telegram.me/joinchat/0338811e01cabfbb50df16c3bea1faae\" target=\"_blank"
+"\">Telegram聊天"
 
 #: templates/add_edit_store.html:42
 msgid "Name"
-msgstr "Nombre"
+msgstr "命名"
 
 #: templates/add_edit_store.html:44
 msgid "Sustainable entity"
-msgstr "Entidad sustentable"
+msgstr "可持续实体"
 
 #: templates/add_edit_store.html:45
 msgid "Name of the entity you want to add"
-msgstr "Nombre de la entidad que quieres añadir"
+msgstr "该实体的名称，你想添加"
 
 #: templates/add_edit_store.html:52
 msgid "Check that the entity is not listed above"
-msgstr "Verifica que la entidad no esté listada mas arriba"
+msgstr "检查实体没有在上面列出"
 
 #: templates/add_edit_store.html:59
 msgid "Add Logo"
-msgstr "Añadir Logotipo"
+msgstr "新增标志"
 
 #: templates/add_edit_store.html:65
 msgid "If you are part of the staff send us a logo."
-msgstr "Si eres parte del staff envíanos un logotipo"
+msgstr "如果你是工作人员的一部分，给我们一个标志。"
 
 #: templates/add_edit_store.html:65
 msgid "The picture will be public"
-msgstr "La imagen será pública"
+msgstr "画面将被公开"
 
 #: templates/add_edit_store.html:72
 msgid "Delete Logo"
-msgstr "Eliminar Logotipo"
+msgstr "删除标志"
 
 #: templates/add_edit_store.html:80
 msgid "Description of the entity"
-msgstr "Descripción de la entidad"
+msgstr "实体的描述"
 
 #: templates/add_edit_store.html:83
 msgid "What does the entity? Why it is special?"
-msgstr "¿A qué se dedica la entidad? ¿Por qué es especial?"
+msgstr "什么实体？为什么是特殊的？"
 
 #: templates/add_edit_store.html:89
 msgid "What is the commitment with Sustainability?"
-msgstr "¿Cuál es el compromiso con la Sustentabilidad?"
+msgstr "什么是可持续发展的承诺？"
 
 #: templates/add_edit_store.html:92
 msgid ""
 "What makes the entity to contribute to sustainability? Which are the "
 "production pipelines? Does it have any certification?"
-msgstr ""
-"¿Qué hace que la entidad aporte a la sustentabilidad? ¿Cuales son los "
-"procesos de producción? ¿Tiene alguna certificación?"
+msgstr "是什么让实体以促进可持续发展？哪些是制作流程？是否有什么认证？"
 
 #: templates/add_edit_store.html:109
 msgid "Address"
-msgstr "Domicilio"
+msgstr "住址"
 
 #: templates/add_edit_store.html:111
 msgid "Street 1234, City, Country"
-msgstr "Calle 1234, Ciudad, País"
+msgstr "街1234，城市，国家"
 
 #: templates/add_edit_store.html:112
 msgid "Entity address"
-msgstr "Domicilio de la entidad"
+msgstr "实体地址"
 
 #: templates/add_edit_store.html:117
 msgid "E-Mail"
-msgstr "Correo electrónico"
+msgstr "电子邮件"
 
 #: templates/add_edit_store.html:119
 msgid "info@sustainableentity.com"
-msgstr "info@entidadsustentable.com"
+msgstr "info@sustainableentity.com"
 
 #: templates/add_edit_store.html:120
 msgid "Contact E-Mail"
-msgstr "Correo electrónico de contacto"
+msgstr "联系邮箱"
 
 #: templates/add_edit_store.html:135
 msgid "Websites"
-msgstr "Sitios web"
+msgstr "网站"
 
 #: templates/add_edit_store.html:139
 msgid "http://sustainableentity.com"
-msgstr "http://entidadsustentable.com"
+msgstr "http://sustainableentity.com"
 
 #: templates/add_edit_store.html:142
 msgid "SustainableEntity.com"
-msgstr "EntidadSustentable.com"
+msgstr "SustainableEntity.com"
 
 #: templates/add_edit_store.html:145
 msgid "Add website"
-msgstr "Añadir sitio web"
+msgstr "添加网站"
 
 #: templates/add_edit_store.html:149
 msgid ""
-"Enter URL (it must begin with \"http://\" or \"https://\"), enter the "
-"Name and then click on Add website"
+"Enter URL (it must begin with \"http://\" or \"https://\"), enter the Name "
+"and then click on Add website"
 msgstr ""
-"Ingresar URL (debe comenzar con \"http://\" o \"https://\"), ingresar "
-"Nombre y luego hacer click en Añadir Sitio Web"
+"输入网址（它必须以“http://”或“https://开头”），输入姓名，然后点击添加网站"
 
 #: templates/add_edit_store.html:165
 msgid "Phone Numbers"
-msgstr "Números Telefónicos"
+msgstr "电话号码"
 
 #: templates/add_edit_store.html:170
 msgid "Ground"
-msgstr "Línea"
+msgstr "Ground"
 
 #: templates/add_edit_store.html:171
 msgid "Mobile"
-msgstr "Celular"
+msgstr "Mobile"
 
 #: templates/add_edit_store.html:172
 msgid "Radio"
-msgstr "Radio (Nextel)"
+msgstr "Radio"
 
 #: templates/add_edit_store.html:179
 msgid "Add Phone Number"
-msgstr "Añadir Número Telefónico"
+msgstr "添加电话号码"
 
 #: templates/add_edit_store.html:183
 msgid "Select phone type, enter the number and click on Add Phone Number"
-msgstr ""
-"Seleccionar tipo de teléfono, ingresar número y hacer click en Añadir "
-"Número Telefónico"
+msgstr "选择手机类型，输入号码，然后单击添加电话号码"
 
 #: templates/add_edit_store.html:233
 msgid "Satellite imagery of Earth"
-msgstr "Imagen satelital de la Tierra"
+msgstr "地球卫星图像"
 
 #: templates/add_edit_store.html:243
 msgid "Exact location"
-msgstr "Ubicación exacta"
+msgstr "招聘信息"
 
 #: templates/add_edit_store.html:246
 msgid "Get current location"
-msgstr "Obtener ubicación actual"
+msgstr "获取当前位置"
 
 #: templates/add_edit_store.html:251
 msgid "Latitude"
-msgstr "Latitud"
+msgstr "纬"
 
 #: templates/add_edit_store.html:257
 msgid "Longitude"
-msgstr "Longitud"
+msgstr "经度"
 
 #: templates/add_edit_store.html:265
 msgid "Advanced Options"
-msgstr "Opciones Avanzadas"
+msgstr "高级选项"
 
 #: templates/add_edit_store.html:270
 msgid "Products"
-msgstr "Productos"
+msgstr "产品展示"
 
 #: templates/add_edit_store.html:290
 #, python-format
 msgid "Acme / natural 100%%"
-msgstr "Marca Acme / 100%% natural"
+msgstr "Acme / natural 100%%"
 
 #: templates/add_edit_store.html:291
 msgid "USD 5 oz"
-msgstr "$5 el Kg"
+msgstr "USD 5 oz"
 
 #: templates/add_edit_store.html:292 templates/add_edit_store.html:334
 msgid "Add"
-msgstr "Añadir"
+msgstr "加"
 
 #: templates/add_edit_store.html:316
 msgid "Edit description"
-msgstr "Editar descripción"
+msgstr "编辑说明"
 
 #: templates/add_edit_store.html:318
 msgid "Edited because ..."
-msgstr "Editado porque..."
+msgstr "编辑，因为..."
 
 #: templates/add_edit_store.html:319
 msgid "Short edit description"
-msgstr "Descripción corta de la edición"
+msgstr "简短编辑说明"
 
 #: templates/add_edit_store.html:329
 msgid "Save"
-msgstr "Guardar"
+msgstr "保存"
 
 #: templates/home.html:42
 msgid "What I'm looking for? Ex.: Restaurant"
-msgstr "¿Qué busco? Ejemplo: Restaurant"
+msgstr "我在找什么？例：餐厅"
 
 #: templates/home.html:51
 msgid "Search for any product"
-msgstr "Buscar cualquier producto"
+msgstr "搜索任何产品"
 
 #: templates/home.html:52
 msgid "Select location on map"
-msgstr "Seleccionar ubicación en el mapa"
+msgstr "在地图上选择位置"
 
 #: templates/home.html:53
 msgid "Search near here"
-msgstr "Buscar cerca de aquí"
+msgstr "这里附近搜索"
 
 #: templates/home.html:54
 msgid "Search everywhere"
-msgstr "Buscar en todos lados"
+msgstr "搜索无处不在"
 
 #: templates/home.html:113
 msgid "No results found"
-msgstr "No se encontraron resultados"
+msgstr "未找到结果"
 
 #: templates/home.html:369
 msgid "Getting location..."
-msgstr "Obteniendo ubicación"
+msgstr "获取位置..."
 
 #: templates/home.html:375 templates/home.html:387
 msgid "Known location"
-msgstr "Ubicación conocida"
+msgstr "已知位置"
 
 #: templates/home.html:379 templates/home.html:389 templates/home.html:459
 msgid "Unknown location"
-msgstr "Ubicación desconocida"
+msgstr "未知的位置"
 
 #: templates/layout.html:42
 msgid "Hovyũ, sustainable life"
-msgstr "Hovyũ, vida sustentable"
+msgstr "Hovyũ，可持续的生活"
 
 #: templates/layout.html:110
 msgid "Toggle navigation"
-msgstr "Toggle barra de navegación"
+msgstr "切换导航"
 
 #: templates/layout.html:139
 msgid "businesses and organizations"
-msgstr "comercios y organizaciones"
-
-#~ msgid "e"
-#~ msgstr "and"
-
+msgstr "企业和组织"

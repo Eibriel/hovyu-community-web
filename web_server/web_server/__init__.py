@@ -16,7 +16,8 @@ app.config.from_object('web_server.config.Config')
 # Set locale
 @babel.localeselector
 def get_locale():
-    return g.get('locale')
+    locale = g.get('locale')
+    return locale
 
 from web_server.modules.jinja_filters import nl2br
 from web_server.modules.jinja_filters import char2emoji
