@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-sm-offset-1 col-sm-10">
+
+<p>{{ logs|length }}</p>
+{% for log in logs %}
+
+{% if log['robot'] %}
+<div class="alert alert-warning" role="alert">
+{% else %}
+<div class="alert alert-success" role="alert">
+{% endif %}
+<p>
+<h4><span  class="label label-primary">{{ log['page']}}</span></h4><br>
+{% if not log['robot'] %}
+<ul>
+    <li>{{ log['ip_md5'] }}</li>
+    <li>{% if log['useragent_browser'] %}{{ log['useragent_browser'] }}{% else %}No Browser{% endif %}</li>
+    <li>{% if log['useragent_platform'] %}{{ log['useragent_platform'] }}{% else %}No Platform{% endif %}</li>
+    <li>{% if log['useragent_version'] %}{{ log['useragent_version'] }}{% else %}No Version{% endif %}</li>
+    <li>{% if log['acceptlanguage'] != '' %}{{ log['acceptlanguage'] }}{% else %}No language{% endif %}</li>
+    <li>{% if log['referrer'] %}{{ log['referrer'] }}{% else %}No referrer{% endif %}</li>
+</ul>
+{% endif %}
+</p>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
