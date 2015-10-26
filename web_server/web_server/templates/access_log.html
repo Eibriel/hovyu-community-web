@@ -12,7 +12,6 @@
 {% else %}
 <div class="alert alert-success" role="alert">
 {% endif %}
-<p>
 <h4><span  class="label label-primary">{{ log['page']}}</span></h4><br>
 {% if not log['robot'] %}
 <ul>
@@ -25,7 +24,6 @@
     <li>{% if log['referrer'] %}{{ log['referrer'] }}{% else %}No referrer{% endif %}</li>
 </ul>
 {% endif %}
-</p>
 </div>
 
 {% endfor %}

@@ -1,4 +1,3 @@
-import re
 import random
 import logging
 
@@ -91,22 +90,11 @@ def sitemap():
 @app.route("/access_log.html")
 def access_log():
     current_domain = get_current_domain()
-    logs = get('access_log?sort=-_updated')
+    logs = get('access_log?sort=-_updated&max_results=100')
 
     filtered_logs = []
     for log in logs:
-        # Get USETAGENT
-        if log['useragent'] == '':
-            log['useragent_browser'] = 'null'
-        else:
-            search = re.search("Majestic",log['useragent'])
-            if search:
-                log['useragent_browser'] = 'majestic'
-
-        if log['useragent_browser'] in ['google', 'aol', 'ask', 'yahoo', 'null', 'majestic']:
-            log['robot'] = True
-        else:
-            log['rogot'] = False
+        if not log.get('robot'):
             filtered_logs.append(log)
 
     response = make_response(render_template('access_log.html',
