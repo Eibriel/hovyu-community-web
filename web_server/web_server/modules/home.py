@@ -1,3 +1,4 @@
+import re
 import random
 import logging
 
@@ -92,14 +93,24 @@ def access_log():
     current_domain = get_current_domain()
     logs = get('access_log?sort=-_updated')
 
+    filtered_logs = []
     for log in logs:
-        if log['useragent_browser'] in ['google', 'aol', 'ask', 'yahoo']:
+        # Get USETAGENT
+        if log['useragent'] == '':
+            log['useragent_browser'] = 'null'
+        else:
+            search = re.search("Majestic",log['useragent'])
+            if search:
+                log['useragent_browser'] = 'majestic'
+
+        if log['useragent_browser'] in ['google', 'aol', 'ask', 'yahoo', 'null', 'majestic']:
             log['robot'] = True
         else:
             log['rogot'] = False
+            filtered_logs.append(log)
 
     response = make_response(render_template('access_log.html',
-                             logs = logs,
+                             logs = filtered_logs,
                              current_domain = current_domain,
                              subtitle = 'Access Log'))
     #response.headers['Content-Type'] = 'text/plain; charset=utf-8'

@@ -7,7 +7,7 @@
 <p>{{ logs|length }}</p>
 {% for log in logs %}
 
-{% if log['robot'] %}
+{% if log['acceptlanguage'] == '' or not log['useragent_browser'] %}
 <div class="alert alert-warning" role="alert">
 {% else %}
 <div class="alert alert-success" role="alert">
@@ -17,6 +17,7 @@
 {% if not log['robot'] %}
 <ul>
     <li>{{ log['ip_md5'] }}</li>
+    <li>{{ log['useragent'] }}</li>
     <li>{% if log['useragent_browser'] %}{{ log['useragent_browser'] }}{% else %}No Browser{% endif %}</li>
     <li>{% if log['useragent_platform'] %}{{ log['useragent_platform'] }}{% else %}No Platform{% endif %}</li>
     <li>{% if log['useragent_version'] %}{{ log['useragent_version'] }}{% else %}No Version{% endif %}</li>
