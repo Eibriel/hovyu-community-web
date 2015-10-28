@@ -92,9 +92,14 @@ def access_log():
     current_domain = get_current_domain()
     params = {
         'sort': '-_updated',
-        'max_results': '100',
+        'max_results': 100,
         'where': '{"robot": false}'
     }
+
+    if 'showall' in request.args:
+        params['where'] = None
+        params['max_results'] = 500
+
     logs = get('access_log', params=params)
 
     response = make_response(render_template('access_log.html',
