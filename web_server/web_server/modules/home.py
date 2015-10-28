@@ -90,15 +90,15 @@ def sitemap():
 @app.route("/access_log.html")
 def access_log():
     current_domain = get_current_domain()
-    logs = get('access_log?sort=-_updated&max_results=100')
-
-    filtered_logs = []
-    for log in logs:
-        if not log.get('robot'):
-            filtered_logs.append(log)
+    params = {
+        'sort': '-_updated',
+        'max_results': '100',
+        'where': '{"robot": false}'
+    }
+    logs = get('access_log', params=params)
 
     response = make_response(render_template('access_log.html',
-                             logs = filtered_logs,
+                             logs = logs,
                              current_domain = current_domain,
                              subtitle = 'Access Log'))
     #response.headers['Content-Type'] = 'text/plain; charset=utf-8'
