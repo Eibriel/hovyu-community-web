@@ -8,10 +8,24 @@
                     <h4 class="modal-title" id="upgradeModalLabel">Destacar comercio</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Podés colocar este negocio entre los primeros <strong>¡Abonando un año te regalamos 2 meses!</strong></p>
+                    <p>Agrega una Insignia a tu negocio para que se destaque! <strong>¡Abonando un año te regalamos 2 meses!</strong></p>
                     <p>Paso 1 de 2</p>
-                    
+
                     <div class="form-horizontal">
+                        <!-- Badge -->
+                        <div class="form-group">
+                            <label for="payment_badge" class="col-sm-2 control-label">Insignia</label>
+                            <div class="col-sm-10">
+                                <select class="form-control"  id="payment_badge">
+                                    <option value="ar">Reciclaje</option>
+                                    <option value="br">Energía Limpia</option>
+                                    <option value="co">Orgánico</option>
+                                    <option value="ve">Vegano</option>
+                                    <option value="mx">Kosher</option>
+                                </select>
+                                <span id="new_store_badge_help" class="help-block">Insignia que quieres agregar a la entidad</span>
+                            </div>
+                        </div>
                         <!-- Country -->
                         <div class="form-group">
                             <label for="payment_country" class="col-sm-2 control-label">País</label>
@@ -90,7 +104,8 @@
                         <!-- Send -->
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-success" onclick="send_payment_instructions();">Enviar</button>
+                                <!--<button type="submit" class="btn btn-success" onclick="send_payment_instructions();">Enviar</button>-->
+                                <button type="button" class="btn btn-success" data-dismiss="modal">Enviar</button>
                             </div>
                         </div>
                     </div>
@@ -113,22 +128,22 @@ function add_high(id, iid, name) {
     //$('#panel_store_'+id).addClass('panel-primary');
     //$('#panel_store_'+id).removeClass('panel-default');
     //$('#star_'+id).css('display', 'inline');
-    
+
     $('#upgrade_store_id').val(id);
     $('#upgrade_store_iid').val(iid);
     $('#upgrade_store_name').val(name);
-    
+
     redraw_upgrade_modal();
 }
 
 function redraw_upgrade_modal() {
     var country = $('#payment_country').val();
     var product = $('input[name=product]:checked', '#product_radio').val();
-    
+
     $('#payment_local_bank_label').removeClass('disabled');
     $('#payment_mercadopago_label').removeClass('disabled');
     $('#payment_bitcoin_label').removeClass('disabled');
-        
+
     if (product == 'highlight_one_year') {
         ars_pay = 'ARS 2000.0';
         ars_saving = 'ARS 400.0';
@@ -144,10 +159,10 @@ function redraw_upgrade_modal() {
         btc_pay = 'BTC 0.08';
         btc_saving = 'BTC 0.0';
     }
-    
+
     $('#payment_amount_to_pay').val(usd_pay);
     $('#payment_amount_saved').val(usd_saving);
-    
+
     if (country == '') {
         $('#payment_local_bank_label').addClass('disabled');
         $('#payment_mercadopago_label').addClass('disabled');
@@ -169,15 +184,15 @@ function redraw_upgrade_modal() {
         $('#payment_bitcoin_label').removeClass('active');
         $('#payment_local_bank_label').removeClass('active');
     }
-    
+
     var method = $('input[name=method]:checked', '#method_radio').val();
-    
+
     //console.log(method);
     if (method == 'bitcoin') {
         $('#payment_amount_to_pay').val(btc_pay);
         $('#payment_amount_saved').val(btc_saving);
     }
-    
+
 }
 
 $('#payment_country').change(redraw_upgrade_modal);
@@ -211,12 +226,9 @@ function send_payment_instructions() {
               name: name }
     })
       .done(function( msg ) {});
-    
+
     $('#upgradeModal').modal('hide')
 }
 
 </script>
 {% endmacro %}
-
-
-

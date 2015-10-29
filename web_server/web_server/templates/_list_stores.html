@@ -96,9 +96,9 @@
                             <button class="btn btn-default btn-xs" type="button" onClick="return toggle_picture_uploader('{{ item._id }}')">
                                 <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> {{ _('Add photo') }}
                             </button>
-                            {% if False %}<button class="btn btn-default btn-xs" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
-                                <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> Destacar
-                            </button>{% endif %}
+                            <button class="btn btn-default btn-xs" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
+                                <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> {{ _('Add Badge') }}
+                            </button>
 
                             <div class="row hide" id="add_picture_div_{{ item._id }}">
                                 <div class="col-sm-12" style="margin-top: 1em">
