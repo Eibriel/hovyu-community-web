@@ -67,3 +67,18 @@ from web_server.modules.pictures import client_pictures
 from web_server.modules.pictures import client_picture_approve
 from web_server.modules.pictures import add_client_picture
 from web_server.modules.pictures import logo_picture
+# PAYMENTS
+from web_server.modules.payments import payments
+from web_server.modules.payments import payment_add_edit
+from web_server.modules.payments import add_payment
+from web_server.modules.payments import edit_payment
+from web_server.modules.payments import send_payment_instructions
+# CALLBACKS
+from web_server.modules.callbacks import bitcoin_callback
+from web_server.modules.callbacks import mercadopago_callback
+from web_server.modules.callbacks import test_callback
+# BADGES
+from web_server.modules.badge_stores import badge_stores
+from web_server.modules.badge_stores import add_badge_store
+from web_server.modules.badge_stores import edit_badge_store
+from web_server.modules.badge_stores import badge_store_add_edit

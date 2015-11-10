@@ -1,5 +1,9 @@
 from bson import ObjectId
 
+from web_server import app
+
+from web_server.modules.server_requests import get
+
 # CALLBAKS
 @app.route('/bitcoin_callback/<payment_id>/<secret>')
 def bitcoin_callback(payment_id, secret):
@@ -44,3 +48,9 @@ def mercadopago_callback(payment_id, secret):
         return '', 400
     else:
         return '', 200
+
+@app.route('/test_callback/<payment_id>/<secret>', methods=['GET'])
+def test_callback(payment_id, secret):
+    item = get('payments/{0}?callback=test'.format(payment_id))
+    print (item)
+    return '', 200

@@ -8,7 +8,7 @@
         {% endif %}
     </div>
     <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
-        <a role="button" class="btn btn-primary btn-sm" href="/">
+        <a role="button" class="btn btn-primary btn-sm" href="/payments">
           Cancelar
         </a>
     </div>
@@ -46,15 +46,20 @@
                 <span id="payment_email_help" class="help-block">EMail del que paga</span>
             </div>
         </div>
-        <!-- Start day -->
+        <!-- Badge -->
         <div class="form-group">
-            <label for="payment_start_day" class="col-sm-2 control-label">Start Day</label>
-                <div class="col-sm-10">
-                    <select class="form-control"  name="start_day" id="payment_start_day">
-                    {% for n in range(1, 31) %}
-                        <option value="ar">Pesos Argentinos</option>
-                    {% endfor %}
-                    </select>
+            <label for="payment_badge" class="col-sm-2 control-label">Badge</label>
+            <div class="col-sm-10">
+                <input type="text" name="badge" id="payment_badge" class="form-control" placeholder="" value="{{ edit_item.badge }}"></input>
+                <span id="payment_email_help" class="help-block">Badge name</span>
+            </div>
+        </div>
+        <!-- Months -->
+        <div class="form-group">
+            <label for="payment_months" class="col-sm-2 control-label">Months</label>
+            <div class="col-sm-10">
+                <input type="text" name="months" id="payment_moths" class="form-control" placeholder="12" value="{{ edit_item.months }}"></input>
+                <span id="payment_email_help" class="help-block">Months</span>
             </div>
         </div>
         <!-- Store Id -->
@@ -79,18 +84,18 @@
         </div>
         <!-- Amount -->
         <div class="form-group">
-            <label for="payment_amount" class="col-sm-2 control-label">Cantidad</label>
+            <label for="payment_amount" class="col-sm-2 control-label">{{ _('Amount') }}</label>
             <div class="col-sm-10">
                 <input type="text" name="amount" id="payment_amount" class="form-control" placeholder="0.0 o 1000000000" value="{{ edit_item.amount }}"></input>
                 <span id="payment_amount_help" class="help-block">Cantidad en formato de coma flotante o satoshi</span>
             </div>
         </div>
-        <!-- Day cost -->
+        <!-- Real Amount -->
         <div class="form-group">
-            <label for="payment_day_cost" class="col-sm-2 control-label">Costo diario</label>
+            <label for="payment_real_amount" class="col-sm-2 control-label">{{ _('Real Amount') }}</label>
             <div class="col-sm-10">
-                <input type="text" name="day_cost" id="payment_day_cost" class="form-control" placeholder="0.0 o 1000000000" value="{{ edit_item.day_cost }}"></input>
-                <span id="payment_day_cost_help" class="help-block">Cantidad en formato de coma flotante o satoshi</span>
+                <input type="text" name="real_amount" id="payment_real_amount" class="form-control" placeholder="0.0 o 1000000000" value="{{ edit_item.real_amount }}"></input>
+                <span id="payment_real_amount_help" class="help-block">Cantidad en formato de coma flotante o satoshi</span>
             </div>
         </div>
         <!-- Completed -->
@@ -101,6 +106,14 @@
                         <input type="checkbox" name="completed" {% if edit_item.completed %}checked="checked"{% endif %}> Completado
                     </label>
                 </div>
+            </div>
+        </div>
+        <!-- Completion Date -->
+        <div class="form-group">
+            <label for="completion_date" class="col-sm-2 control-label">{{ _('Completion Date') }}</label>
+            <div class="col-sm-10">
+                <input type="text" name="completion_date" id="completion_date" class="form-control" placeholder="DD-MM-YYY" value="{{ edit_item.completion_date }}"></input>
+                <span id="completion_date_help" class="help-block">{{ _('Payment completion date') }}</span>
             </div>
         </div>
         <!-- Refunded -->
@@ -119,6 +132,13 @@
             <div class="col-sm-10">
                 <textarea name="refund_description" id="payment_refund_description" class="form-control" rows="3" >{{ edit_item.refund_description }}</textarea>
                 <span id="payment_refund_description_help" class="help-block">¿Cual fue el motivo del reembolso?¿Cómo y cuando se reenbolsó?</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="admin_password" class="col-sm-2 control-label">Password de Administrador</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="admin_password" id="admin_password" placeholder="Password de Administrador">
+                <span id="password_help" class="help-block">Solo el administrador tiene permisos para cambiar esta información</span>
             </div>
         </div>
 

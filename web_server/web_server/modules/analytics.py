@@ -134,6 +134,70 @@ b = {
     'name': 'linkdexbot'
 }
 browsers.append( b )
+#Whynder Magnet
+b = {
+    'useragent': 'Whynder Magnet',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'Whynder Magnet'
+}
+browsers.append( b )
+#James BOT - WebCrawler
+b = {
+    'useragent': 'James BOT - WebCrawler',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'James BOT - WebCrawler'
+}
+browsers.append( b )
+#Lipperhey-Kaus-Australis
+b = {
+    'useragent': 'Lipperhey-Kaus-Australis',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'Lipperhey-Kaus-Australis'
+}
+browsers.append( b )
+#ia_archiver
+# Alexa
+b = {
+    'useragent': 'ia_archiver',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'ia_archiver (Alexa)'
+}
+browsers.append( b )
+#OrangeBot
+b = {
+    'useragent': 'OrangeBot',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'orange.com'
+}
+browsers.append( b )
+# Netcraft Web Server Survey
+b = {
+    'useragent': 'Netcraft Web Server Survey',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'netcraft.com/survey'
+}
+browsers.append( b )
+#NetcraftSurveyAgent
+b = {
+    'useragent': 'NetcraftSurveyAgent',
+    'referrer': None,
+    'robot': True,
+    'harmful': False,
+    'name': 'netcraft.com'
+}
+browsers.append( b )
 
 # HARMFUL
 
@@ -166,6 +230,43 @@ b = {
     'name': 'rankings-analytics'
 }
 browsers.append( b )
+#http://pizza-tycoon.com/
+b = {
+    'useragent': None,
+    'referrer': 'http://pizza-tycoon.com/',
+    'robot': True,
+    'harmful': False,
+    'name': 'pizza-tycoon'
+}
+browsers.append( b )
+#http://hvd-store.com/
+b = {
+    'useragent': None,
+    'referrer': 'http://hvd-store.com/',
+    'robot': True,
+    'harmful': False,
+    'name': 'hvd-store'
+}
+browsers.append( b )
+#http://burger-imperia.com/
+b = {
+    'useragent': None,
+    'referrer': 'http://burger-imperia.com/',
+    'robot': True,
+    'harmful': False,
+    'name': 'burger-imperia'
+}
+browsers.append( b )
+#http://hundejo.com/
+b = {
+    'useragent': None,
+    'referrer': 'http://hundejo.com/',
+    'robot': True,
+    'harmful': False,
+    'name': 'hundejo'
+}
+browsers.append( b )
+
 
 def log_access():
     ip = '{1}{0}'.format(app.config['IP_LOG_SALT'], request.environ['REMOTE_ADDR'])

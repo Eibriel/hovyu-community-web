@@ -5,107 +5,105 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="upgradeModalLabel">Destacar comercio</h4>
+                    <h4 class="modal-title" id="upgradeModalLabel">{{ _('Add Badge') }}</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Agrega una Insignia a tu negocio para que se destaque! <strong>¡Abonando un año te regalamos 2 meses!</strong></p>
-                    <p>Paso 1 de 2</p>
+                    <p>{{ _('Add a badge to the entity so it stand out!') }} <strong>{{ _('Paying one year you get 2 months!') }}</strong></p>
+                    <p>{{ _('Step 1 of 2') }}</p>
 
                     <div class="form-horizontal">
                         <!-- Badge -->
                         <div class="form-group">
-                            <label for="payment_badge" class="col-sm-2 control-label">Insignia</label>
+                            <label for="payment_badge" class="col-sm-2 control-label">{{ _('Badge') }}</label>
                             <div class="col-sm-10">
                                 <select class="form-control"  id="payment_badge">
-                                    <option value="ar">Reciclaje</option>
-                                    <option value="br">Energía Limpia</option>
-                                    <option value="co">Orgánico</option>
-                                    <option value="ve">Vegano</option>
-                                    <option value="mx">Kosher</option>
+                                    <option value="recycling">{{ _('Recycling') }}</option>
+                                    <option value="clean_energy">{{ _('Clean Energy') }}</option>
+                                    <option value="organic">{{ _('Organic') }}</option>
+                                    <option value="vegan">{{ _('Vegan') }}</option>
+                                    <option value="kosher">{{ _('Kosher') }}</option>
+                                    <option value="gluten_free">{{ _('Gluten Free') }}</option>
+                                    <option value="cruelty_free">{{ _('Cruelty Free') }}</option>
+                                    <option value="free_software">{{ _('Free Software') }}</option>
+                                    <option value="free_hardware">{{ _('Free Hardware') }}</option>
+                                    <option value="creative_commons">{{ _('Creative Commons') }}</option>
                                 </select>
-                                <span id="new_store_badge_help" class="help-block">Insignia que quieres agregar a la entidad</span>
+                                <span id="new_store_badge_help" class="help-block">{{ _('Badge you want to add to the entity') }}</span>
                             </div>
                         </div>
                         <!-- Country -->
                         <div class="form-group">
-                            <label for="payment_country" class="col-sm-2 control-label">País</label>
+                            <label for="payment_country" class="col-sm-2 control-label">{{ _('Country') }}</label>
                             <div class="col-sm-10">
                                 <select class="form-control"  name="country" id="payment_country">
-                                    <option value="ar">Argentina</option>
-                                    <option value="br">Brasil</option>
-                                    <option value="co">Colombia</option>
-                                    <option value="ve">Venezuela</option>
-                                    <option value="mx">México</option>
-                                    <option value="">Otros</option>
+                                    <option value="ar">{{ _('Argentina') }}</option>
+                                    <option value="br">{{ _('Brazil') }}</option>
+                                    <option value="co">{{ _('Colombia') }}</option>
+                                    <option value="ve">{{ _('Venezuela') }}</option>
+                                    <option value="mx">{{ _('Mexico') }}</option>
+                                    <option value="">{{ _('Others') }}</option>
                                 </select>
-                                <span id="new_store_name_help" class="help-block">País desde donde se hará el pago</span>
+                                <span id="new_store_name_help" class="help-block">{{ _('Country from which payment will be made') }}</span>
                             </div>
                         </div>
-                        <!-- Amount -->
+                        <!-- Months -->
                         <div class="form-group">
-                            <label for="new_store_name" class="col-sm-2 control-label">Cantidad</label>
+                            <label for="new_store_name" class="col-sm-2 control-label">{{ _('Months') }}</label>
                             <div class="col-sm-10">
-                                <div class="btn-group" data-toggle="buttons" id="product_radio">
-                                  <label class="btn btn-primary active">
-                                    <input type="radio" name="product" id="payment_year" autocomplete="off" value="highlight_one_year" checked> Un Año
-                                  </label>
-                                  <label class="btn btn-primary">
-                                    <input type="radio" name="product" id="payment_month" autocomplete="off" value="highlight_one_month"> Un Mes
-                                  </label>
-                                </div>
-                                <span id="new_store_name_help" class="help-block">¿Por cuánto tiempo querés destacar el comercio?</span>
+                                <input type="number" name="months" id="payment_months" class="form-control" placeholder="" value="12" required></input>
+                                <span id="new_store_name_help" class="help-block">{{ _('For how long do you want to keep the Badge?') }}</span>
                             </div>
                         </div>
                         <!-- Total -->
                         <div class="form-group">
-                            <label for="payment_amount_to_pay" class="col-sm-2 control-label">Total a pagar</label>
+                            <label for="payment_amount_to_pay" class="col-sm-2 control-label">{{ _('Total to pay') }}</label>
                             <div class="col-sm-10">
                                 <input type="text" id="payment_amount_to_pay" class="form-control" placeholder="0" value="2000" disabled></input>
-                                <span id="new_store_name_help" class="help-block">El total que deberás abonar</span>
+                                <span id="new_store_name_help" class="help-block">{{ _('Total amount you should pay') }}</span>
                             </div>
                         </div>
-                        <!-- Ahorro -->
+                        <!-- Saving -->
                         <div class="form-group">
-                            <label for="payment_amount_saved" class="col-sm-2 control-label">Total ahorrado</label>
+                            <label for="payment_amount_saved" class="col-sm-2 control-label">{{ _('Total saving') }}</label>
                             <div class="col-sm-10">
                                 <input type="text" id="payment_amount_saved" class="form-control" placeholder="0" value="400" disabled></input>
-                                <span id="new_store_name_help" class="help-block">Lo que estás ahorrando al destacar el comercio por varios meses</span>
+                                <span id="new_store_name_help" class="help-block">{{ _('How much are you saving keeping the Badge for several months') }}</span>
                             </div>
                         </div>
                         <!-- Payment Method -->
                         <div class="form-group">
-                            <label for="method_radio" class="col-sm-2 control-label">Método</label>
+                            <label for="method_radio" class="col-sm-2 control-label">{{_('Payment method') }}</label>
                             <div class="col-sm-10">
                                 <div class="btn-group" data-toggle="buttons" id="method_radio">
                                   <!--<label class="btn btn-primary active disabled">
                                     <input type="radio" name="method" id="payment_pagomiscuentas" autocomplete="off" value="pagomiscuentas"> PagoMisCuentas
                                   </label>-->
                                   <label class="btn btn-primary active" id="payment_mercadopago_label">
-                                    <input type="radio" name="method" id="payment_mercadopago" autocomplete="off" value="mercadopago" checked> MercadoPago
+                                    <input type="radio" name="method" id="payment_mercadopago" autocomplete="off" value="mercadopago" checked> {{ _('MercadoPago') }}
                                   </label>
                                   <label class="btn btn-primary" id="payment_local_bank_label">
-                                    <input type="radio" name="method" id="payment_local_bank" autocomplete="off" value="local_bank"> Transferencia Bancária
+                                    <input type="radio" name="method" id="payment_local_bank" autocomplete="off" value="local_bank"> {{ _('Wire Transfer') }}
                                   </label>
                                   <label class="btn btn-primary" id="payment_bitcoin_label">
-                                    <input type="radio" name="method" id="payment_bitcoin" autocomplete="off" value="bitcoin"> Bitcoin
+                                    <input type="radio" name="method" id="payment_bitcoin" autocomplete="off" value="bitcoin"> {{ _('Bitcoin') }}
                                   </label>
                                 </div>
-                                <span id="new_store_name_help" class="help-block">Seleccionar método de pago</span>
+                                <span id="new_store_name_help" class="help-block">{{ _('Select payment method') }}</span>
                             </div>
                         </div>
                         <!-- EMail -->
                         <div class="form-group">
-                            <label for="payment_email" class="col-sm-2 control-label">EMail</label>
+                            <label for="payment_email" class="col-sm-2 control-label">{{ _('EMail') }}</label>
                             <div class="col-sm-10">
-                                <input type="text" name="email" id="payment_email" class="form-control" placeholder="tu@correo.com" value=""></input>
-                                <span id="new_store_name_help" class="help-block">Enviar instrucciones de pago a éste correo</span>
+                                <input type="email" name="email" id="payment_email" class="form-control" placeholder="{{ _('your@email.com') }}" value=""></input>
+                                <span id="new_store_name_help" class="help-block">{{ _('Send payment instructions to this EMail') }}</span>
                             </div>
                         </div>
                         <!-- Send -->
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <!--<button type="submit" class="btn btn-success" onclick="send_payment_instructions();">Enviar</button>-->
-                                <button type="button" class="btn btn-success" data-dismiss="modal">Enviar</button>
+                                <button type="submit" class="btn btn-success" onclick="send_payment_instructions();">{{ _('Send') }}</button>
+                                <!--<button type="button" class="btn btn-success" data-dismiss="modal">{{ _('Send') }}</button>-->
                             </div>
                         </div>
                     </div>
@@ -114,7 +112,7 @@
                     <input type="hidden" id="upgrade_store_id" value=""/>
                     <input type="hidden" id="upgrade_store_iid" value=""/>
                     <input type="hidden" id="upgrade_store_name" value=""/>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
                     <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                 </div>
             </div>
@@ -138,27 +136,46 @@ function add_high(id, iid, name) {
 
 function redraw_upgrade_modal() {
     var country = $('#payment_country').val();
-    var product = $('input[name=product]:checked', '#product_radio').val();
+    //var product = $('input[name=product]:checked', '#product_radio').val();
+    var months = $('#payment_months').val();
+
+    if (months < 1 || isNaN(months)) {
+        months = 1;
+        $('#payment_months').val(months);
+    }
+
+    months = parseInt(months, 10);
+    $('#payment_months').val(months);
 
     $('#payment_local_bank_label').removeClass('disabled');
     $('#payment_mercadopago_label').removeClass('disabled');
     $('#payment_bitcoin_label').removeClass('disabled');
 
-    if (product == 'highlight_one_year') {
-        ars_pay = 'ARS 2000.0';
-        ars_saving = 'ARS 400.0';
-        usd_pay = 'USD 200.0';
-        usd_saving = 'USD 40.0';
-        btc_pay = 'BTC 0.8';
-        btc_saving = 'BTC 0.16';
-    } else if (product == 'highlight_one_month') {
-        ars_pay = 'ARS 200.0';
-        ars_saving = 'ARS 0.0';
-        usd_pay = 'USD 20.0';
-        usd_saving = 'USD 0.0';
-        btc_pay = 'BTC 0.08';
-        btc_saving = 'BTC 0.0';
-    }
+    var ars_month = 200;
+    var usd_month = 20;
+    var btc_month = 0.08;
+
+    var saving = Math.floor(months/12)*2;
+
+    var ars = (ars_month*months) - (ars_month*saving);
+    var usd = (usd_month*months) - (usd_month*saving);
+    var btc = (btc_month*months) - (btc_month*saving);
+
+    //if (product == 'highlight_one_year') {
+    ars_pay = 'ARS '+ars;
+    ars_saving = 'ARS '+(ars_month*saving);
+    usd_pay = 'USD '+usd;
+    usd_saving = 'USD '+(usd_month*saving);
+    btc_pay = 'BTC '+btc;
+    btc_saving = 'BTC '+(btc_month*saving);
+    //} else if (product == 'highlight_one_month') {
+    //ars_pay = 'ARS 200.0';
+    //ars_saving = 'ARS 0.0';
+    //usd_pay = 'USD 20.0';
+    //usd_saving = 'USD 0.0';
+    //btc_pay = 'BTC 0.08';
+    //btc_saving = 'BTC 0.0';
+    //}
 
     $('#payment_amount_to_pay').val(usd_pay);
     $('#payment_amount_saved').val(usd_saving);
@@ -197,8 +214,8 @@ function redraw_upgrade_modal() {
 
 $('#payment_country').change(redraw_upgrade_modal);
 //
-$('#payment_year').change(redraw_upgrade_modal);
-$('#payment_month').change(redraw_upgrade_modal);
+//$('#payment_year').change(redraw_upgrade_modal);
+$('#payment_months').change(redraw_upgrade_modal);
 //
 $('#payment_mercadopago').change(redraw_upgrade_modal);
 $('#payment_local_bank').change(redraw_upgrade_modal);
@@ -206,9 +223,11 @@ $('#payment_bitcoin').change(redraw_upgrade_modal);
 
 function send_payment_instructions() {
     var method = $('input[name=method]:checked', '#method_radio').val();
-    var product = $('input[name=product]:checked', '#product_radio').val();
+    //var product = $('input[name=product]:checked', '#product_radio').val();
     var country = $('#payment_country').val();
     var email = $('#payment_email').val();
+    var badge = $('#payment_badge').val();
+    var months = $('#payment_months').val();
     var id = $('#upgrade_store_id').val();
     var iid = $('#upgrade_store_iid').val();
     var name = $('#upgrade_store_name').val();
@@ -219,8 +238,10 @@ function send_payment_instructions() {
       type: "json",
       data: { email: email,
               method: method,
-              product: product,
+              //product: product,
               country: country,
+              badge: badge,
+              months: months,
               id: id,
               iid: iid,
               name: name }

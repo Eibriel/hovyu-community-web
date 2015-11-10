@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="row">
+        {% if editing %}
+        <h1 style="text-align: center;">{{ _('Edit Badge Store relation') }}</h1>
+        {% else %}
+        <h1 style="text-align: center;">{{ _('Add Badge Store relation') }}</h1>
+        {% endif %}
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <a role="button" class="btn btn-primary btn-sm" href="/products">
+          Cancelar
+        </a>
+    </div>
+    {% if editing %}
+    <form action="edit_badge_store" method="POST" class="form-horizontal">
+    {% else %}
+    <form action="new_badge_store" method="POST" class="form-horizontal">
+    {% endif %}
+
+        <!-- Store -->
+        <div class="form-group">
+            <label for="store" class="col-sm-2 control-label">{{ _('Store') }}</label>
+            <div class="col-sm-10">
+                <input type="text" name="store" id="store" class="form-control" placeholder="" value="{{ edit_item.store }}"></input>
+                <span id="store_help" class="help-block">{{ _('Store ID') }}</span>
+            </div>
+        </div>
+
+        <!-- Badge -->
+        <div class="form-group">
+            <label for="badge" class="col-sm-2 control-label">{{ _('Badge') }}</label>
+                <div class="col-sm-10">
+                    <select class="form-control"  name="badge" id="badge">
+                        <option value="recycling">{{ _('Recycling') }}</option>
+                        <option value="clean_energy">{{ _('Clean Energy') }}</option>
+                        <option value="organic">{{ _('Organic') }}</option>
+                        <option value="vegan">{{ _('Vegan') }}</option>
+                        <option value="kosher">{{ _('Kosher') }}</option>
+                        <option value="gluten_free">{{ _('Gluten Free') }}</option>
+                        <option value="cruelty_free">{{ _('Cruelty Free') }}</option>
+                        <option value="free_software">{{ _('Free Software') }}</option>
+                        <option value="free_hardware">{{ _('Free Hardware') }}</option>
+                        <option value="creative_commons">{{ _('Creative Commons') }}</option>
+                    </select>
+                    <span id="badge_help" class="help-block">{{ edit_item.badge }}</span>
+            </div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="form-group">
+            <label for="start_date" class="col-sm-2 control-label">{{ _('Start Date') }}</label>
+            <div class="col-sm-10">
+                <input type="text" name="start_date" id="start_date" class="form-control" placeholder="DD-MM-YYY" value="{{ edit_item.start_date }}"></input>
+                <span id="start_date_help" class="help-block">{{ _('Badge start date') }}</span>
+            </div>
+        </div>
+
+        <!-- End Date -->
+        <div class="form-group">
+            <label for="end_date" class="col-sm-2 control-label">{{ _('End Date') }}</label>
+            <div class="col-sm-10">
+                <input type="text" name="end_date" id="end_date" class="form-control" placeholder="DD-MM-YYY" value="{{ edit_item.end_date }}"></input>
+                <span id="end_date_help" class="help-block">{{ _('Badge end date') }}</span>
+            </div>
+        </div>
+
+        <!-- Paused -->
+        <div class="form-group ">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="paused" {% if edit_item.paused %}checked="checked"{% endif %}> {{ _('Pause Badge') }}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Password -->
+        <div class="form-group">
+            <label for="admin_password" class="col-sm-2 control-label">{{ _('Admin Password') }}</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="admin_password" id="admin_password" placeholder="Password de Administrador">
+                <span id="password_help" class="help-block">Solo el administrador tiene permisos para cambiar esta información</span>
+            </div>
+        </div>
+        {% if editing %}
+        <input type="hidden" name="_id" value="{{ edit_item._id }}">
+        <input type="hidden" name="_etag" value="{{ edit_item._etag }}">
+        {% endif %}
+
+        <div class="form-group">
+            <label for="new_store_edit_submit" class="col-sm-2 control-label">{{ _('Save') }}</label>
+            <div class="col-sm-10">
+                {% if editing %}
+                <button type="submit" class="btn btn-primary">{{ _('Edit') }}</button>
+                {% else %}
+                <button type="submit" class="btn btn-primary">{{ _('Add') }}</button>
+                {% endif %}
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

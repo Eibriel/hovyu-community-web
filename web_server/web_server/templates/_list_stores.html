@@ -52,7 +52,9 @@
                                 {% endif %}
 
                                 {% if item.exact_location and item.location and item.location.coordinates[0]!=0 and item.location.coordinates[1]!=0 %}
-                                 - <a href="http://www.openstreetmap.org/?mlat={{ item.location.coordinates[1] }}&amp;mlon={{ item.location.coordinates[0] }}#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">{{ _('Map') }}</a>
+                                 - <a href="http://www.openstreetmap.org/?mlat={{ item.location.coordinates[1] }}&amp;mlon={{ item.location.coordinates[0] }}#map=18/{{ item.location.coordinates[1] }}/{{ item.location.coordinates[0] }}" target="_blank">
+                                     {{ _('Map') }}<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                                   </a>
                                 {% endif %}
                                 <br>
 
@@ -97,7 +99,7 @@
                                 <span class="glyphicon glyphicon-camera" aria-hidden="true"></span> {{ _('Add photo') }}
                             </button>
                             <button class="btn btn-default btn-xs" type="button" data-toggle="modal" data-target="#upgradeModal" id="upgrade_{{ item._id }}">
-                                <span class="glyphicon glyphicon-circle-arrow-up" aria-hidden="true"></span> {{ _('Add Badge') }}
+                                <span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> {{ _('Add Badge') }}
                             </button>
 
                             <div class="row hide" id="add_picture_div_{{ item._id }}">
@@ -144,6 +146,9 @@
                                         {% endif %}
                                         <p><small><small>{{ _('Views') }}: {{ item.views }}</small></small><br>
                                         <small><small>{{ _('Edits') }}: {{ item._version - 1 }}</small></small></p>
+                                        {% for badge in item.badges %}
+                                        <p><big><big><span class="label label-success">{{ badge }}</span></big></big></p>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 {% if item.exact_location %}

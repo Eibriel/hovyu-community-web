@@ -20,7 +20,8 @@
 {% endif %}
     <div class="panel-heading"><h2>{{ item.real_amount|money_scale_inverse(item.currency) }} {{ item.currency }}<small> ({{ item._id }})</small></h2></div>
     <div class="panel-body">
-    <p>Producto: {{ item.product }}</p>
+    <p>Badge: {{ item.badge }}</p>
+    <p>Badge Id: {{ item.badge_store }}</p>
     <p>A pagar: {{ item.amount|money_scale_inverse(item.currency) }} {{ item.currency }}</p>
     <p>Pagado: {{ item.real_amount|money_scale_inverse(item.currency) }} {{ item.currency }}</p>
     <!--<p>IID: {{ item.iid }}</p>-->
@@ -28,7 +29,7 @@
     <p>IID del Comercio: {{ item.store_iid }}</p>
     <p>Completo: {{ item.completed }}</p>
     {% if item.completed %}
-    <p>Fecha de ingreso de fondos: {{ item.start_date }}</p>
+    <p>Fecha de ingreso de fondos: {{ item.completion_date }}</p>
     {% endif %}
     <p>Método de pago: {{ item.payment_method }}</p>
     {% if item.payment_method == 'mercadopago' %}

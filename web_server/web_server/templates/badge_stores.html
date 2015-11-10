@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="row">
+        <h2 style="text-align: center;">Badges &amp; Stores </h2>
+    </div>
+    <div style="text-align: center; margin-top: 10px; margin-bottom: 20px;">
+        <a role="button" class="btn btn-primary btn-sm" href="/badge_store_add_edit">
+          {{ _('Add Badge Store relation') }}
+        </a>
+    </div>
+{% for item in items %}
+<div class="panel panel-default" id="panel_store_{{ item._id }}">
+    <div class="panel-heading"><strong>{{ item.badge }} - {{ item.store }}</strong></div>
+    <div class="panel-body">
+    <ul>
+        <li>Start Date: {{ item.start_date }}</li>
+        <li>End Date: {{ item.end_date }}</li>
+        <li>Paused: {{ item.paused }}</li>
+    </ul>
+    <a class="btn-sm btn-default" href="/badge_store_add_edit?e={{ item._id }}" role="button">
+        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar
+    </a>
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
